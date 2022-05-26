@@ -1,0 +1,13 @@
+{
+    "name": "ProductFeatureModule",
+    "alias": "productfeaturemodule",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\ProductFeatureModule\\Providers\\ProductFeatureModuleServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
