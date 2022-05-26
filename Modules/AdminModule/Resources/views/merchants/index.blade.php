@@ -1,0 +1,226 @@
+@extends('commonmodule::layouts.master')
+
+@section('title')
+    {{__('adminmodule::admin.merchants')}}
+@endsection
+
+@section('css')
+    <link rel="stylesheet" href="{{ asset('assets/admin/plugins/table/datatable/custom_dt_zero_config.css')}}"
+          type="text/css">
+@endsection
+
+
+
+@section('content')
+
+
+
+    <!--  BEGIN CONTENT PART  -->
+    <div id="content" class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <div class="page-title">
+                    <h3>{{__('adminmodule::admin.merchants')}}</h3>
+                    <div class="crumbs">
+                        <ul id="breadcrumbs" class="breadcrumb">
+                            <li><a href="{{url('/admin')}}"><i class="flaticon-home-fill"></i></a></li>
+                            <li><a href="#">{{__('adminmodule::admin.merchants')}}</a></li>
+                            <li class="active"><a href="#">{{__('adminmodule::admin.merchants')}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                @can('add_merchant')
+                    <div class="page-title" style="float:right">
+                        <a href="{{url('admin/merchants/create')}}"
+                           class="mt-4 btn btn-button-16"> {{__('adminmodule::admin.add_new_merchant')}}  </a>
+                        <a href="{{asset('assets/admin/merchants_sample.xlsx')}}"
+                           class="mt-4 btn btn-button-16 mr-2"> {{__('productmodule::admin.download')}}  </a>
+                        <a data-target="#uploadModal" data-toggle="modal"
+                           class="mt-4 btn btn-button-16 mr-2"> {{__('productmodule::admin.upload')}}  </a>
+                    </div>
+                @endcan
+
+            </div>
+
+            <div class="row" id="cancel-row">
+
+                <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+                    <div class="statbox widget box box-shadow">
+                        <div class="widget-header">
+                            <div class="row">
+                                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                    <h4>{{__('adminmodule::admin.merchants')}}</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <form class="bulk-form" action="{{ route('merchant.bulk') }}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="method" value="">
+                                        <input type="hidden" name="ids" value="">
+                                        <button type="submit" class="btn btn-success bulk-btn" value="active"
+                                                disabled>{{__('productmodule::admin.activate')}}</button>
+                                        <button type="submit" class="btn btn-danger bulk-btn" value="de-active"
+                                                disabled>{{__('productmodule::admin.de-active')}}</button>
+                                        <button type="submit" class="btn btn-danger bulk-btn" value="delete"
+                                                disabled>{{__('productmodule::admin.delete')}}</button>
+                                        <div class="bulk-btn-group d-inline-block">
+                                            <h2 class="group-title">{{__('ordermodule::payment.cash_on_delivery')}}</h2>
+                                            <button type="submit" class="btn btn-success bulk-btn" value="can_cash"
+                                                    disabled>{{__('productmodule::admin.activate')}}</button>
+                                            <button type="submit" class="btn btn-danger bulk-btn" value="can_not_cash"
+                                                    disabled>{{__('productmodule::admin.de-active')}}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="widget-content widget-content-area">
+                            <div class="table-responsive mb-4">
+                                <table id="zero-config" class="table table-hover table-bordered" style="width:100%">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th><input type="checkbox" class="table-select-all"></th>
+                                        <th>{{__('adminmodule::admin.account_number')}}</th>
+                                        <th>{{__('adminmodule::admin.company_name')}}</th>
+                                        <th>{{__('adminmodule::admin.authorized_person')}}</th>
+                                        <th>{{__('adminmodule::admin.email')}}</th>
+                                        <th>{{__('adminmodule::admin.status')}}</th>
+                                        <th>{{__('adminmodule::admin.create_at')}}</th>
+                                        <th>{{__('adminmodule::admin.operations')}}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($merchants as $merchant)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>
+                                                <input type="checkbox" class="table-select"
+                                                       name="ids[]" value="{{$merchant->id}}">
+                                            </td>
+                                            <td class="text-primary">{{$merchant->account_number}}</td>
+                                            <td class="text-primary">{{$merchant->company_name}}</td>
+                                            <td>{{$merchant->authorized_person}}</td>
+                                            <td>{{$merchant->email}}</td>
+                                            <td>
+                                                <button
+                                                    class="btn {{($merchant->is_active)?'btn-success':'btn-danger'}}">
+                                                    {{($merchant->is_active)?__('adminmodule::admin.active'):__('adminmodule::admin.inactive')}}
+                                                </button>
+                                            </td>
+                                            <td>{{$merchant->created_at}}</td>
+                                            <td>
+                                                <ul class="table-controls">
+                                                    @can('update_merchant')
+
+                                                        <li><a class="btn btn-success p-0"
+                                                               href="{{url('admin/merchants/'.$merchant->id.'/edit')}}"
+                                                               data-toggle="tooltip" data-placement="top"
+                                                               title="Edit"><i
+                                                                    class="flaticon-edit  bg-success p-1 text-white br-6 mb-1"></i></a>
+                                                        </li>
+                                                    @endcan
+
+                                                    @can('delete_merchant')
+                                                        <li>
+                                                            <form class="inline"
+                                                                  action="{{url('admin/merchants/' . $merchant->id)}}"
+                                                                  method="POST">
+                                                                {{ method_field('DELETE') }} {!! csrf_field() !!}
+                                                                <button title="Delete" type="submit"
+                                                                        onclick="return confirm('{{__('adminmodule::admin.delete_admins')}}')"
+                                                                        type="button"
+                                                                        class="btn btn-danger p-0"><i
+                                                                        class="flaticon-delete  bg-danger p-1 text-white br-6 "></i>
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    @endcan
+                                                </ul>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+    <!--  END CONTENT PART  -->
+
+
+    {{--  upload Modal  --}}
+    <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{__('productmodule::admin.upload')}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="{{route('upload_merchants')}}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <input type="file" name="merchants" class="col-lg-6"
+                                   accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">{{__('productmodule::admin.cancel')}}</button>
+                        <button type="submit" class="btn btn-primary">{{__('productmodule::admin.upload')}}</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    {{--  End Upload Modal  --}}
+@stop
+
+@section('js')
+    @include('commonmodule::includes.swal')
+
+    <script src="{{ asset('assets/admin/plugins/table/datatable/button-ext/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/plugins/table/datatable/button-ext/jszip.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/plugins/table/datatable/button-ext/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/plugins/table/datatable/button-ext/buttons.print.min.js') }}"></script>
+
+    <script>
+        $('#zero-config').DataTable({
+            dom: 'Bfrtip',
+            "lengthMenu": [100, 50, 20, 10],
+            "language": {
+                "paginate": {
+                    "previous": "<i class='flaticon-arrow-left-1'></i>",
+                    "next": "<i class='flaticon-arrow-right'></i>"
+                },
+                "info": "Showing page _PAGE_ of _PAGES_"
+            },
+            "buttons": [
+                'excel'
+            ],
+            columnDefs: [{
+                orderable: false,
+                targets: 1
+            }],
+        });
+
+        $(document).ready(function () {
+            $(".dt-button.buttons-html5").addClass('btn btn-info');
+        })
+    </script>
+@endsection

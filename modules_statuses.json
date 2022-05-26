@@ -1,0 +1,12 @@
+{
+    "AdminModule": true,
+    "AreaModule": true,
+    "CommonModule": true,
+    "ConfigModule": true,
+    "FrontHomeModule": true,
+    "OrderModule": true,
+    "ProductFeatureModule": true,
+    "ProductModule": true,
+    "UserModule": true,
+    "WarrantyModule": true
+}

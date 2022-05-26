@@ -1,0 +1,82 @@
+<?php
+
+return array(
+    'login_head' => 'تسجيل الدخول / تسجيل جديد ',
+    'login' => 'تسجيل دخول',
+    'social_login' => 'تسجيل الدخول بواسطة',
+    'signin_with' => 'التسجيل بواسطة',
+    'fb_login' => 'الفيس بوك',
+    'go_login' => 'جوجل',
+    'signin' => 'تسجيل دخول',
+    'create_account' => 'تسجيل جديد',
+    'register' => 'سجل الان',
+    'email' => 'البريد الالكترونى',
+    'password' => 'كلمة المرور',
+    'password_confirmation' => 'تأكيد كلمة المرور',
+    'forgot_password' => 'هل نسيت كلمة المرور ؟',
+    'back_to_login' => 'الرجوع لتسجيل الدخول',
+    'remember_me' => 'تذكرنى',
+
+    // register
+    'first_name' => 'الاسم الاول',
+    'last_name' => 'الاسم الاخير',
+    'phone' => 'رقم الجوال',
+    'gender' => 'النوع',
+    'country' => 'الدولة',
+    'government' => 'المحافظة',
+    'city' => 'المدينة',
+    'zone' => 'المنطقة',
+    'choose_country' => 'اختر الدولة',
+    'choose_city' => 'اختر المدينة',
+    'choose_government' => 'اختر المحافظة',
+    'choose_zone' => 'اختر المنطقة',
+    'reset_btn' => 'ارسال',
+    'reset_password_message' => 'قم بأدخال بريدك الالكترونى وسيتم ارسال لينك لاعادة تعيين كلمة المرور',
+    'choose_gender' => 'اختر النوع',
+    'address' => 'العنوان',
+    'male' => 'ذكر',
+    'female' => 'انثى',
+    'activate_title' => 'تم ارسال كود التفعيل على ايميلك يرجى التفعيل',
+    'activation_code' => 'كود التفعيل',
+    'code' => 'الكود',
+    'active' => 'تفعيل',
+    'in_valid_login' => 'البريد الالكتروني او كلمة المرور غير صحيحة',
+    'login_success' => 'تم تسجيل الدخول بنجاح',
+    'resetpassword' => 'اعادة تعيين كلمة المرور',
+    'click_here' => 'اضغط هنا',
+    'active_message' => 'عزيزى العميل شكرا لك على تسجيلك  فى موقعنا ,  مرفق لك الكود الخاص بالتفعيل',
+
+    'resetpassword_message' => 'اعادة تعيين كلمة مرور الحساب في متجر بيونيرز',
+    'user_register' => 'تسجيل مستخدم جديد',
+    'merchant_register' => 'تسجيل تاجر جديد',
+    'company_name' => 'إسم الشركة',
+    'authorized_person' => 'إسم الشخص المفوض',
+    'commercial_register' => 'السجل التجاري',
+    'tax_number' => 'الرقم الضريبي',
+    'logo' => 'صورة اللوجو',
+    'merchant_login' => 'الدخول كتاجر',
+    'merchant_login_head' => 'الدخول الى حسابك',
+
+    'choose_phone_code' => 'كود الدولة',
+
+    'welcome' => 'مرحبا بك',
+
+    'accept' => 'أوافق على ',
+    'terms_conditions' => 'الشروط والاحكام',
+
+    'loading' => 'ارسال...',
+
+    'phone_code_Sent' => 'تم ارسال كود التفعيل الى هاتفك',
+
+    'phone_login' => 'الدخول بالهاتف',
+    'email_login' => 'الدخول بالبريد',
+    'phone_reset' => 'استرجاع بالهاتف',
+    'email_reset' => 'استرجاع بالبريد',
+
+    'creds_not_found' => 'البيانات غير صحيحة',
+    'or_phone' => 'او الهاتف',
+
+    'save' => 'حفظ',
+    'send' => 'ارسال',
+    'no_account' => 'ليس لديك حساب',
+);

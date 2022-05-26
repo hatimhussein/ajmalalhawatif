@@ -1,0 +1,13 @@
+{
+    "name": "WarrantyModule",
+    "alias": "warrantymodule",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\WarrantyModule\\Providers\\WarrantyModuleServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

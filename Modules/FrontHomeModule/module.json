@@ -1,0 +1,13 @@
+{
+    "name": "FrontHomeModule",
+    "alias": "fronthomemodule",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\FrontHomeModule\\Providers\\FrontHomeModuleServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
