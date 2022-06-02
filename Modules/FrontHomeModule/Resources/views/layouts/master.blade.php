@@ -50,6 +50,15 @@
 {!! ($seo_info!=null)?$seo_info->script_footer:'' !!}
 {!! $site_data->where('key','seo_script')->first()->value_en !!}
 
+<script>
+    $(document).on("keypress", 'input[type="number"]', function(e){
+        let charCode = !e.charCode ? e.which : e.charCode;
+
+        if( !(charCode >= 48 && charCode <= 57) ){
+            e.preventDefault();
+        }
+    });
+</script>
 
 </body>
 </html>

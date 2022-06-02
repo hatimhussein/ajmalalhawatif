@@ -1,3 +1,14 @@
+<style>
+    #prices_table {
+        justify-content: space-around;
+        background: #f1f0f0;
+        padding: 10px;
+        font-size: 14px;
+        color: white;
+        font-weight: bold;
+    }
+</style>
+
 <section >
     <style media="screen">
         .input-background{
@@ -8,8 +19,8 @@
           data-on-error-input="notifyOnErrorInput" data-show-error-hint="false" novalidate="novalidate">
         @csrf
 
-        <div class="row">
-            <div class="col-lg-4">
+        <div class="row" id="prices_table">
+            <div class="col-lg-2">
                 <div class="">
                     <label>{{__('productmodule::admin.first_level')}}</label>
                     <input value="{{$product_info->product_price1}}" class=" form-control" data-validate-func="required"
@@ -29,7 +40,7 @@
                            name="product_max_qty1" type="number" min="0" required>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <div class="">
                     <label>{{__('productmodule::admin.second_level')}}</label>
                     <input value="{{$product_info->product_price2}}" class=" form-control" data-validate-func="required"
@@ -49,7 +60,7 @@
                            name="product_max_qty2" type="number" min="0" required>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <div class="">
                     <label>{{__('productmodule::admin.third_level')}}</label>
                     <input value="{{$product_info->product_price3}}" class=" form-control" data-validate-func="required"
@@ -70,10 +81,9 @@
                 </div>
             </div>
 
+{{--            <div class="col-12" style="height: 50px"></div>--}}
 
-            <div class="col-12" style="height: 50px"></div>
-
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <div class="">
                     <label>{{__('productmodule::admin.fourth_level')}}</label>
                     <input value="{{$product_info->product_price4}}" class=" form-control" data-validate-func="required"
@@ -93,7 +103,7 @@
                            name="product_max_qty4" type="number" min="0" required>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <div class="">
                     <label>{{__('productmodule::admin.fifth_level')}}</label>
                     <input value="{{$product_info->product_price}}" class=" form-control" id="mainPrice" data-validate-func="required"

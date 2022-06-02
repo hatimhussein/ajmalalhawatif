@@ -17,6 +17,7 @@ Route::prefix('fronthomemodule')->group(function () {
 
 Route::middleware(['is_not_ban','auth'])->group(function () {
     Route::get('/suggestions', "HomeController@suggestions");
+    Route::post('store-file-suggestions', 'HomeController@suggestionsStore');
 });
 
 

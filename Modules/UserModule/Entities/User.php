@@ -5,6 +5,7 @@ namespace Modules\UserModule\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Modules\AreaModule\Entities\City;
 use Modules\AreaModule\Entities\Country;
@@ -22,6 +23,9 @@ use Modules\WarrantyModule\Entities\Warranty;
 class User extends Authenticatable
 {
     use Notifiable, Notifier;
+
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
 
     protected $fillable = [
         'first_name', 'last_name', 'email', 'phone', 'phone_code_id', 'gender', 'birth_date', 'user_status', 'has_forward_account'

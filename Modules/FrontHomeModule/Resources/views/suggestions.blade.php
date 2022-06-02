@@ -19,7 +19,7 @@
             </div>
             <fieldset class="col2-set">
                 <div class="col-2 registered-users suggestion"><strong>{{__('fronthomemodule::suggestion.suggestions')}}</strong>
-                  <form id="suggestionComplaintForm" >
+                  <form id="suggestionComplaintForm" enctype="multipart/form-data">
                     <div class="content">
                         <ul class="form-list">
                             <li>
@@ -31,7 +31,7 @@
                             <li>
                                 <label for="phone">{{__('fronthomemodule::suggestion.mobile')}} <span class="required">*</span></label>
                                 <br>
-                                <input name="mobil" type="text" title="phone"
+                                <input name="mobil" type="number" title="phone"
                                     class="input-text required-entry validate-password" required autocomplete="off">
                             </li>
 
@@ -43,18 +43,10 @@
                             </li>
 
                             <li>
-                                    <div class="radio-btn">
-                                        <label for="suggestion">{{__('fronthomemodule::suggestion.suggestion')}}</label>
-                                        <input type="radio" name="type" value="suggestion" id="suggestion" required >
-                                    </div>
-                                    <div class="radio-btn">
-                                        <label for="complaint">{{__('fronthomemodule::suggestion.complaint')}}</label>
-                                        <input type="radio" name="type" value="complaint" id="complaint" required >
-                                    </div>
-                                <div class="radio-btn">
-                                    <label for="message">{{__('fronthomemodule::suggestion.message')}}</label>
-                                    <input type="radio" name="type" value="message" id="message" required >
-                                </div>
+                                <label for="pass">{{__('fronthomemodule::suggestion.additional_attachments')}} </label>
+                                <br>
+                                <input type="file" name="additional_attachments">
+                                <br>
                             </li>
                             <li>
                                 <label for="pass">{{__('fronthomemodule::suggestion.message')}} <span class="required">*</span></label>
@@ -103,9 +95,7 @@ $( "#suggestionComplaintForm" ).submit(function( event ) {
                        else{
                          toastr["success"](response.message)
                          $('input[type="text"]').val('');
-                         $('input[type="radio"]').attr('checked',false);
                          $('textarea').val('');
-
                         }
 
                      },

@@ -2,6 +2,7 @@
 
 namespace Modules\AdminModule\Http\Controllers;
 
+use App\Exports\UsersExport;
 use App\Imports\MerchantsImport;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -56,6 +57,12 @@ class MerchantsController extends Controller
         $merchants = $this->merchantRepository->getMerchants();
         $this->merchantRepository->markSeen($merchants);
         return view('adminmodule::merchants.index', compact('merchants'));
+    }
+
+    public function downloadUsers(Excel $excel)
+    {
+
+        return Excel::download(new UsersExport(), 'users.xlsx');
     }
 
     /**

@@ -24,6 +24,8 @@ Route::prefix('admin')->group(function () {
     Route::resource('merchants', 'MerchantsController');
     Route::post('merchant/bulk', 'MerchantsController@bulk')->name('merchant.bulk');
 
+    Route::get('download-users', 'MerchantsController@downloadUsers');
+
     Route::resource('permissions', 'PermissionController');
     Route::post('permissions/update-role-permession', 'PermissionController@updateRolePermission');
     Route::post('permissions/update-role-name', 'PermissionController@updateRoleName');

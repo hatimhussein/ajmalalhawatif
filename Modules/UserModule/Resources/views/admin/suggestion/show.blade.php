@@ -69,8 +69,6 @@
                                                     <p class="mb-2"><span class="usr-work-position">{{__('fronthomemodule::suggestion.subject')}} : </span>
                                                         <a href="">{{$suggestion->subject}}</a></p>
 
-
-
                                                 </div>
                                             </div>
                                         </div>
@@ -88,6 +86,11 @@
                                                         {{$suggestion->message }}
                                                     </p>
 
+                                                    @if($suggestion->additional_attachments)
+                                                        <a href="{{ imagePath($suggestion->additional_attachments) }}" target="_blank" class="btn btn-success">
+                                                            تحميل المرفقات
+                                                        </a>
+                                                    @endif
 
 
                                                 </div>

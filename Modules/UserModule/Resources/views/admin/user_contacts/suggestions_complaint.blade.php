@@ -27,28 +27,28 @@
 
             <div class="widget-content justify-pill rounded-pills-icon widget-content-area" style="padding:0px">
 
-                <ul class="nav nav-pills mt-3  justify-content-center navs nav3" id="justify-pills-tab" role="tablist">
+{{--                <ul class="nav nav-pills mt-3  justify-content-center navs nav3" id="justify-pills-tab" role="tablist">--}}
 
-                    <li class="nav-item ml-2 mr-2" >
-                        <a class="nav-link mb-2 text-center {{$type=='all'?'active':''}}"   href="{{url('admin/suggestions_complaint')}}"   >{{__('usermodule::admin.all')}}</a>
-                    </li>
-
-
-                    <li class="nav-item ml-2 mr-2" >
-                        <a class="nav-link mb-2 text-center {{$type=='suggestion'?'active':''}}"  href="{{url('admin/suggestions_complaint/suggestion')}}" role="tab" aria-controls="justify-pills-Suggestion" aria-selected="true">{{__('usermodule::admin.suggestions')}}</a>
-                    </li>
-
-                    <li class="nav-item ml-2 mr-2" >
-                        <a class="nav-link mb-2 text-center {{$type=='complaint'?'active':''}}" href="{{url('admin/suggestions_complaint/complaint')}}" role="tab" aria-controls="justify-pills-complaint" aria-selected="true">{{__('usermodule::admin.complaint')}}</a>
-                    </li>
-
-                    <li class="nav-item ml-2 mr-2" >
-                        <a class="nav-link mb-2 text-center {{$type=='message'?'active':''}}"  href="{{url('admin/suggestions_complaint/message')}}" role="tab" aria-controls="justify-pills-messages" aria-selected="true">{{__('usermodule::admin.messages')}}</a>
-                    </li>
+{{--                    <li class="nav-item ml-2 mr-2" >--}}
+{{--                        <a class="nav-link mb-2 text-center {{$type=='all'?'active':''}}"   href="{{url('admin/suggestions_complaint')}}"   >{{__('usermodule::admin.all')}}</a>--}}
+{{--                    </li>--}}
 
 
+{{--                    <li class="nav-item ml-2 mr-2" >--}}
+{{--                        <a class="nav-link mb-2 text-center {{$type=='suggestion'?'active':''}}"  href="{{url('admin/suggestions_complaint/suggestion')}}" role="tab" aria-controls="justify-pills-Suggestion" aria-selected="true">{{__('usermodule::admin.suggestions')}}</a>--}}
+{{--                    </li>--}}
 
-                </ul>
+{{--                    <li class="nav-item ml-2 mr-2" >--}}
+{{--                        <a class="nav-link mb-2 text-center {{$type=='complaint'?'active':''}}" href="{{url('admin/suggestions_complaint/complaint')}}" role="tab" aria-controls="justify-pills-complaint" aria-selected="true">{{__('usermodule::admin.complaint')}}</a>--}}
+{{--                    </li>--}}
+
+{{--                    <li class="nav-item ml-2 mr-2" >--}}
+{{--                        <a class="nav-link mb-2 text-center {{$type=='message'?'active':''}}"  href="{{url('admin/suggestions_complaint/message')}}" role="tab" aria-controls="justify-pills-messages" aria-selected="true">{{__('usermodule::admin.messages')}}</a>--}}
+{{--                    </li>--}}
+
+
+
+{{--                </ul>--}}
 
                 <ul class="nav nav-pills mt-3  justify-content-center navs nav3" id="justify-pills-tab" role="tablist">
 

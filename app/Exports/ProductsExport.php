@@ -28,9 +28,10 @@ class ProductsExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
     public function headings(): array
     {
         return [
-            '#',
-            'القسم',
-            'الماركة',
+            'القسم عربي',
+            'القسم انجليزي',
+            'الماركة عربي',
+            'الماركة انجليزي',
             'كود المنتج',
             'الحالة',
             'النوع',
@@ -56,6 +57,7 @@ class ProductsExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
             'فيديو يوتيوب',
             'الصورة الرئيسية',
             'الصور الثانوية',
+            'رقم الصنف',
         ];
     }
 
@@ -67,9 +69,10 @@ class ProductsExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
         }
 
         return [
-            $Product->id,
             $Product->category->name_ar,
+            $Product->category->name_en,
             $Product->brand->name_ar,
+            $Product->brand->name_en,
             $Product->product_code,
             $Product->status,
             $Product->type,
@@ -95,6 +98,7 @@ class ProductsExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
             $Product->yt_video,
             url('images/product/' . $Product->product_photo),
             $images,
+            $Product->item_number,
         ];
     }
 }

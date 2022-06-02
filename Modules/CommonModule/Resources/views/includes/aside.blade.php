@@ -13,7 +13,7 @@
 {{--            </li>--}}
             <li class="nav-item d-flex">
                 <a href="#" class="navbar-brand">
-                    <img src="{{ asset('assets/admin/img/icons/config/site_data.svg')}}" class="img-fluid" alt="logo">
+                    <img src="{{ asset('assets/admin/img/icons/config/svg/site_data_new.svg')}}" class="img-fluid" alt="logo">
                 </a>
                 <p class="border-underline"></p>
             </li>
@@ -89,6 +89,7 @@
                    </li> -->
 
             @can('products')
+
                 <li class="menu">
                     <a href="#products" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
@@ -149,7 +150,9 @@
                         @endcan
                     </ul>
                 </li>
+
             @endcan
+
             @can('markting')
                 <li class="menu">
                     <a href="#markting" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -299,6 +302,11 @@
                         @can('users')
                             <li>
                                 <a href="{{url('admin/users')}}"> {{__('commonmodule::sidebar.users')}} </a>
+                            </li>
+                        @endcan
+                        @can('users')
+                            <li>
+                                <a href="{{url('admin/deleted-users')}}"> العملاء المحذوفين </a>
                             </li>
                         @endcan
                         @can('show_merchant')
@@ -503,7 +511,33 @@
                     </ul>
                 </li>
         @endcan
-        <!--    @can('report')
+
+            @can('report')
+
+                <li class="menu">
+                    <a href="#archive" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <i class="flaticon-folder"></i>
+                            <span>الأرشيف</span>
+                        </div>
+                        <div>
+                            <i class="flaticon-right-arrow"></i>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="archive" data-parent="#accordionExample">
+
+                        <li>
+                            <a href="{{url('admin/deleted-users')}}"> التجار المحذوفون</a>
+                        </li>
+                        <li>
+                            <a href="{{url('admin/deleted-products')}}"> المنتجات المحذوفة</a>
+                        </li>
+
+                    </ul>
+                </li>
+
+            <!--
+
             <li class="menu">
                 <a href="#area" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <div class="">

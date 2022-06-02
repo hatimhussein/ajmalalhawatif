@@ -14,6 +14,7 @@ use Modules\AreaModule\Repository\CityRepository;
 use Modules\AreaModule\Repository\CountryRepository;
 use Modules\AreaModule\Repository\GovernmentRepository;
 use Modules\AreaModule\Repository\ZoneRepository;
+use Modules\UserModule\Entities\User;
 use Modules\UserModule\Notifications\UserRegisterNotification;
 use Modules\UserModule\Repository\UserRepository;
 use Modules\UserModule\Repository\UserLogRepository;
@@ -67,10 +68,24 @@ class UserModuleController extends Controller
         $this->middleware('permission:users')->only(['show', 'index']);
     }
 
+    public function restoreUser($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+        $user->restore();
+
+        return redirect()->back()->with('user_updated', 'updated');
+    }
+
     function index()
     {
         $users = $this->userRepository->findAllUsers();
         return view('usermodule::admin.user.index', compact('users'));
+    }
+
+    function deletedUsers()
+    {
+        $users = $this->userRepository->getDeletedUsers();
+        return view('usermodule::admin.user.deleted_users', compact('users'));
     }
 
     public function show($id)

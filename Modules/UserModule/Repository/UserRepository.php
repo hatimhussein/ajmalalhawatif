@@ -39,6 +39,10 @@ class UserRepository extends BaseRepository
         return User::class;
     }
 
+    function getDeletedUsers()
+    {
+        return User::onlyTrashed()->get();
+    }
 
     public function query(): Builder
     {

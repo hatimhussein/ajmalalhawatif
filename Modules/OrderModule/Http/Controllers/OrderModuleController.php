@@ -131,8 +131,10 @@ class OrderModuleController extends Controller
             foreach ($cart_data as $key => $item){
 //                dd($item['product_id'], $item['quantity'], $item['user_id']);
                 $product = Product::find($item['product_id']);
-                if ($item['quantity'] < $product->{'product_min_qty'.auth()->user()->prices_level} || $item['quantity'] > $product->{'product_max_qty'.auth()->user()->prices_level}){
-                    return redirect()->back()->with('failed', 'يجب عليك شراء كمية مناسبة من منتج (' . $item['item_name'] . ')، تكون بين ' . $product->{'product_min_qty'.auth()->user()->prices_level} . ' - ' . $product->{'product_max_qty'.auth()->user()->prices_level} . ' قطعة');
+                if (($product->{'product_min_qty'.auth()->user()->prices_level} != 0 && $product->{'product_max_qty'.auth()->user()->prices_level} != 0)){
+                    if ($item['quantity'] < $product->{'product_min_qty'.auth()->user()->prices_level} || $item['quantity'] > $product->{'product_max_qty'.auth()->user()->prices_level}){
+                        return redirect()->back()->with('failed', 'يجب عليك شراء كمية مناسبة من منتج (' . $item['item_name'] . ')، تكون بين ' . $product->{'product_min_qty'.auth()->user()->prices_level} . ' - ' . $product->{'product_max_qty'.auth()->user()->prices_level} . ' قطعة');
+                    }
                 }
             }
 

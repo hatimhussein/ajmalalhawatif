@@ -1,11 +1,13 @@
 @extends('commonmodule::layouts.master')
 
 @section('title')
-    {{__('adminmodule::admin.merchants')}}
+    {{__('usermodule::admin.users')}}
 @endsection
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/admin/plugins/table/datatable/custom_dt_zero_config.css')}}"
+          type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/admin/plugins/table/datatable/custom_dt_html5.css')}}"
           type="text/css">
 @endsection
 
@@ -20,28 +22,28 @@
         <div class="container">
             <div class="page-header">
                 <div class="page-title">
-                    <h3>{{__('adminmodule::admin.merchants')}}</h3>
+                    <h3>{{__('usermodule::admin.users')}}</h3>
                     <div class="crumbs">
                         <ul id="breadcrumbs" class="breadcrumb">
                             <li><a href="{{url('/admin')}}"><i class="flaticon-home-fill"></i></a></li>
-                            <li><a href="#">{{__('adminmodule::admin.merchants')}}</a></li>
-                            <li class="active"><a href="#">{{__('adminmodule::admin.merchants')}}</a></li>
+                            <li class="active"><a href="#">{{__('usermodule::admin.users')}}</a></li>
                         </ul>
                     </div>
                 </div>
 
-                @can('add_merchant')
-                    <div class="page-title" style="float:right">
-                        <a href="{{url('admin/merchants/create')}}"
-                           class="mt-4 btn btn-button-16"> {{__('adminmodule::admin.add_new_merchant')}}  </a>
-                        <a href="{{url('admin/download-users')}}"
-                           class="mt-4 btn btn-button-16 mr-2"> {{__('productmodule::admin.download')}}  </a>
-                        <a data-target="#uploadModal" data-toggle="modal"
-                           class="mt-4 btn btn-button-16 mr-2"> {{__('productmodule::admin.upload')}}  </a>
-                    </div>
-                @endcan
+                <div class="page-title" style="float:right">
+                    <a href="{{url('admin/users/create')}}"
+                       class="mt-4 btn btn-button-16"> {{__('usermodule::admin.add_new_user')}}  </a>
+                    <a href="{{asset('assets/admin/users_sample.xlsx')}}"
+                       class="mt-4 btn btn-button-16 mr-2"> {{__('productmodule::admin.download')}}  </a>
+                    <a data-target="#uploadModal" data-toggle="modal"
+                       class="mt-4 btn btn-button-16 mr-2"> {{__('productmodule::admin.upload')}}  </a>
+                </div>
+
 
             </div>
+
+            <br>
 
             <div class="row" id="cancel-row">
 
@@ -50,12 +52,12 @@
                         <div class="widget-header">
                             <div class="row">
                                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                                    <h4>{{__('adminmodule::admin.merchants')}}</h4>
+                                    <h4>{{__('usermodule::admin.users')}}</h4>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <form class="bulk-form" action="{{ route('merchant.bulk') }}" method="post">
+                                <div class="col-md-12">
+                                    <form class="bulk-form" action="{{ route('user.bulk') }}" method="post">
                                         @csrf
                                         <input type="hidden" name="method" value="">
                                         <input type="hidden" name="ids" value="">
@@ -76,64 +78,84 @@
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="widget-content widget-content-area">
-                            <div class="table-responsive mb-4">
+                            <div class=" mb-4">
                                 <table id="zero-config" class="table table-hover table-bordered" style="width:100%">
                                     <thead>
                                     <tr>
                                         <th>#</th>
                                         <th><input type="checkbox" class="table-select-all"></th>
-                                        <th>{{__('adminmodule::admin.account_number')}}</th>
-                                        <th>{{__('adminmodule::admin.company_name')}}</th>
-                                        <th>{{__('adminmodule::admin.authorized_person')}}</th>
-                                        <th>{{__('adminmodule::admin.email')}}</th>
-                                        <th>{{__('adminmodule::admin.status')}}</th>
-                                        <th>{{__('adminmodule::admin.create_at')}}</th>
-                                        <th>{{__('adminmodule::admin.operations')}}</th>
+                                        <th>{{__('usermodule::admin.name')}}</th>
+                                        <th> {{__('usermodule::admin.email')}}</th>
+                                        <th>{{__('usermodule::admin.phone')}}</th>
+                                        <th>{{__('usermodule::admin.date')}} </th>
+                                        <th>{{__('usermodule::admin.status')}} </th>
+                                        <th>{{__('usermodule::admin.action')}}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($merchants as $merchant)
+                                    @foreach($users as $user)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>
                                                 <input type="checkbox" class="table-select"
-                                                       name="ids[]" value="{{$merchant->id}}">
+                                                       name="ids[]" value="{{$user->id}}">
                                             </td>
-                                            <td class="text-primary">{{$merchant->account_number}}</td>
-                                            <td class="text-primary">{{$merchant->company_name}}</td>
-                                            <td>{{$merchant->authorized_person}}</td>
-                                            <td>{{$merchant->email}}</td>
+                                            <td class="text-primary">{{$user->first_name}} {{$user->last_name}}</td>
+                                            <td>{{$user->email}}</td>
+                                            <td>{{$user->phone}}</td>
+
+                                            <td>{{$user->created_at}}</td>
                                             <td>
-                                                <button
-                                                    class="btn {{($merchant->is_active)?'btn-success':'btn-danger'}}">
-                                                    {{($merchant->is_active)?__('adminmodule::admin.active'):__('adminmodule::admin.inactive')}}
-                                                </button>
+
+                                                @if(!$user->is_ban)
+                                                    <a href="{{url('admin/change-user-status/status/1/id/'.$user->id)}}"
+                                                       class="btn btn-outline-success btn-rounded mb-4 mr-2">
+                                                        <i class="flaticon-single-circle-tick"></i> {{__('usermodule::admin.active')}}
+                                                    </a>
+
+                                                @else
+                                                    <a href="{{url('admin/change-user-status/status/0/id/'.$user->id)}}"
+                                                       class="btn btn-outline-danger btn-rounded mb-4 mr-2">
+                                                        <i class="flaticon-circle-cross"></i> {{__('usermodule::admin.unactive')}}
+                                                    </a>
+                                                @endif
+
                                             </td>
-                                            <td>{{$merchant->created_at}}</td>
+
                                             <td>
                                                 <ul class="table-controls">
-                                                    @can('update_merchant')
+                                                    <li>
+                                                        <a class="btn btn-info p-0"
+                                                           href="{{url('admin/users/'.$user->id)}}"
+                                                           data-toggle="tooltip" data-placement="top" title="Edit">
+                                                            <i class="flaticon-view  bg-info p-1 text-white br-6"></i>
+                                                        </a>
+                                                    </li>
 
-                                                        <li><a class="btn btn-success p-0"
-                                                               href="{{url('admin/merchants/'.$merchant->id.'/edit')}}"
-                                                               data-toggle="tooltip" data-placement="top"
-                                                               title="Edit"><i
-                                                                    class="flaticon-edit  bg-success p-1 text-white br-6 mb-1"></i></a>
+                                                    @can('users')
+                                                        <li>
+                                                            <a href="{{ url('admin/users/'.$user->id.'/edit') }}"
+                                                               class="mod btn btn-success p-0">
+                                                                <i class="flaticon-edit  bg-success p-1 text-white br-6 mb-1"></i>
+                                                            </a>
                                                         </li>
                                                     @endcan
 
-                                                    @can('delete_merchant')
+                                                    @can('users')
                                                         <li>
                                                             <form class="inline"
-                                                                  action="{{url('admin/merchants/' . $merchant->id)}}"
+                                                                  action="{{url('admin/restore-user/' . $user->id)}}"
                                                                   method="POST">
-                                                                {{ method_field('DELETE') }} {!! csrf_field() !!}
-                                                                <button title="Delete" type="submit"
-                                                                        onclick="return confirm('{{__('adminmodule::admin.delete_admins')}}')"
-                                                                        type="button"
-                                                                        class="btn btn-danger p-0"><i
-                                                                        class="flaticon-delete  bg-danger p-1 text-white br-6 "></i>
+                                                                {{ method_field('PUT') }}
+                                                                {!! csrf_field() !!}
+                                                                <button class="btn btn-danger p-0" title="Restore"
+                                                                        type="submit"
+                                                                        onclick="return confirm('{{__('productmodule::product.delete_product')}}')"
+                                                                        type="button">
+                                                                    <i class="flaticon-reload-1  bg-danger p-1 text-white"></i>
                                                                 </button>
                                                             </form>
                                                         </li>
@@ -157,8 +179,8 @@
     </div>
     <!--  END CONTENT PART  -->
 
-
     {{--  upload Modal  --}}
+
     <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -169,11 +191,11 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" action="{{route('upload_merchants')}}" enctype="multipart/form-data">
+                <form method="post" action="{{route('upload_users')}}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="row">
-                            <input type="file" name="merchants" class="col-lg-6"
+                            <input type="file" name="users" class="col-lg-6"
                                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                                    required>
                         </div>
@@ -188,6 +210,7 @@
             </div>
         </div>
     </div>
+
     {{--  End Upload Modal  --}}
 @stop
 
@@ -211,7 +234,7 @@
                 "info": "Showing page _PAGE_ of _PAGES_"
             },
             "buttons": [
-                // 'excel'
+                'excel'
             ],
             columnDefs: [{
                 orderable: false,

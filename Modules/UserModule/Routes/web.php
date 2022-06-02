@@ -15,6 +15,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::resource('users', 'UserModuleController');
     Route::post('user/bulk', 'UserModuleController@bulk')->name('user.bulk');
 
+    Route::get('deleted-users', 'UserModuleController@deletedUsers')->name("deleted_users");
+    Route::put('restore-user/{user}', 'UserModuleController@restoreUser')->name("restore_user");
+
     Route::get('contactus', 'ContactsController@ContactUs');
     Route::get('suggestions_complaint/{type?}', 'ContactsController@SuggestionsComplaint');
     Route::post('suggestions_operation', 'ContactsController@SuggestionsOperations')->name('SuggestionsOperations');

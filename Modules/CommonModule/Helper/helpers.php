@@ -76,3 +76,7 @@ if (!function_exists('convertArabicNumToEnglish')) {
         return strtr($arabic, $trans);
     }
 }
+
+function imagePath($image_path){
+    return asset(\Illuminate\Support\Facades\Storage::url($image_path));
+}

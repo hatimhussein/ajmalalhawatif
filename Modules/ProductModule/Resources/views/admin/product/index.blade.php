@@ -34,7 +34,8 @@
                     <a class="mt-4 btn btn-button-16 mr-2"
                        href="{{url('admin/downloadproducts')}}"> {{__('productmodule::admin.download')}}  </a>
                     <a data-target="#uploadModal" data-toggle="modal"
-                       class="mt-4 btn btn-button-16 mr-2"> {{__('productmodule::admin.upload')}}  </a>
+{{--                       class="mt-4 btn btn-button-16 mr-2"> {{__('productmodule::admin.upload')}}  </a>--}}
+                       class="mt-4 btn btn-button-16 mr-2"> استيراد / تحديث  </a>
                 </div>
 
 

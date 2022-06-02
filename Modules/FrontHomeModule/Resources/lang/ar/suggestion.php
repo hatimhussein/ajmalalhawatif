@@ -8,6 +8,7 @@ return array(
     'complaint'=>'شكوى',
     'message'=>'رسالة',
     'send_btn'=>'ارسال',
-    'subject'=>'العنوان'
+    'subject'=>'العنوان',
+    'additional_attachments'=>'مرفقات اضافية'
 
 );

@@ -175,6 +175,9 @@
         {{--        </li>--}}
     </ul>
 
+{{--    <div style="width: 250px; margin: auto">--}}
+{{--        <a href="{{ url('/') }}" target="_blank" class="btn btn-info">زيارة الموقع الرئيسي</a>--}}
+{{--    </div>--}}
 
     <ul class="navbar-nav flex-row ml-lg-auto">
 

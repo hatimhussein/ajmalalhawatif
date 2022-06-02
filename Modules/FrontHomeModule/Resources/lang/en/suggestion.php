@@ -8,6 +8,7 @@ return array(
     'complaint'=>'Complaint',
     'message'=>'Message',
     'send_btn'=>'Send',
-    'subject'=>'subject'
+    'subject'=>'subject',
+    'additional_attachments'=>'Additional Attachments'
 
 );

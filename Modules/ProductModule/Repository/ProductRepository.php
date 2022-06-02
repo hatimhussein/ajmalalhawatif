@@ -2,6 +2,7 @@
 
 namespace Modules\ProductModule\Repository;
 
+use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

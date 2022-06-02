@@ -9,7 +9,7 @@ class Suggestion extends Model
 {
     use Notifier;
 
-    protected $fillable = ['name', 'phone', 'type', 'message', 'subject', 'complete', 'show', 'reply_type', 'generate', 'user_id', 'seen_at'];
+    protected $fillable = ['name', 'phone', 'message', 'subject', 'complete', 'show', 'reply_type', 'generate', 'user_id', 'seen_at', 'additional_attachments'];
 
     public function user()
     {
@@ -21,4 +21,6 @@ class Suggestion extends Model
     {
         return $this->hasMany(SuggesstionReply::class, 'suggesstion_id');
     }
+
+
 }

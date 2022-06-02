@@ -387,7 +387,6 @@ class ProductModuleController extends Controller
 
     public function downloadProducts(Excel $excel)
     {
-
         return Excel::download(new ProductsExport, 'products.xlsx');
     }
 
