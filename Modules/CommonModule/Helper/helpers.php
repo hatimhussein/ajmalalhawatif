@@ -3,6 +3,7 @@
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Modules\ConfigModule\Entities\Config;
+use Modules\ConfigModule\Repository\ConfigRepository;
 
 function bulkDelete($table_name, $ids, $extra_conditions = 1): int
 {
@@ -79,4 +80,16 @@ if (!function_exists('convertArabicNumToEnglish')) {
 
 function imagePath($image_path){
     return asset(\Illuminate\Support\Facades\Storage::url($image_path));
+}
+
+function getNavLogo(){
+    $configCategorires = ConfigRepository::configCategorires();
+    $nav_logo = $configCategorires->where('id',4)->first()->configs->where('key','nav_logo')->first();
+    return $nav_logo;
+}
+
+function getLoginLogo(){
+    $configCategorires = ConfigRepository::configCategorires();
+    $login_logo = $configCategorires->where('id',4)->first()->configs->where('key','login_logo')->first();
+    return $login_logo;
 }

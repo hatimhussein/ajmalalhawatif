@@ -31,13 +31,13 @@
                     <label>{{__('productmodule::admin.first_level_min_qty')}}</label>
                     <input value="{{$product_info->product_min_qty1}}" class=" form-control" data-validate-func="required"
                            data-validate-arg="6"
-                           name="product_min_qty1" type="number" min="0" required>
+                           name="product_min_qty1" id="product_min_qty1" type="number" min="0" required>
                 </div>
                 <div class="">
                     <label>{{__('productmodule::admin.first_level_max_qty')}}</label>
                     <input value="{{$product_info->product_max_qty1}}" class=" form-control" data-validate-func="required"
                            data-validate-arg="6"
-                           name="product_max_qty1" type="number" min="0" required>
+                           name="product_max_qty1" id="product_max_qty1" type="number" min="0" required>
                 </div>
             </div>
             <div class="col-lg-2">
@@ -51,13 +51,13 @@
                     <label>{{__('productmodule::admin.second_level_min_qty')}}</label>
                     <input value="{{$product_info->product_min_qty2}}" class=" form-control" data-validate-func="required"
                            data-validate-arg="6"
-                           name="product_min_qty2" type="number" min="0" required>
+                           name="product_min_qty2" id="product_min_qty2" type="number" min="0" required>
                 </div>
                 <div class="">
                     <label>{{__('productmodule::admin.second_level_max_qty')}}</label>
                     <input value="{{$product_info->product_max_qty2}}" class=" form-control" data-validate-func="required"
                            data-validate-arg="6"
-                           name="product_max_qty2" type="number" min="0" required>
+                           name="product_max_qty2" id="product_max_qty2" type="number" min="0" required>
                 </div>
             </div>
             <div class="col-lg-2">
@@ -71,13 +71,13 @@
                     <label>{{__('productmodule::admin.third_level_min_qty')}}</label>
                     <input value="{{$product_info->product_min_qty3}}" class=" form-control" data-validate-func="required"
                            data-validate-arg="6"
-                           name="product_min_qty3" type="number" min="0" required>
+                           name="product_min_qty3" id="product_min_qty3" type="number" min="0" required>
                 </div>
                 <div class="">
                     <label>{{__('productmodule::admin.third_level_max_qty')}}</label>
                     <input value="{{$product_info->product_max_qty3}}" class=" form-control" data-validate-func="required"
                            data-validate-arg="6"
-                           name="product_max_qty3" type="number" min="0" required>
+                           name="product_max_qty3" id="product_max_qty3" type="number" min="0" required>
                 </div>
             </div>
 
@@ -94,13 +94,13 @@
                     <label>{{__('productmodule::admin.fourth_level_min_qty')}}</label>
                     <input value="{{$product_info->product_min_qty4}}" class=" form-control" data-validate-func="required"
                            data-validate-arg="6"
-                           name="product_min_qty4" type="number" min="0" required>
+                           name="product_min_qty4" id="product_min_qty4" type="number" min="0" required>
                 </div>
                 <div class="">
                     <label>{{__('productmodule::admin.fourth_level_max_qty')}}</label>
                     <input value="{{$product_info->product_max_qty4}}" class=" form-control" data-validate-func="required"
                            data-validate-arg="6"
-                           name="product_max_qty4" type="number" min="0" required>
+                           name="product_max_qty4" id="product_max_qty4" type="number" min="0" required>
                 </div>
             </div>
             <div class="col-lg-2">
@@ -114,13 +114,13 @@
                     <label>{{__('productmodule::admin.fifth_level_min_qty')}}</label>
                     <input value="{{$product_info->product_min_qty5}}" class=" form-control" data-validate-func="required"
                            data-validate-arg="6"
-                           name="product_min_qty5" type="number" min="0" required>
+                           name="product_min_qty5" id="product_min_qty5" type="number" min="0" required>
                 </div>
                 <div class="">
                     <label>{{__('productmodule::admin.fifth_level_max_qty')}}</label>
                     <input value="{{$product_info->product_max_qty5}}" class=" form-control" data-validate-func="required"
                            data-validate-arg="6"
-                           name="product_max_qty5" type="number" min="0" required>
+                           name="product_max_qty5" id="product_max_qty5" type="number" min="0" required>
                 </div>
             </div>
         </div>
@@ -151,3 +151,4 @@
         </div>
     </form>
 </section>
+

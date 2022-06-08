@@ -39,9 +39,9 @@ class UserRepository extends BaseRepository
         return User::class;
     }
 
-    function getDeletedUsers()
+    function getDeletedUsers($is_merchant)
     {
-        return User::onlyTrashed()->get();
+        return User::onlyTrashed()->where('is_merchant', '=', $is_merchant)->get();
     }
 
     public function query(): Builder

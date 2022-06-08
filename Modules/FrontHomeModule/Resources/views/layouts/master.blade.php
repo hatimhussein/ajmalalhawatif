@@ -51,7 +51,7 @@
 {!! $site_data->where('key','seo_script')->first()->value_en !!}
 
 <script>
-    $(document).on("keypress", 'input[type="number"]', function(e){
+    $(document).on("keypress", 'input[type="tel"]', function(e){
         let charCode = !e.charCode ? e.which : e.charCode;
 
         if( !(charCode >= 48 && charCode <= 57) ){

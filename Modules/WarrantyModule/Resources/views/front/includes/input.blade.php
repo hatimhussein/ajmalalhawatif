@@ -6,7 +6,7 @@
                 @if($input->value_en)<em class="required">*</em>@endif
             </label>
             <div class="input-box">
-                <input type="number" name="{{ $input->key }}"
+                <input type="tel" name="{{ $input->key }}"
                        {{ ($read_only ?? false) ? 'readonly' : '' }}
                        {{ ($disabled ?? false) ? 'readonly' : '' }}
                        title="Phone Number" id="{{ $input->key }}"
@@ -28,6 +28,18 @@
                 </select>
             </div>
         </div>
+    </div>
+@elseif($input->key == 'warranty_number')
+    <label for="{{ $input->key }}">{{__('warrantymodule::'.($localeFile ?? 'warranty').'.'.$input->key)}}
+        @if($input->value_en)<em class="required">*</em>@endif
+    </label>
+    <div class="input-box">
+        <input type="tel" name="{{ $input->key }}"
+               {{ ($read_only ?? false) ? 'readonly' : '' }}
+               {{ ($disabled ?? false) ? 'readonly' : '' }}
+               title="{{__('warrantymodule::'.($localeFile ?? 'warranty').'.'.$input->key)}}" id="{{ $input->key }}"
+               class="input-text form-control {{ $input->value_en ? 'required-entry' : '' }}"
+               value="{{ $value ?? '' }}">
     </div>
 @else
     <label for="{{ $input->key }}">{{__('warrantymodule::'.($localeFile ?? 'warranty').'.'.$input->key)}}

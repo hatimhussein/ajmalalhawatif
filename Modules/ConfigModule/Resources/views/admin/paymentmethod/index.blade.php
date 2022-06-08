@@ -68,7 +68,7 @@
 
               <div class="row" id="cancel-row">
 
-                  <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+                  <div class="col-xl-6 col-lg-6 col-sm-12  layout-spacing">
                       <div class="statbox widget box box-shadow">
                           <div class="widget-header">
                               <div class="row">
@@ -188,7 +188,120 @@
                       </div>
                   </div>
 
+                  <div class="col-xl-6 col-lg-6 col-sm-12  layout-spacing">
+                      <div class="statbox widget box box-shadow">
+                          <div class="widget-header">
+                              <div class="row">
+                                  <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                      <h4>حسابات الدفع البنكي</h4>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="widget-content widget-content-area">
+                              <div class= "mb-4">
+                                  <form action="{{ route('storeBankAccount') }}" method="POST" enctype="multipart/form-data">
+                                      @csrf
+                                      <div class="form-group">
+                                          <label for="bank_name">اسم البنك</label>
+                                          <input type="text" class="form-control" id="bank_name" name="bank_name" required placeholder="اسم البنك">
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="owner_account_name">اسم صاحب الحساب</label>
+                                          <input type="text" class="form-control" id="owner_account_name" name="owner_account_name" required placeholder="اسم صاحب الحساب">
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="iban_number">رقم الآيبان</label>
+                                          <input type="text" class="form-control" id="iban_number" name="iban_number" required placeholder="رقم الآيبان">
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="account_number">رقم الحساب</label>
+                                          <input type="number" class="form-control" id="account_number" name="account_number" required placeholder="رقم الحساب">
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="logo_path">شعار البنك</label>
+                                          <input type="file" class="form-control" id="logo_path" name="logo_path" required placeholder="شعار البنك">
+                                      </div>
+
+                                      <div class="form-group">
+                                          <input type="submit" class="form-control btn btn-primary" value="حفظ">
+                                      </div>
+
+                                  </form>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+                      <div class="statbox widget box box-shadow">
+                          <div class="widget-header">
+                              <div class="row">
+                                  <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                      <h4>حسابات الدفع البنكي</h4>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="widget-content widget-content-area">
+
+                              <div class= "mb-4">
+                                  <table id="zero-config" class="table table-hover table-bordered" style="width:100%">
+                                      <thead>
+                                      <tr class="text-center">
+                                          <th>#</th>
+                                          <th>{{__('bank_name')}}</th>
+                                          <th>{{__('owner_account_name')}}</th>
+                                          <th>{{__('iban_number')}}</th>
+                                          <th>{{__('configmodule::admin.action')}}</th>
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                      @foreach($bank_accounts as $bank_account)
+                                          <tr class="text-center">
+                                              <td class="text-primary">{{$bank_account->id}}</td>
+                                              <td class="text-primary">
+                                                  {{$bank_account->bank_name}}
+                                                  <br>
+                                                  <img style="width: 50px; margin-top: 10px; height: 50px;" src="{{asset('images/img/'.$bank_account->logo_path)}}" itemprop="thumbnail" alt="Image description" />
+                                              </td>
+                                              <td class="text-primary">{{$bank_account->owner_account_name}}</td>
+                                              <td class="text-primary">
+                                                  {{$bank_account->iban_number}}
+                                                  <br>
+                                                  <br>
+                                                  {{$bank_account->account_number}}
+                                              </td>
+                                              <td>
+                                                  <ul class="table-controls" style="display: flex;justify-content: center;align-items: center;">
+                                                      <li>
+                                                          <a href="#">
+                                                              <i class="flaticon-edit bg-success p-1 text-white"></i>
+                                                          </a>
+                                                      </li>
+                                                      @can('delete_payment_method')
+                                                          <li>
+                                                              <form class="inline" action="{{url('admin/payment-method/' . $method->id)}}" method="POST">
+                                                                  {{ method_field('DELETE') }}
+                                                                  {!! csrf_field() !!}
+                                                                  <button class="btn btn-danger p-0" title="Delete" type="submit" onclick="return confirm('{{__('configmodule::admin.delete_image')}}')" type="button">
+                                                                      <i class="flaticon-delete bg-danger p-1 text-white"></i>
+                                                                  </button>
+                                                              </form>
+                                                          </li>
+                                                      @endcan
+                                                  </ul>
+                                              </td>
+                                          </tr>
+                                      @endforeach
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+
               </div>
+
 
 
           </div>

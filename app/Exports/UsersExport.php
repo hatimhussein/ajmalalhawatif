@@ -51,11 +51,11 @@ class UsersExport implements FromCollection, ShouldAutoSize, WithHeadings, WithM
     {
 
         return [
-            $user->account_number,
+            $user->account_number ?? '',
             $user->company_name,
             $user->authorized_person,
             $user->email,
-            $user->code->code,
+            $user->code->code ?? '',
             $user->phone,
             $user->commercial_register,
             $user->tax_number,
@@ -68,7 +68,7 @@ class UsersExport implements FromCollection, ShouldAutoSize, WithHeadings, WithM
             $user->zone->name_ar,
             $user->city->name_ar,
             $user->government->name_ar,
-            $user->logo,
+            $user->logo ? url('images/user/' . $user->logo) : '',
             '',
             $user->created_at,
         ];

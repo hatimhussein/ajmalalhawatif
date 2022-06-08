@@ -79,6 +79,19 @@ class OrderAdminController extends Controller
         $this->configRepository = $configRepository;
     }
 
+    public function deletedOrders()
+    {
+        $orders = $this->orderAdminRepository->getDeletedOrders();
+        return view('ordermodule::admin.deleted_orders', compact('orders'));
+    }
+
+    public function restoreOrders($id)
+    {
+        $order = Order::withTrashed()->findOrFail($id);
+        $order->restore();
+
+        return redirect()->back()->with('_updated', 'updated');
+    }
 
     public function index($status)
     {

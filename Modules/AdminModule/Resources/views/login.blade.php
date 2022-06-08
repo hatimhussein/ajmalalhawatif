@@ -17,7 +17,7 @@
 <form action="{{route('admin_login')}}" method="post" class="form-login" style="padding-top: 0;">
     @csrf
     <div class="row">
-        <div class="col-md-12 text-center mb-4" style="height: 207px;background-image: url('{{asset('assets/admin/img/logo-ajmal.png')}}');background-position: center;background-repeat: no-repeat;background-size: cover;
+        <div class="col-md-12 text-center mb-4" style="height: 207px;background-image: url('{{asset('images/img/' . getLoginLogo()->photo)}}');background-position: center;background-repeat: no-repeat;background-size: cover;
     ">
 {{--            <img alt="logo" src="{{asset('assets/admin/img/logo-ajmal.png')}}" class="theme-logo" style="width: 150px;">--}}
         </div>

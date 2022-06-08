@@ -95,6 +95,7 @@ class MerchantsImport implements ToModel, WithHeadingRow, WithChunkReading, With
                                 'can_cash' => $row['aldfaa_aand_alastlam'] == 1 ? 1 : 0,
                                 'has_forward_account' => $row['ldyh_hsab_agl'] == 1 ? 1 : 0,
                                 'bank_transfer' => $row['althoyl_albnky'] == 1 ? 1 : 0,
+                                'logo' => $row['alshaaar'] ?? '',
                             ]);
                         }else{
                             User::create([
@@ -114,6 +115,7 @@ class MerchantsImport implements ToModel, WithHeadingRow, WithChunkReading, With
                                 'can_cash' => $row['aldfaa_aand_alastlam'] == 1 ? 1 : 0,
                                 'has_forward_account' => $row['ldyh_hsab_agl'] == 1 ? 1 : 0,
                                 'bank_transfer' => $row['althoyl_albnky'] == 1 ? 1 : 0,
+                                'logo' => $row['alshaaar'] ?? '',
                             ]);
                         }
                     }

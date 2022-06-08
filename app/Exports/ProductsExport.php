@@ -63,10 +63,14 @@ class ProductsExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
 
     public function map($Product): array
     {
-        $images = [];
-        foreach ($Product->images as $image){
-            $images [] = url('images/product/' . $image->image) . ', ';
-        }
+
+        $images = $Product->images->pluck('image')->map(function($image){
+            if ($image){
+                $link = url('images/product/' . $image);
+                return( stripslashes($link));
+            }
+            return '';
+        })->toArray();
 
         return [
             $Product->category->name_ar,
@@ -96,7 +100,7 @@ class ProductsExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
             $Product->weight_class,
             $Product->video,
             $Product->yt_video,
-            url('images/product/' . $Product->product_photo),
+            $Product->product_photo ? url('images/product/' . $Product->product_photo) : '',
             $images,
             $Product->item_number,
         ];

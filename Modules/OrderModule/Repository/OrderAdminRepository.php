@@ -14,6 +14,7 @@ use Modules\OrderModule\Entities\OrderProduct;
 use Modules\OrderModule\Notifications\OrderStatusEmployeeNotification;
 use Modules\ProductModule\Entities\Product;
 use Modules\ProductModule\Entities\ProductCombination;
+use Modules\UserModule\Entities\User;
 use Modules\WarrantyModule\Repository\BaseRepository;
 
 //
@@ -31,6 +32,10 @@ class OrderAdminRepository extends BaseRepository
         return Order::with(['user', "userAddresses", 'status', 'products'])->where('orders.id', $order_id)->first();
     }
 
+    function getDeletedOrders()
+    {
+        return Order::onlyTrashed()->get();
+    }
 
     public function getOrdersByStatus($status)
     {

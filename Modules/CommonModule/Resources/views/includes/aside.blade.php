@@ -13,7 +13,7 @@
 {{--            </li>--}}
             <li class="nav-item d-flex">
                 <a href="#" class="navbar-brand">
-                    <img src="{{ asset('assets/admin/img/icons/config/svg/site_data_new.svg')}}" class="img-fluid" alt="logo">
+                    <img src="{{ asset('images/img/'.getNavLogo()->photo)}}" class="img-fluid" alt="logo">
                 </a>
                 <p class="border-underline"></p>
             </li>
@@ -304,11 +304,6 @@
                                 <a href="{{url('admin/users')}}"> {{__('commonmodule::sidebar.users')}} </a>
                             </li>
                         @endcan
-                        @can('users')
-                            <li>
-                                <a href="{{url('admin/deleted-users')}}"> العملاء المحذوفين </a>
-                            </li>
-                        @endcan
                         @can('show_merchant')
                             <li>
                                 <a href="{{url('admin/merchants')}}"> {{__('commonmodule::sidebar.merchants')}} <i
@@ -527,10 +522,16 @@
                     <ul class="collapse submenu list-unstyled" id="archive" data-parent="#accordionExample">
 
                         <li>
+                            <a href="{{url('admin/deleted-customers')}}"> العملاء المحذوفون</a>
+                        </li>
+                        <li>
                             <a href="{{url('admin/deleted-users')}}"> التجار المحذوفون</a>
                         </li>
                         <li>
                             <a href="{{url('admin/deleted-products')}}"> المنتجات المحذوفة</a>
+                        </li>
+                        <li>
+                            <a href="{{url('admin/deleted-orders')}}"> الطلبات المحذوفة</a>
                         </li>
 
                     </ul>

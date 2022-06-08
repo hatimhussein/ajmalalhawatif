@@ -1,7 +1,7 @@
 @extends('commonmodule::layouts.master')
 
 @section('title')
-    التجار المحذوفون
+    العملاء المحذوفون
 @endsection
 
 @section('css')
@@ -19,11 +19,11 @@
             <div class="page-header">
 
                 <div class="page-title">
-                    <h3>التجار المحذوفون</h3>
+                    <h3>العملاء المحذوفون</h3>
                     <div class="crumbs">
                         <ul id="breadcrumbs" class="breadcrumb">
                             <li><a href="{{url('/admin')}}"><i class="flaticon-home-fill"></i></a></li>
-                            <li class="active"><a href="#">التجار المحذوفون</a></li>
+                            <li class="active"><a href="#">العملاء المحذوفون</a></li>
                         </ul>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                                     @foreach($users as $user)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td class="text-primary">{{ $user->company_name }}</td>
+                                            <td class="text-primary">{{ $user->first_name . ' ' . $user->last_name  }}</td>
                                             <td>{{$user->email}}</td>
                                             <td>{{$user->phone}}</td>
 
