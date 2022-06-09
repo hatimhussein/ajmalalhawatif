@@ -4,13 +4,21 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Modules\ConfigModule\Entities\Config;
 use Modules\ConfigModule\Repository\ConfigRepository;
+use Carbon\Carbon;
 
 function bulkDelete($table_name, $ids, $extra_conditions = 1): int
 {
     $arr = explode(',', $ids);
     $params = array_fill(0, count($arr), '?');
     $params = implode(',', $params);
-    DB::delete("DELETE IGNORE FROM `{$table_name}` WHERE `id` IN ({$params}) AND {$extra_conditions}", $arr);
+
+    if($table_name == 'products'){
+         DB::table('products')
+            ->whereIn('id', $arr)
+            ->update(['deleted_at' => Carbon::now()]);
+    }else{
+        DB::delete("DELETE IGNORE FROM `{$table_name}` WHERE `id` IN ({$params}) AND {$extra_conditions}", $arr);
+    }
 //    $warning = DB::select('SELECT @@warning_count as `warnings`');
 //    return $warning[0]->warnings ?? 0;
     return 0;
