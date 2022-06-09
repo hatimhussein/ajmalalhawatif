@@ -155,9 +155,9 @@ class OrderModuleController extends Controller
     public function doCheckout(Request $request): JsonResponse
     {
 
-//        if (!count(app('cart_data'))) {
-//            return $this->setCode(201)->setError(__('ordermodule::cart.no_products'))->send();
-//        }
+        if (!count(app('cart_data'))) {
+            return $this->setCode(201)->setError(__('ordermodule::cart.no_products'))->send();
+        }
         $delivery_times = $this->deliverytimeRepository->findFrontDelivertytime()->pluck('id')->toArray();
 
         $data = $request->validate([
@@ -176,28 +176,28 @@ class OrderModuleController extends Controller
 
         $checkoutOrder = $this->getCheckoutOrderData($data);
 
-//        if (!$checkoutOrder->is_valid) {
-//            if ($checkoutOrder->errorCode == 203)
-//                return $this->setCode($checkoutOrder->errorCode)->setData($checkoutOrder->errorMessage)->send();
-//            else
-//                return $this->setCode($checkoutOrder->errorCode)->setError($checkoutOrder->errorMessage)->send();
-//        }
+        if (!$checkoutOrder->is_valid) {
+            if ($checkoutOrder->errorCode == 203)
+                return $this->setCode($checkoutOrder->errorCode)->setData($checkoutOrder->errorMessage)->send();
+            else
+                return $this->setCode($checkoutOrder->errorCode)->setError($checkoutOrder->errorMessage)->send();
+        }
 
         $checkoutOrder->currency = session('currency');
 
-//        if ($this->paymentRepository->isPaymentOnline($checkoutOrder->payment_type)) {
-//            $paymentProvider = $this->paymentRepository->makeProvider($checkoutOrder->payment_type);
-//            $unpaidOrder = $this->paymentRepository->saveUnPaidOrder($checkoutOrder);
-//            try {
-//                $url = $paymentProvider->getOrderPaymentUrl($unpaidOrder, $checkoutOrder);
-//                $this->orderRepository->clearUserCart();
-//                return $this->setCode(100)->setSuccess($url)->send();
-//            } catch (Exception $exception) {
-//                $unpaidOrder->delete();
-//                return $this->setCode(201)->setError(__('ordermodule::payment.init_fail'))->send();
-////                return $this->setCode(201)->setError([$exception->getMessage(), $exception->getTrace()])->send();
-//            }
-//        }
+        if ($this->paymentRepository->isPaymentOnline($checkoutOrder->payment_type)) {
+            $paymentProvider = $this->paymentRepository->makeProvider($checkoutOrder->payment_type);
+            $unpaidOrder = $this->paymentRepository->saveUnPaidOrder($checkoutOrder);
+            try {
+                $url = $paymentProvider->getOrderPaymentUrl($unpaidOrder, $checkoutOrder);
+                $this->orderRepository->clearUserCart();
+                return $this->setCode(100)->setSuccess($url)->send();
+            } catch (Exception $exception) {
+                $unpaidOrder->delete();
+                return $this->setCode(201)->setError(__('ordermodule::payment.init_fail'))->send();
+//                return $this->setCode(201)->setError([$exception->getMessage(), $exception->getTrace()])->send();
+            }
+        }
 
         $main_order_data = $this->orderRepository->getMainOrderData($checkoutOrder);
 
