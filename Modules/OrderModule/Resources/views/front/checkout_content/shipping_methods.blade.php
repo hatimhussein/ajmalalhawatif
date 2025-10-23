@@ -1,8 +1,3 @@
-<style>
-    .payment-div {
-        flex-wrap: wrap !important;
-    }
-</style>
 <div class="col-md-4 fl-r">
     <div class="opc-col-center">
         <div class="shipping-block">
@@ -91,15 +86,13 @@
                         {{--                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="">--}}
                         {{--                        </label>--}}
                         @foreach($paymentMethods as $key => $method)
-                            <div class="col-md-4" style="margin-top: 15px">
-                                <label for="p_method_{{$key}}">
-                                    <input id="p_method_{{$key}}" value="{{$key}}"
-                                           type="radio" name="payment_type" title="{{__('ordermodule::payment.front_'.$key)}}"
-                                           {{ $key == 'cash_on_delivery' ? 'checked' : '' }}
-                                           class="radio" autocomplete="off">
-                                    <span>{!! __('ordermodule::payment.front_'.$key) !!}</span>
-                                </label>
-                            </div>
+                            <label for="p_method_{{$key}}">
+                                <input id="p_method_{{$key}}" value="{{$key}}"
+                                       type="radio" name="payment_type" title="{{__('ordermodule::payment.front_'.$key)}}"
+                                       {{ $key == 'cash_on_delivery' ? 'checked' : '' }}
+                                       class="radio" autocomplete="off">
+                                <span>{!! __('ordermodule::payment.front_'.$key) !!}</span>
+                            </label>
                         @endforeach
                     </div>
                 </fieldset>

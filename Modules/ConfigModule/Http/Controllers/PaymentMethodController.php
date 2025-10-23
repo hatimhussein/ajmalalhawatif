@@ -2,7 +2,6 @@
 
 namespace Modules\ConfigModule\Http\Controllers;
 
-use App\Models\BankAccount;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -31,31 +30,9 @@ class PaymentMethodController extends Controller
     public function index()
     {
         $methods = PaymentMethod::all();
-        $bank_accounts = BankAccount::query()->get();
-
-        return view('configmodule::admin.paymentmethod.index', compact('methods', 'bank_accounts'));
+        return view('configmodule::admin.paymentmethod.index', compact('methods'));
     }
 
-    public function storeBankAccount(Request $request)
-    {
-        $request->validate([
-            'logo_path' => 'required|image|mimes:jpeg,png,jpg,gif',
-            'bank_name' => 'required|string',
-            'owner_account_name' => 'required|string',
-            'iban_number' => 'required|string',
-            'account_number' => 'required|numeric',
-        ]);
-
-        BankAccount::create([
-            'logo_path' => $this->upload($request->file('logo_path'), 'img'),
-            'bank_name' => $request->bank_name,
-            'owner_account_name' => $request->owner_account_name,
-            'iban_number' => $request->iban_number,
-            'account_number' => $request->account_number,
-        ]);
-
-        return redirect()->back()->with('success', 'success');
-    }
 
     public function store(Request $request)
     {
@@ -67,7 +44,10 @@ class PaymentMethodController extends Controller
         $data['image'] = $this->upload($request->file('photo'), 'img');
         PaymentMethod::create($data);
         return redirect()->back()->with('success', 'success');
+
+
     }
+
 
     public function destroy($id)
     {

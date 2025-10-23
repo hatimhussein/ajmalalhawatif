@@ -1,0 +1,13 @@
+{
+    "name": "SkudoModule",
+    "alias": "skudomodule",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SkudoModule\\Providers\\SkudoModuleServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

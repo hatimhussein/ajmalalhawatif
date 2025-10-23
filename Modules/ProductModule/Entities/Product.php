@@ -139,7 +139,7 @@ class Product extends Model
 
     function images()
     {
-        return $this->hasMany(ProductImage::class);
+        return $this->hasMany(ProductImage::class)->select('product_id','image');
     }
 
     public function attributes()

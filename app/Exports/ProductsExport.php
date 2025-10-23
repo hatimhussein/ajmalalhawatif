@@ -22,61 +22,47 @@ class ProductsExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
     public function collection()
 
     {
-        return Product::all();
+        return Product::with('images')->get();
     }
 
     public function headings(): array
     {
         return [
-            'القسم عربي',
-            'القسم انجليزي',
-            'الماركة عربي',
-            'الماركة انجليزي',
+            '#',
+            'قسم',
+            'المرة',
             'كود المنتج',
             'الحالة',
             'النوع',
-            'الاسم بالعربية',
-            'الاسم بالانجليزية',
-            'الوصف بالعربية',
-            'الوصف بالانجليزية',
+            'الاسم باعرية',
+            'السم بالانجليزية',
+            'الوصف بالعبية',
+            'الوص بالانجليزية',
             'وصف مختصر بالعربية',
             'وصف مختصر بالانجليزية',
-            'سعر عميل خاص',
-            'سعر موزع منطقة',
-            'سعر صاحب متجر',
+            'سعر عمي خاص',
+            'سعر وزع منطقة',
+            'سعر صاح متجر',
             'سعر متجر الكترونى',
             'سعر عميل نهائي',
             'الكمية',
             'الطول',
             'العرض',
             'الطول',
-            'طول الطبقة',
-            'الوزن',
+            'طول الطبق',
+            'لوزن',
             'فئة الوزن',
-            'الفيديو',
-            'فيديو يوتيوب',
             'الصورة الرئيسية',
             'الصور الثانوية',
-            'رقم الصنف',
         ];
     }
 
     public function map($Product): array
     {
-
-        $images = $Product->images->pluck('image')->map(function($image){
-            if ($image){
-                $link = url('images/product/' . $image);
-                return( stripslashes($link));
-            }
-            return '';
-        })->toArray();
-
         return [
+            $Product->id,
             $Product->category->name_ar,
-            $Product->category->name_en,
             $Product->brand->name_ar,
-            $Product->brand->name_en,
             $Product->product_code,
             $Product->status,
             $Product->type,
@@ -98,11 +84,8 @@ class ProductsExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
             $Product->length_class,
             $Product->weight,
             $Product->weight_class,
-            $Product->video,
-            $Product->yt_video,
-            $Product->product_photo ? url('images/product/' . $Product->product_photo) : '',
-            $images,
-            $Product->item_number,
+            $Product->product_photo,
+            $Product->images
         ];
     }
 }

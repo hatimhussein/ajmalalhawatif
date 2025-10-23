@@ -48,10 +48,8 @@
                         @php($total = 0)
 
                         @foreach($cart_data as $keys => $values)
-                            {{ $values['item_name'] }}
                             <tr class="first last odd">
-                                <td>
-                                    <img src="{{asset('images/product/'.$values['item_photo'])}}"
+                                <td><img src="{{asset('images/product/'.$values['item_photo'])}}"
                                          alt="{{$values['item_name']}}"
                                          class="checkout-cart-image">
                                     <h3 class="product-name">{{$values['item_name']}}

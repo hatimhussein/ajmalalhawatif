@@ -58,7 +58,6 @@
                 </div>
             @endcan
             <div class="row">
-
                 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
                     <div class="profile-info-section hgt mb-4">
                         <div class="card" style="">
@@ -381,7 +380,7 @@
                             <input type="hidden" name="modal_order_id" id="modal_order_id">
                             <input type="hidden" name="modal_status_id" id="modal_status_id">
                             <input type="hidden" name="modal_status_comment" id="modal_status_comment">
-                            <input type="password" name="password" required
+                            <input type="text" name="password" required
                                    placeholder="{{__('productmodule::admin.password')}}" class="form-control">
                         </div>
                 </div>

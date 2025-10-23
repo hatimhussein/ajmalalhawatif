@@ -66,7 +66,7 @@ class WarrantyExport implements FromCollection, ShouldAutoSize, WithHeadings, Wi
             $row->usage_date,
             $row->created_at,
             $row->device_name_ar,
-            $row->is_applicable ? 'نعم' : 'ا',
+            $row->is_applicable ? 'نعم' : 'لا',
             $row->value,
             $row->currency->name ?? '-',
             $row->reason ?? '-',

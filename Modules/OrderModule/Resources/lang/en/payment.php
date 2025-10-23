@@ -9,6 +9,4 @@ return array(
     'front_my_fatoorah' => "Mada<br>Apple Pay<br>Visa \ Master",
     'front_cash_on_delivery' => 'Cash On Delivery',
     'front_forward_account' => 'Forward Account',
-    'bank_transfer' => 'Bank Transfer',
-    'front_bank_transfer' => 'Bank Transfer',
 );

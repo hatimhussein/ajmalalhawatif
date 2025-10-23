@@ -10,11 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\ConfigModule\Entities\Currency;
 use Modules\OrderModule\Scopes\OrderScope;
 use Modules\ProductFeatureModule\Entities\Deliverytime;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
-    use Notifier, SoftDeletes;
+    use Notifier;
 
     protected $fillable = [
         'user_id', 'user_address_id', 'payment_type', 'sub_total', 'discount',
@@ -24,8 +23,6 @@ class Order extends Model
         'tax_percentage', 'assigned_ids', 'last_modifier_id', 'transaction_id', 'completed_at', 'untaxed_shipping',
         'seen_at'
     ];
-
-    protected $dates = ['deleted_at'];
 
     protected static function boot()
     {

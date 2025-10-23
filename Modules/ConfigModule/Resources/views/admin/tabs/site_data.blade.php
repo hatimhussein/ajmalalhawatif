@@ -6,9 +6,7 @@
             @php($logo=$configCategorires->where('id',4)->first()->configs->where('key','logo')->first())
             @php($favicon=$configCategorires->where('id',4)->first()->configs->where('key','favicon')->first())
             @php($logo_footer=$configCategorires->where('id',4)->first()->configs->where('key','logo_footer')->first())
-            @php($login_logo = $configCategorires->where('id',4)->first()->configs->where('key','login_logo')->first())
-            @php($nav_logo = $configCategorires->where('id',4)->first()->configs->where('key','nav_logo')->first())
-        @foreach($configCategorires->where('id',4)->first()->configs as $key=>$config)
+            @foreach($configCategorires->where('id',4)->first()->configs as $key=>$config)
                 @if($config->key=='timezone')
                     <div class="row">
                         <div class="col-12">
@@ -184,7 +182,10 @@
 
                         <div class="custom-file-container__image-preview product-list-img">
                             <img src="{{asset('images/img/'.$logo->photo)}}"/>
+
                         </div>
+
+
                     </div>
                 </div>
             </div>
@@ -206,9 +207,13 @@
                                 @include('commonmodule::includes.error',['errors'=>$errors->toArray(),'filed'=>'photo'])
                             @endif
                         </h4>
+                        <!--  <div class="custom-file-container__image-preview product-list-img">
+
+                         </div> -->
 
                         <div class="custom-file-container__image-preview product-list-img">
                             <img src="{{asset('images/img/'.$favicon->photo)}}"/>
+
                         </div>
 
 
@@ -233,59 +238,16 @@
                                 @include('commonmodule::includes.error',['errors'=>$errors->toArray(),'filed'=>'photo'])
                             @endif
                         </h4>
+                        <div class="custom-file-container__image-preview product-list-img">
+
+                        </div>
 
                         <div class="custom-file-container__image-preview product-list-img">
                             <img src="{{asset('images/img/'.$logo_footer->photo)}}"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="statbox widget box box-shadow">
-                <div class="widget-content p-0">
-                    <div class="custom-file-container" data-upload-id="myFirstImage">
-                        <label>{!! LanguageHelper::configTranslate($login_logo) !!}<a
-                                class="custom-file-container__image-clear" title="Clear Image"></a></label>
-                        <label class="custom-file-container__custom-file">
-                            <input type="file" name="login_logo"
-                                   class="custom-file-container__custom-file__custom-file-input"
-                                   accept="image/*">
-                            <!-- <input type="hidden" name="MAX_FILE_SIZE" value="10485760" /> -->
-                            <span class="custom-file-container__custom-file__custom-file-control">
-                        </span>
-                        </label>
-                        <h4>
-                            @if ($errors->has('photo'))
-                                @include('commonmodule::includes.error',['errors'=>$errors->toArray(),'filed'=>'photo'])
-                            @endif
-                        </h4>
-                        <div class="custom-file-container__image-preview product-list-img">
-                            <img src="{{asset('images/img/'.$login_logo->photo)}}"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="statbox widget box box-shadow">
-                <div class="widget-content p-0">
-                    <div class="custom-file-container" data-upload-id="myFirstImage">
-                        <label>{!! LanguageHelper::configTranslate($nav_logo) !!}<a
-                                class="custom-file-container__image-clear" title="Clear Image"></a></label>
-                        <label class="custom-file-container__custom-file">
-                            <input type="file" name="nav_logo"
-                                   class="custom-file-container__custom-file__custom-file-input"
-                                   accept="image/*">
-                            <!-- <input type="hidden" name="MAX_FILE_SIZE" value="10485760" /> -->
-                            <span class="custom-file-container__custom-file__custom-file-control">
-                        </span>
-                        </label>
-                        <h4>
-                            @if ($errors->has('photo'))
-                                @include('commonmodule::includes.error',['errors'=>$errors->toArray(),'filed'=>'photo'])
-                            @endif
-                        </h4>
-                        <div class="custom-file-container__image-preview product-list-img">
-                            <img src="{{asset('images/img/'.$nav_logo->photo)}}"/>
                         </div>
+
+
                     </div>
                 </div>
             </div>

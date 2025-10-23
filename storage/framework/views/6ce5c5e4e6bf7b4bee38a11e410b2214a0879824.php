@@ -1,0 +1,1 @@
+<?php /**PATH D:\freelancing\أجمل الهواتف\real_web_app\Modules/WarrantyModule\Resources/views/admin/insurance/edit.blade.php ENDPATH**/ ?>

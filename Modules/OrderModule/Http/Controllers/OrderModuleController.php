@@ -12,11 +12,9 @@ use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Modules\AreaModule\Repository\CountryRepository;
-use Modules\ConfigModule\Repository\ConfigRepository;
 use Modules\OrderModule\Notifications\OrderCreatedNotification;
 use Modules\OrderModule\Repository\PaymentRepository;
 use Modules\OrderModule\Traits\OrderService;
-use Modules\ProductModule\Entities\Product;
 use Modules\ProductModule\Entities\ProductCombination;
 use Modules\UserModule\Repository\UserRepository;
 use Modules\OrderModule\Repository\OrderRepository;
@@ -70,8 +68,6 @@ class OrderModuleController extends Controller
      */
     private PaymentRepository $paymentRepository;
 
-    private ConfigRepository $configRepository;
-
 
     public function __construct(UserRepository $userRepository,
                                 OrderRepository $orderRepository,
@@ -81,8 +77,7 @@ class OrderModuleController extends Controller
                                 ProductRepository $productRepository,
                                 OrderAdminRepository $orderAdminRepository,
                                 DeliverytimeRepository $deliverytimeRepository,
-                                PaymentRepository $paymentRepository,
-                                ConfigRepository       $configRepository
+                                PaymentRepository $paymentRepository
     )
     {
         $this->userRepository = $userRepository;
@@ -94,8 +89,6 @@ class OrderModuleController extends Controller
         $this->countryRepository = $countryRepository;
         $this->deliverytimeRepository = $deliverytimeRepository;
         $this->paymentRepository = $paymentRepository;
-        $this->configRepository = $configRepository;
-
     }
 
     public function checkout()
@@ -126,18 +119,6 @@ class OrderModuleController extends Controller
 
             $paymentMethods = config('payment.methods');
 
-            $cart_data = $this->orderRepository->getCartData();
-
-            foreach ($cart_data as $key => $item){
-//                dd($item['product_id'], $item['quantity'], $item['user_id']);
-                $product = Product::find($item['product_id']);
-                if (($product->{'product_min_qty'.auth()->user()->prices_level} != 0 && $product->{'product_max_qty'.auth()->user()->prices_level} != 0)){
-                    if ($item['quantity'] < $product->{'product_min_qty'.auth()->user()->prices_level} || $item['quantity'] > $product->{'product_max_qty'.auth()->user()->prices_level}){
-                        return redirect()->back()->with('failed', 'يجب عليك شراء كمية مناسبة من منتج (' . $item['item_name'] . ')، تكون بين ' . $product->{'product_min_qty'.auth()->user()->prices_level} . ' - ' . $product->{'product_max_qty'.auth()->user()->prices_level} . ' قطعة');
-                    }
-                }
-            }
-
             return view('ordermodule::front.checkout', compact('user_addresses', 'countries', 'sub_total', 'tax_sub_total', 'delivery_time', 'tax_shipping', 'tax_value', 'country_tax', 'abroad_tax', 'paymentMethods'));
         } catch (Exception $e) {
 //            return $this->setCode(201)->setError($e->getTrace())->send();
@@ -154,7 +135,6 @@ class OrderModuleController extends Controller
      */
     public function doCheckout(Request $request): JsonResponse
     {
-
         if (!count(app('cart_data'))) {
             return $this->setCode(201)->setError(__('ordermodule::cart.no_products'))->send();
         }
@@ -263,15 +243,6 @@ class OrderModuleController extends Controller
         return view('ordermodule::failed_payment', compact('transaction_id'));
     }
 
-    public function Invoice($order_id)
-    {
-        $order = $this->orderRepository->find($order_id);
-        $orders = [$order];
-        $site_info = $this->configRepository->getConfigsByKey(['commercial_register', 'tax_number', 'hotline']);
-
-        return view('ordermodule::admin.multi_invoice', compact('orders', 'site_info'));
-    }
-
     public function paymentWebHook(Request $request): JsonResponse
     {
         if ($request->Event != 'TransactionsStatusChanged') {
@@ -335,7 +306,6 @@ class OrderModuleController extends Controller
     {
 
         $order = $this->orderRepository->userOrder(auth()->id(), $id);
-
         if (!$order)
             return redirect('/');
         return view('ordermodule::front.order_details', compact('order'));

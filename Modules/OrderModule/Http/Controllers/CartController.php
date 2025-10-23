@@ -30,7 +30,6 @@ class CartController extends Controller
         $this->userRepository = $userRepository;
     }
 
-
     function index()
     {
         $wish_list = $this->userRepository->wishList();
@@ -113,7 +112,6 @@ class CartController extends Controller
                             }
                         }
                     } else {
-
 
                         if ($request->product_quantity <= $check_combination->combination_quantity) {
                             $price = $this->calculateProductPrice($product, $request->product_quantity);
@@ -198,7 +196,6 @@ class CartController extends Controller
                     }
                 }
             } else {
-
 
                 if ($request->product_quantity <= $product->product_quantity) {
                     $price = $this->calculateProductPrice($product, $request->product_quantity);

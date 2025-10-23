@@ -102,7 +102,7 @@
                                         <li>
                                             <label for="phone">{{__('usermodule::login.phone')}} <span class="required">*</span></label>
                                             <br>
-                                            <input name="phone" type="tel" title="Phone Number" minlength="9"
+                                            <input name="phone" type="number" title="Phone Number" minlength="9"
                                                    maxlength="14"
                                                    placeholder="{{__('commonmodule::front.phone_placeholder')}}"
                                                    class="input-text required-entry"
@@ -137,7 +137,7 @@
                                             <label for="email">{{__('usermodule::login.code')}} <span
                                                     class="required">*</span></label>
                                             <br>
-                                            <input name="code" type="tel" title="Code"
+                                            <input name="code" type="number" title="Code"
                                                    class="input-text required-entry"
                                                    value="" required>
                                         </li>
@@ -199,7 +199,7 @@
                                             <label>{{__('usermodule::login.phone')}} <span
                                                     class="required">*</span></label>
                                             <br>
-                                            <input name="phone" type="tel" title="Email Address" autocomplete="off"
+                                            <input name="phone" type="number" title="Email Address" autocomplete="off"
                                                    placeholder="{{__('commonmodule::front.phone_placeholder')}}"
                                                    class="input-text required-entry" minlength="9" maxlength="14"
                                                    value="">
@@ -315,7 +315,7 @@
                                             <label>{{__('usermodule::login.phone')}} <span
                                                     class="required">*</span></label>
                                             <br>
-                                            <input name="phone" type="tel" title="Email Address" autocomplete="off"
+                                            <input name="phone" type="number" title="Email Address" autocomplete="off"
                                                    placeholder="{{__('commonmodule::front.phone_placeholder')}}"
                                                    class="input-text required-entry" minlength="9" maxlength="14"
                                                    value="">
@@ -446,7 +446,7 @@
                                                 for="phone">{{__('usermodule::login.phone')}}
                                                 <span class="required">*</span></label>
                                             <br>
-                                            <input name="phone" type="tel" title="Phone Number" minlength="9"
+                                            <input name="phone" type="number" title="Phone Number" minlength="9"
                                                    maxlength="14"
                                                    placeholder="{{__('commonmodule::front.phone_placeholder')}}"
                                                    class="input-text required-entry"

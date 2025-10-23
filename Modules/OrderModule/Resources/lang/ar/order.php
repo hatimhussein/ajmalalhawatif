@@ -48,6 +48,4 @@ return array(
 
     're_order' => 'تكرار الطلب',
 
-    'print_invoice' => 'طباعة الفاتورة',
-
 );

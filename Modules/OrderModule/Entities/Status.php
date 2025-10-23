@@ -8,7 +8,7 @@ use Modules\OrderModule\Entities\StatusType;
 
 class Status extends Model
 {
-    protected $fillable = ["title","status_type_id", "able_print"];
+    protected $fillable = ["title","status_type_id"];
 
     public $timestamps = false;
 

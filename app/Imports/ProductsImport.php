@@ -14,9 +14,6 @@ class ProductsImport implements ToCollection
 {
     public function collection(Collection $rows)
     {
-
-//        dd($rows);
-
         $attributes = collect([]);
 
         foreach ($rows as $index => $row) {
@@ -31,35 +28,29 @@ class ProductsImport implements ToCollection
             } else {
 
                 $category = Category::where(function ($q) use ($row) {
-                    $q->where('name_ar', 'like', '%' . $row[0] . '%')->orWhere('name_en', 'like', '%' . $row[1] . '%');
+                    $q->where('name_ar', 'like', '%' . $row[1] . '%')->orWhere('name_en', 'like', '%' . $row[1] . '%');
                 })->doesntHave('child')->first();
 
-                $brand = Brand::where('name_ar', 'like', '%' . $row[2] . '%')->orWhere('name_en', 'like', '%' . $row[3] . '%')->first();
+                $brand = Brand::where('name_ar', 'like', '%' . $row[2] . '%')->orWhere('name_en', 'like', '%' . $row[2] . '%')->first();
                 if ($category && $brand) {
-//                    dd($row[13]);
-                    $product = Product::query()->updateOrCreate([
-                            'product_code' => $row[4],
-                            'item_number' => $row[29],
-                        ],
-                        [
+                    $product = Product::create([
                         'parent_id' => $category->id,
                         'brand_id' => $brand->id,
-    //                        'product_code' => $row[4],
-                        'type' => $row[6] == 'combination' ? $row[6] : 'simple',
-                        'name_ar' => $row[7],
-                        'name_en' => $row[8],
-                        'desc_ar' => $row[9],
-                        'desc_en' => $row[10],
-                        'short_desc_ar' => $row[11],
-                        'short_desc_en' => $row[12],
-                        'product_price1' => $row[13],
-                        'product_price2' => $row[14],
-                        'product_price3' => $row[15],
-                        'product_price4' => $row[16],
-                        'product_price' => $row[17],
-                        'product_quantity' => $row[18],
-                        'status' => $row[5],
-                        'item_number' => $row[29],
+                        'product_code' => $row[3],
+                        'type' => $row[5] == 'combination' ? $row[5] : 'simple',
+                        'name_ar' => $row[6],
+                        'name_en' => $row[7],
+                        'desc_ar' => $row[8],
+                        'desc_en' => $row[9],
+                        'short_desc_ar' => $row[10],
+                        'short_desc_en' => $row[11],
+                        'product_price1' => $row[12],
+                        'product_price2' => $row[13],
+                        'product_price3' => $row[14],
+                        'product_price4' => $row[15],
+                        'product_price' => $row[16],
+                        'product_quantity' => $row[17],
+                        'status' => '0',
                     ]);
 
                     if ($product) {

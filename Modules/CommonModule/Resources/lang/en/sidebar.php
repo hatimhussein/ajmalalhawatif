@@ -28,9 +28,11 @@ return array(
     'zones' => 'Governments',
     'merchants' => 'Merchants',
     'warranty' => 'Warranty',
+    'warranty_skudo' => 'Skudo Warranty',
     'card_warranty' => 'Card Warranty',
     'sms_warranty' => 'SMS Warranty',
     'insurance' => 'Insurance',
+    'insurance_skudo' => 'Skudo Insurance',
 
 
     'markting' => 'Marketing',

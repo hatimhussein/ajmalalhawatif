@@ -32,8 +32,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::post('changeAdvertise', 'AdvertismentController@changeAdvertise')->name('changeAdvertise');
 
     Route::resource('payment-method', 'PaymentMethodController');
-    Route::post('store-bank-account', 'PaymentMethodController@storeBankAccount')->name('storeBankAccount');
-
     Route::resource('shipping-method', 'ShippingMethodController');
     Route::resource('currency', 'CurrencyController');
     Route::post('update-deafult-currency', 'CurrencyController@setDefaultCurrency');

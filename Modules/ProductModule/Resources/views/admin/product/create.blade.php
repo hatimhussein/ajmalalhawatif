@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{ asset('assets/admin/plugins/file-upload/file-upload-with-preview.css')}}"
           type="text/css">
 
+
+
     <style>
         #formValidate .wizard > .content {
             min-height: 25em;

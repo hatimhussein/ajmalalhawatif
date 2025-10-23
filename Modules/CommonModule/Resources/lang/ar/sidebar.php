@@ -26,9 +26,11 @@ return array(
     'zones' => 'المحافظات',
     'merchants' => 'التجار',
     'warranty' => 'المطالبة والضمان',
+    'warranty_skudo' => 'المطالبة والضمان سكودو',
     'card_warranty' => 'المطالبة والضمان باستخدام الكارت',
     'sms_warranty' => 'المطالبة والضمان باستخدام رسالة',
     'insurance' => 'تسجيلات الضمان',
+    'insurance_skudo' => 'تسجيلات الضمان سكودو',
 
 
     'markting' => 'التسويق',

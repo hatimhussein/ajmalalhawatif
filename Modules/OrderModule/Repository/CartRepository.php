@@ -69,7 +69,7 @@ class CartRepository
                 $price += $item->combination_price ?? 0;
                 return ($price - (($price * $item->use_offer_price) / 100));
             }
-        } else {
+        } else{
             $discount = $this->getCartProductDiscount($item, $user->prices_level);
             $price = ProductHelper::getRawDiscountPrice($item->product->$price_level, $discount);
             return $price + ($item->combination_price ?? 0);

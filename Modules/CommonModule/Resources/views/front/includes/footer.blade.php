@@ -76,6 +76,8 @@
                     <a href="{{url('/config/3')}}">{!! LanguageHelper::configTranslate($site_data->where('key','aman')->first())  !!}</a>
                     <a href="{{route('front.insurance.index')}}">{{__('warrantymodule::insurance.insurance')}}</a>
                     <a href="{{route('front.warranty.index')}}">{{__('commonmodule::front.warranty')}}</a>
+                    <a href="{{route('front.skudo.insurance.index')}}">{{__('commonmodule::front.insurance_skudo')}}</a>
+                    <a href="{{route('front.skudo.warranty.index')}}">{{__('commonmodule::front.warranty_skudo')}}</a>
                 </div>
 
                 <div class="policy">

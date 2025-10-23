@@ -13,6 +13,7 @@ return array(
     'wishlist' => 'المفضلة',
     'returns' => 'الاسترجاع',
     'warranty' => 'المطالبة والضمان',
+    'warranty_skudo' => 'المطالبة والضمان سكودو',
     'logout' => 'تسجيل الخروج',
     'lang' => 'اللغة',
 
@@ -21,6 +22,7 @@ return array(
     'links' => 'روابط مهمة',
     'categories' => 'الاقسام',
     'catalogs' => 'وسائط متعدده',
+    'insurance_skudo' => 'تسجيل ضمان سكودو',
 
     // newsletter
     'newsletter' => 'القائمة البريدية',
