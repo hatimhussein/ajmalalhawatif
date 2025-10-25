@@ -33,6 +33,29 @@
             </div>
 
             <div class="row" id="cancel-row">
+                
+                <!-- Display Success/Error Messages -->
+                @if(session('success'))
+                    <div class="col-12">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>نجح!</strong> {{ session('success') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                @endif
+                
+                @if(session('error'))
+                    <div class="col-12">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>خطأ!</strong> {{ session('error') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                @endif
 
                 <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
                     <div class="statbox widget box box-shadow">
@@ -41,15 +64,20 @@
                                 <div class="col-md-6">
                                     <form action="{{ route('skudo.serial-numbers.index') }}">
                                         <div class="row">
-                                            <div class="col-md-8">
+                                            <div class="col-md-6">
                                                 <input type="text" name="search" class="form-control mb-3"
                                                        placeholder="البحث في الأرقام التسلسلية..."
                                                        value="{{ request('search') }}">
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <button type="submit" class="btn btn-success">
                                                     <i class="flaticon-search-1"></i> بحث
                                                 </button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <a href="{{ route('skudo.serial-numbers.import') }}" class="btn btn-primary">
+                                                    <i class="flaticon-upload"></i> استيراد Excel
+                                                </a>
                                             </div>
                                         </div>
                                     </form>
@@ -67,9 +95,9 @@
                                         <th>اسم الصنف (إنجليزي)</th>
                                         <th>الرقم التسلسلي</th>
                                         <th>تاريخ الإضافة</th>
-                                        <th>حالة تسجيل الضمان</th>
+                                        <th>رقم تسجيل الضمان وحالته</th>
                                         <th>حالة المطالبة</th>
-                                        <th>حالة المطالبة</th>
+                                        <th>قيمة التعويض - رقم الاعتماد</th>
                                         <th>الإجراءات</th>
                                     </tr>
                                     </thead>
@@ -82,29 +110,114 @@
                                             <td>{{ $serialNumber->product_name_en ?? '-' }}</td>
                                             <td>{{ $serialNumber->product_serial ?? '-' }}</td>
                                             <td>{{ $serialNumber->formatted_created_at }}</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>-</td>
                                             <td>
-                                                <div class="btn-group" role="group">
-                                                    <a href="{{ route('skudo.serial-numbers.show', $serialNumber->id) }}" 
-                                                       class="btn btn-info btn-sm" title="عرض">
-                                                        <i class="flaticon-eye"></i>
-                                                    </a>
-                                                    <a href="{{ route('skudo.serial-numbers.edit', $serialNumber->id) }}" 
-                                                       class="btn btn-warning btn-sm" title="تعديل">
-                                                        <i class="flaticon-edit-1"></i>
-                                                    </a>
-                                                    <form action="{{ route('skudo.serial-numbers.destroy', $serialNumber->id) }}" 
-                                                          method="POST" style="display: inline-block;" 
-                                                          onsubmit="return confirm('هل أنت متأكد من حذف هذا الرقم التسلسلي؟')">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm" title="حذف">
-                                                            <i class="flaticon-delete-1"></i>
-                                                        </button>
-                                                    </form>
-                                                </div>
+                                                @if($serialNumber->insurance)
+                                                    <div class="d-flex flex-column">
+                                                        <a href="{{ route('skudo.insurance.edit', $serialNumber->insurance->id) }}" 
+                                                           class="badge badge-primary mb-1 text-decoration-none">#{{ $serialNumber->insurance->id }}</a>
+                                                        <span class="badge 
+                                                            @if($serialNumber->insurance->status == 0) badge-secondary
+                                                            @elseif($serialNumber->insurance->status == 1) badge-success
+                                                            @elseif($serialNumber->insurance->status == 2) badge-danger
+                                                            @elseif($serialNumber->insurance->status == 3) badge-warning
+                                                            @else badge-light @endif">
+                                                            @if($serialNumber->insurance->status == 0) جديد
+                                                            @elseif($serialNumber->insurance->status == 1) مفعل
+                                                            @elseif($serialNumber->insurance->status == 2) مرفوض
+                                                            @elseif($serialNumber->insurance->status == 3) قيد المراجعة
+                                                            @else غير محدد @endif
+                                                        </span>
+                                                    </div>
+                                                @else
+                                                    <span class="text-muted">غير مستخدم</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($serialNumber->insurance && $serialNumber->insurance->warranties->count() > 0)
+                                                    @php
+                                                        $latestWarranty = $serialNumber->insurance->warranties->sortByDesc('created_at')->first();
+                                                    @endphp
+                                                    <div class="d-flex flex-column">
+                                                        <a href="{{ route('skudo.warranty.edit', $latestWarranty->id) }}" 
+                                                           class="badge badge-info mb-1 text-decoration-none">#{{ $latestWarranty->id }}</a>
+                                                        <span class="badge 
+                                                            @if($latestWarranty->is_applicable == 1) badge-success
+                                                            @elseif($latestWarranty->is_applicable == 2) badge-warning
+                                                            @elseif($latestWarranty->is_applicable == null) badge-secondary
+                                                            @else badge-danger @endif">
+                                                            @if($latestWarranty->is_applicable == 1) يشمل الضمان
+                                                            @elseif($latestWarranty->is_applicable == 2) معلق
+                                                            @elseif($latestWarranty->is_applicable == null) جديد
+                                                            @else لا يشمل الضمان @endif
+                                                        </span>
+                                                    </div>
+                                                @elseif($serialNumber->insurance)
+                                                    <span class="text-muted">لا توجد مطالبات</span>
+                                                @else
+                                                    <span class="text-muted">غير مستخدم</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($serialNumber->insurance && $serialNumber->insurance->warranties->count() > 0)
+                                                    @php
+                                                        $latestWarranty = $serialNumber->insurance->warranties->sortByDesc('created_at')->first();
+                                                    @endphp
+                                                    <div class="d-flex flex-column">
+                                                        @if($latestWarranty->value && $latestWarranty->currency)
+                                                            <span class="badge badge-success mb-1">
+                                                                {{ number_format($latestWarranty->value, 2) }} {{ $latestWarranty->currency->code ?? '' }}
+                                                            </span>
+                                                        @else
+                                                            <span class="text-muted small">لا توجد قيمة</span>
+                                                        @endif
+                                                        
+                                                        @if($latestWarranty->application_number)
+                                                            <span class="badge badge-info">
+                                                                رقم الاعتماد: {{ $latestWarranty->application_number }}
+                                                            </span>
+                                                        @else
+                                                            <span class="text-muted small">لا يوجد رقم اعتماد</span>
+                                                        @endif
+                                                    </div>
+                                                @elseif($serialNumber->insurance)
+                                                    <span class="text-muted">لا توجد مطالبات</span>
+                                                @else
+                                                    <span class="text-muted">غير مستخدم</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <ul class="table-controls">
+                                                    <li>
+                                                        <a href="{{ route('skudo.serial-numbers.show', $serialNumber->id) }}" 
+                                                           class="btn btn-info p-0" data-toggle="tooltip" data-placement="top" title="عرض">
+                                                            <i class="flaticon-view bg-info p-1 text-white br-6 mb-1"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('skudo.serial-numbers.edit', $serialNumber->id) }}" 
+                                                           class="btn btn-warning p-0" data-toggle="tooltip" data-placement="top" title="تعديل">
+                                                            <i class="flaticon-edit bg-warning p-1 text-white br-6 mb-1"></i>
+                                                        </a>
+                                                    </li>
+                                                    @if(!$serialNumber->insurance)
+                                                        <li>
+                                                            <form class="inline" action="{{ route('skudo.serial-numbers.destroy', $serialNumber->id) }}" 
+                                                                  method="POST" onsubmit="return confirm('هل أنت متأكد من حذف هذا الرقم التسلسلي؟')">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-danger p-0" data-toggle="tooltip" data-placement="top" title="حذف">
+                                                                    <i class="flaticon-delete bg-danger p-1 text-white br-6"></i>
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    @else
+                                                        <li>
+                                                            <button class="btn btn-danger p-0" data-toggle="tooltip" data-placement="top" title="لا يمكن الحذف - مرتبط بضمان" disabled>
+                                                                <i class="flaticon-delete bg-danger p-1 text-white br-6"></i>
+                                                            </button>
+                                                        </li>
+                                                    @endif
+                                                </ul>
                                             </td>
                                         </tr>
                                     @empty

@@ -25,6 +25,8 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
     Route::get('skudo-insuranceServer', 'InsuranceAdminController@insuranceServer')->name('skudo.insurance.insuranceServer');
     Route::get('skudo-insurance/modal/{insurance}', 'InsuranceAdminController@showModal')->name('skudo.insurance.show.modal');
 
+    Route::get('skudo-serial-numbers/import', 'SerialNumberController@import')->name('skudo.serial-numbers.import');
+    Route::post('skudo-serial-numbers/import', 'SerialNumberController@importStore')->name('skudo.serial-numbers.import.store');
     Route::resource('skudo-serial-numbers', 'SerialNumberController')->names('skudo.serial-numbers');
 });
 

@@ -7,6 +7,8 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\SkudoModule\Entities\SerialNumber;
 use Modules\SkudoModule\Http\Requests\SerialNumberRequest;
+use Modules\SkudoModule\Imports\SerialNumbersImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SerialNumberController extends Controller
 {
@@ -16,7 +18,7 @@ class SerialNumberController extends Controller
      */
     public function index(Request $request)
     {
-        $query = SerialNumber::query();
+        $query = SerialNumber::query()->with(['insurance.warranties.currency']);
 
         // Search functionality
         if ($request->has('search') && $request->search) {
@@ -95,6 +97,13 @@ class SerialNumberController extends Controller
     public function destroy($id)
     {
         $serialNumber = SerialNumber::findOrFail($id);
+        
+        // التحقق من وجود علاقات قبل الحذف
+        if ($serialNumber->insurance) {
+            return redirect()->route('skudo.serial-numbers.index')
+                ->with('error', 'لا يمكن حذف هذا الرقم التسلسلي لأنه مرتبط بتسجيل ضمان رقم #' . $serialNumber->insurance->id);
+        }
+        
         $serialNumber->delete();
 
         return redirect()->route('skudo.serial-numbers.index')
@@ -148,5 +157,35 @@ class SerialNumberController extends Controller
             'success' => false,
             'message' => 'لم يتم العثور على الرقم التسلسلي'
         ]);
+    }
+
+    /**
+     * Show the import form
+     */
+    public function import()
+    {
+        return view('skudomodule::admin.serial-numbers.import');
+    }
+
+    /**
+     * Store the imported data
+     */
+    public function importStore(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,xls,csv|max:10240', // 10MB max
+        ]);
+
+        try {
+            $import = new SerialNumbersImport;
+            Excel::import($import, $request->file('file'));
+            
+            return redirect()->route('skudo.serial-numbers.index')
+                ->with('success', 'تم استيراد البيانات بنجاح');
+        } catch (\Exception $e) {
+            \Log::error('Import error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'حدث خطأ أثناء الاستيراد. تأكد من صحة تنسيق الملف والترميز.');
+        }
     }
 }
