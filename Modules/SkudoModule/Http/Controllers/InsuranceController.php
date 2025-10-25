@@ -104,6 +104,11 @@ class InsuranceController extends Controller
             }
         }
 
+        // إضافة serial_number_id إذا كان موجود
+        if ($request->filled('serial_number_id')) {
+            $data['serial_number_id'] = $request->input('serial_number_id');
+        }
+
         // Ensure back_image is persisted even if not part of enabled config
         if ($request->hasFile('back_image')) {
             $data['back_image'] = $request->file('back_image');

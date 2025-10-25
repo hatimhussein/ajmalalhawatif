@@ -563,7 +563,13 @@
                             
                             
                             
+
+                            <li>
+                                <a href="<?php echo e(route('skudo.serial-numbers.index')); ?>"> الأرقام التسلسلية </a>
+                            </li>
+
                         <?php endif; ?>
+
 
                             
 

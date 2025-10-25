@@ -563,7 +563,13 @@
                             {{--                            <li>--}}
                             {{--                                <a href="{{route('skudo.warranty.index')}}?type=sms"> {{__('commonmodule::sidebar.sms_warranty')}} سكودو</a>--}}
                             {{--                            </li>--}}
+
+                            <li>
+                                <a href="{{route('skudo.serial-numbers.index')}}"> الأرقام التسلسلية </a>
+                            </li>
+
                         @endcan
+
 
                             {{--                        @can('returns')--}}
 {{--                            <li>--}}

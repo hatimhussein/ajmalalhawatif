@@ -29,6 +29,9 @@
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -209,6 +212,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;skudo-features&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/freelancing/أجمل الهواتف/real_web_app/Modules&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -257,6 +261,7 @@
       <workItem from="1760985818644" duration="2186000" />
       <workItem from="1761038574002" duration="16000" />
       <workItem from="1761056198283" duration="2484000" />
+      <workItem from="1761389434181" duration="61000" />
     </task>
     <servers />
   </component>

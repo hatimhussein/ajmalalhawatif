@@ -85,18 +85,6 @@
                                         $firstPackageKey = collect($packageSerialKeys)->first(fn($k) => $inputs->contains('key', $k));
                                     @endphp
                                     <div class="col-md-6">
-                                        @if(isset($firstDeviceKey))
-                                            <div class="form-group">
-                                                @include("warrantymodule::front.includes.input", ['input' => $inputs->where('key', $firstDeviceKey)->first(), 'localeFile' => 'insurance'])
-                                            </div>
-                                        @else
-                                            <div class="form-group">
-                                                <label for="device_serial" class="required">الرقم التسلسلي للجهاز</label>
-                                                <input type="text" name="device_serial" id="device_serial" class="form-control" maxlength="100" placeholder="الرقم التسلسلي للجهاز">
-                                            </div>
-                                        @endif
-                                    </div>
-                                    <div class="col-md-6">
                                         @if(isset($firstPackageKey))
                                             <div class="form-group">
                                                 @include("warrantymodule::front.includes.input", ['input' => $inputs->where('key', $firstPackageKey)->first(), 'localeFile' => 'insurance'])
@@ -105,6 +93,50 @@
                                             <div class="form-group">
                                                 <label for="package_serial" class="required">الرقم التسلسلي للمنتج (البكج)</label>
                                                 <input type="text" name="package_serial" id="package_serial" class="form-control" maxlength="100" placeholder="الرقم التسلسلي للمنتج (البكج)">
+                                                <div id="package_serial_info" class="mt-2" style="display: none;">
+                                                    <div class="alert alert-success" style="border-radius: 8px; border-left: 4px solid #28a745;">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="d-flex align-items-center mb-2">
+                                                                    <i class="glyphicon glyphicon-tag" style="margin-left: 8px; color: #28a745;"></i>
+                                                                    <strong style="margin-left: 5px;">اسم المنتج:</strong>
+                                                                </div>
+                                                                <span id="product_name_ar" class="text-primary" style="font-weight: bold;"></span>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="d-flex align-items-center mb-2">
+                                                                    <i class="glyphicon glyphicon-barcode" style="margin-left: 8px; color: #28a745;"></i>
+                                                                    <strong style="margin-left: 5px;">الباركود:</strong>
+                                                                </div>
+                                                                <span id="barcode" class="text-primary" style="font-weight: bold;"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div id="package_serial_error" class="mt-2" style="display: none;">
+                                                    <div class="alert alert-danger" style="border-radius: 8px; border-left: 4px solid #dc3545;">
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="glyphicon glyphicon-warning-sign" style="margin-left: 8px; color: #dc3545; font-size: 18px;"></i>
+                                                            <span id="error_message" class="text-danger" style="font-weight: bold;"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        @if(isset($firstDeviceKey))
+                                            <div class="form-group">
+                                                @include("warrantymodule::front.includes.input", ['input' => $inputs->where('key', $firstDeviceKey)->first(), 'localeFile' => 'insurance'])
+                                            </div>
+                                        @else
+                                            <div class="form-group">
+                                                <label for="device_serial" class="required">الرقم التسلسلي للجهاز</label>
+                                                <small class="help-block text-muted">الرقم التسلسلي للجهاز من خلال النقر على: <strong>#06#*</strong> ثم اتصال</small>
+
+                                                <input type="text" name="device_serial" id="device_serial" class="form-control" maxlength="100" placeholder="الرقم التسلسلي للجهاز">
                                             </div>
                                         @endif
                                     </div>
@@ -245,6 +277,14 @@
         const submitter = $(warranty_form).find('[type="submit"]');
         $(warranty_form).on('submit', (e) => {
             e.preventDefault();
+            
+            // التحقق من أن الرقم التسلسلي غير مستخدم
+            const packageSerial = $('#package_serial').val().trim();
+            if (packageSerial && $('#package_serial_error').is(':visible')) {
+                toastr["error"]("لا يمكن إرسال النموذج لأن الرقم التسلسلي مستخدم مسبقاً");
+                return;
+            }
+            
             submitter.prop('disabled', true);
             let oldText = submitter.text();
             submitter.text('....');
@@ -282,5 +322,78 @@
                 },
             });
         })
+
+        // البحث التلقائي في الأرقام التسلسلية
+        let searchTimeout;
+        $('#package_serial').on('input', function() {
+            const serialNumber = $(this).val().trim();
+            
+            // إخفاء المعلومات السابقة
+            $('#package_serial_info').hide();
+            $('#package_serial_error').hide();
+            
+            // إلغاء البحث السابق إذا كان موجود
+            if (searchTimeout) {
+                clearTimeout(searchTimeout);
+            }
+            
+            // البحث بعد 500ms من توقف الكتابة
+            if (serialNumber.length >= 3) {
+                // إضافة مؤشر تحميل
+                $('#package_serial').after('<div id="loading_indicator" class="text-center mt-2"><i class="fa fa-spinner fa-spin text-primary"></i> جاري البحث...</div>');
+                
+                searchTimeout = setTimeout(function() {
+                    searchSerialNumber(serialNumber);
+                }, 500);
+            } else {
+                $('#loading_indicator').remove();
+            }
+        });
+
+        function searchSerialNumber(serialNumber) {
+            $.ajax({
+                url: '{{ route("front.skudo.serial-numbers.search") }}',
+                method: 'GET',
+                data: { serial: serialNumber },
+                success: function(response) {
+                    // إزالة مؤشر التحميل
+                    $('#loading_indicator').remove();
+                    
+                    // إخفاء جميع الرسائل أولاً
+                    $('#package_serial_info').hide();
+                    $('#package_serial_error').hide();
+                    
+                    if (response.success && response.data) {
+                        // عرض معلومات المنتج
+                        $('#product_name_ar').text(response.data.product_name_ar || '-');
+                        $('#barcode').text(response.data.barcode || '-');
+                        $('#package_serial_info').show();
+                        
+                        // إضافة hidden input للـ serial_number_id
+                        if ($('#serial_number_id').length === 0) {
+                            $('#package_serial').after('<input type="hidden" id="serial_number_id" name="serial_number_id" value="' + response.data.serial_number_id + '">');
+                        } else {
+                            $('#serial_number_id').val(response.data.serial_number_id);
+                        }
+                    } else {
+                        // إذا كان الرقم مستخدم مسبقاً، عرض رسالة خطأ منفصلة
+                        if (response.is_used) {
+                            $('#error_message').text(response.message);
+                            $('#package_serial_error').show();
+                            
+                            // إزالة hidden input
+                            $('#serial_number_id').remove();
+                        }
+                    }
+                },
+                error: function() {
+                    // إزالة مؤشر التحميل
+                    $('#loading_indicator').remove();
+                    $('#package_serial_info').hide();
+                    $('#package_serial_error').hide();
+                    $('#serial_number_id').remove();
+                }
+            });
+        }
     </script>
 @endsection

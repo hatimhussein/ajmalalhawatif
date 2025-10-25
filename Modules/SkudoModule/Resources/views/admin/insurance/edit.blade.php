@@ -148,30 +148,46 @@
                                                     </div>
 
                                                     <div class="statbox widget box box-shadow">
-                                                        <label for="dummy_text_1">
-                                                            <b>{{__('warrantymodule::insurance.dummy_text_1')}}:</b>
+                                                        <label for="item_number">
+                                                            <b>رقم الصنف:</b>
                                                         </label>
-                                                        <input type="text" readonly id="dummy_text_1"
+                                                        <input type="text" readonly id="item_number"
                                                                class="form-control"
-                                                               value="{{ $insurance->dummy_text_1 }}">
+                                                               value="{{ $insurance->serialNumber->item_number ?? '-' }}">
                                                     </div>
 
                                                     <div class="statbox widget box box-shadow">
-                                                        <label for="dummy_text_2">
-                                                            <b>{{__('warrantymodule::insurance.dummy_text_2')}}:</b>
+                                                        <label for="barcode">
+                                                            <b>الباركود:</b>
                                                         </label>
-                                                        <input type="text" readonly id="dummy_text_2"
+                                                        <input type="text" readonly id="barcode"
                                                                class="form-control"
-                                                               value="{{ $insurance->dummy_text_2 }}">
+                                                               value="{{ $insurance->serialNumber->barcode ?? '-' }}">
                                                     </div>
 
                                                     <div class="statbox widget box box-shadow">
-                                                        <label for="dummy_text_3">
-                                                            <b>{{__('warrantymodule::insurance.dummy_text_3')}}:</b>
+                                                        <label for="product_name_ar">
+                                                            <b>اسم الصنف عربي:</b>
                                                         </label>
-                                                        <input type="text" readonly id="dummy_text_3"
+                                                        <input type="text" readonly id="product_name_ar"
                                                                class="form-control"
-                                                               value="{{ $insurance->dummy_text_3 }}">
+                                                               value="{{ $insurance->serialNumber->product_name_ar ?? '-' }}">
+                                                    </div>
+                                                    <div class="statbox widget box box-shadow">
+                                                        <label for="product_name_en">
+                                                            <b>اسم الصنف انجليزي:</b>
+                                                        </label>
+                                                        <input type="text" readonly id="product_name_en"
+                                                               class="form-control"
+                                                               value="{{ $insurance->serialNumber->product_name_en ?? '-' }}">
+                                                    </div>
+                                                    <div class="statbox widget box box-shadow">
+                                                        <label for="serial_created_at">
+                                                            <b>تاريخ اضافة الرقم التسلسلي:</b>
+                                                        </label>
+                                                        <input type="text" readonly id="serial_created_at"
+                                                               class="form-control"
+                                                               value="{{ $insurance->serialNumber->formatted_created_at ?? '-' }}">
                                                     </div>
 
                                                 </div>

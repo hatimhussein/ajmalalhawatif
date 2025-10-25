@@ -64,7 +64,7 @@ class InsuranceAdminController extends Controller
      */
     public function edit($id): Renderable
     {
-        $insurance = $this->insuranceRepository->first(['id' => $id]);
+        $insurance = $this->insuranceRepository->query()->with('serialNumber')->where('id', $id)->first();
         return view('skudomodule::admin.insurance.edit', compact('insurance'));
     }
 

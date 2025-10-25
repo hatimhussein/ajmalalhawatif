@@ -24,6 +24,8 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
     Route::get('skudo-insurance/export', 'InsuranceAdminController@export')->name('skudo.insurance.export');
     Route::get('skudo-insuranceServer', 'InsuranceAdminController@insuranceServer')->name('skudo.insurance.insuranceServer');
     Route::get('skudo-insurance/modal/{insurance}', 'InsuranceAdminController@showModal')->name('skudo.insurance.show.modal');
+
+    Route::resource('skudo-serial-numbers', 'SerialNumberController')->names('skudo.serial-numbers');
 });
 
 /**
@@ -38,6 +40,9 @@ Route::resource('skudo-warranty', 'WarrantyController')->names('front.skudo.warr
 Route::get('skudo-warranty-insurance/{insurance}', 'WarrantyController@findInsurance')->name('skudo.warranty.insurance');
 
 Route::resource('skudo-insurance', 'InsuranceController')->names('front.skudo.insurance');
+
+// البحث في الأرقام التسلسلية
+Route::get('skudo-serial-numbers/search', 'SerialNumberController@search')->name('front.skudo.serial-numbers.search');
 
 /**
  * @Front_Routes - Authenticated Users Only
