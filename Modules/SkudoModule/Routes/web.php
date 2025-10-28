@@ -27,6 +27,7 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
 
     Route::get('skudo-serial-numbers/import', 'SerialNumberController@import')->name('skudo.serial-numbers.import');
     Route::post('skudo-serial-numbers/import', 'SerialNumberController@importStore')->name('skudo.serial-numbers.import.store');
+    Route::get('skudo-serial-numbers/export', 'SerialNumberController@export')->name('skudo.serial-numbers.export');
     Route::resource('skudo-serial-numbers', 'SerialNumberController')->names('skudo.serial-numbers');
 });
 

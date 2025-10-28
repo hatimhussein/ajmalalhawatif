@@ -333,13 +333,19 @@
     <script src="{{ asset('assets/admin/plugins/file-upload/file-upload-with-preview.js')}}"></script>
 
     <script>
-        @foreach($fileInputs->filter(function($fi){ return stripos($fi->key, 'qr') === false && $fi->key !== 'warranty_image'; }) as $input)
-        new FileUploadWithPreview('{{ $input->key }}')
+        // تهيئة front_image و back_image و invoice_image أولاً (يتم عرضهم يدوياً في القالب)
+        new FileUploadWithPreview('front_image');
+        new FileUploadWithPreview('back_image');
+        new FileUploadWithPreview('invoice_image');
+        
+        // ثم تهيئة بقية الحقول (ما عدا front/back/invoice لأنهم تم تهيئتهم بالفعل)
+        @foreach($fileInputs->filter(function($fi){ 
+            return stripos($fi->key, 'qr') === false 
+                && $fi->key !== 'warranty_image' 
+                && !in_array($fi->key, ['front_image', 'back_image', 'invoice_image']); 
+        }) as $input)
+        new FileUploadWithPreview('{{ $input->key }}');
         @endforeach
-        // Ensure back_image is initialized explicitly (in case it was filtered/missed)
-        try { new FileUploadWithPreview('back_image'); } catch (e) {}
-        // Initialize invoice_image upload
-        try { new FileUploadWithPreview('invoice_image'); } catch (e) {}
     </script>
 
     @include('usermodule::front.auth.phone_code_scripts')

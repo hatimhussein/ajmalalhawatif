@@ -61,22 +61,31 @@
                     <div class="statbox widget box box-shadow">
                         <div class="widget-header">
                             <div class="row mt-5">
-                                <div class="col-md-6">
-                                    <form action="{{ route('skudo.serial-numbers.index') }}">
+                                <div class="col-md-9">
+                                    <form action="{{ route('skudo.serial-numbers.index') }}" id="search-form">
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-5">
                                                 <input type="text" name="search" class="form-control mb-3"
                                                        placeholder="البحث في الأرقام التسلسلية..."
                                                        value="{{ request('search') }}">
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <button type="submit" class="btn btn-success">
                                                     <i class="flaticon-search-1"></i> بحث
                                                 </button>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <a href="{{ route('skudo.serial-numbers.import') }}" class="btn btn-primary">
-                                                    <i class="flaticon-upload"></i> استيراد Excel
+                                                    <i class="flaticon-upload"></i> استيراد
+                                                </a>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <a href="{{ route('skudo.serial-numbers.export', ['search' => request('search')]) }}" 
+                                                   class="btn btn-info" 
+                                                   data-toggle="tooltip" 
+                                                   data-placement="top" 
+                                                   title="تصدير جميع الأرقام التسلسلية إلى CSV (يمكن فتحه في Excel)">
+                                                    <i class="flaticon-download"></i> تصدير CSV
                                                 </a>
                                             </div>
                                         </div>

@@ -25,7 +25,7 @@ class SerialNumberController extends Controller
             $query->search($request->search);
         }
 
-        $serialNumbers = $query->orderBy('created_at', 'desc')->paginate(2);
+        $serialNumbers = $query->orderBy('created_at', 'desc')->paginate(50);
 
         return view('skudomodule::admin.serial-numbers.index', compact('serialNumbers'));
     }
@@ -187,5 +187,155 @@ class SerialNumberController extends Controller
             return redirect()->back()
                 ->with('error', 'حدث خطأ أثناء الاستيراد. تأكد من صحة تنسيق الملف والترميز.');
         }
+    }
+
+    /**
+     * Export serial numbers to CSV
+     */
+    public function export(Request $request)
+    {
+        $searchTerm = $request->get('search');
+        
+        try {
+            return $this->exportAsCSV($searchTerm);
+        } catch (\Exception $e) {
+            \Log::error('Export error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'حدث خطأ أثناء تصدير البيانات: ' . $e->getMessage());
+        }
+    }
+    
+    /**
+     * Export as CSV (fallback method for older PHP versions)
+     */
+    private function exportAsCSV($searchTerm)
+    {
+        $query = SerialNumber::query();
+        
+        if ($searchTerm) {
+            $query->search($searchTerm);
+        }
+        
+        $serialNumbers = $query->orderBy('created_at', 'desc')->get();
+        
+        $fileName = 'serial_numbers_' . date('Y-m-d_H-i-s') . '.csv';
+        
+        // Use temp directory instead
+        $directory = storage_path('app');
+        
+        // Create directory if not exists
+        if (!is_dir($directory)) {
+            mkdir($directory, 0755, true);
+        }
+        
+        $filePath = $directory . '/' . $fileName;
+        
+        // Create CSV file
+        $file = fopen($filePath, 'w');
+        
+        // Add UTF-8 BOM for proper Arabic display in Excel
+        fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+        
+        // Headers
+        fputcsv($file, array(
+            '#',
+            'رقم الصنف',
+            'الباركود',
+            'اسم الصنف (عربي)',
+            'اسم الصنف (إنجليزي)',
+            'الرقم التسلسلي',
+            'تاريخ الإضافة',
+            'رقم تسجيل الضمان',
+            'حالة تسجيل الضمان',
+            'رقم المطالبة',
+            'حالة المطالبة',
+            'قيمة التعويض',
+            'رقم الاعتماد'
+        ));
+        
+        $counter = 0;
+        foreach ($serialNumbers as $serialNumber) {
+            $counter++;
+            
+            $insuranceId = '-';
+            $insuranceStatus = '-';
+            $warrantyId = '-';
+            $warrantyStatus = '-';
+            $compensationValue = '-';
+            $applicationNumber = '-';
+            
+            $insurance = $serialNumber->insurance;
+            
+            if ($insurance) {
+                $insuranceId = $insurance->id;
+                $status = $insurance->status;
+                
+                if ($status == 0) {
+                    $insuranceStatus = 'جديد';
+                } elseif ($status == 1) {
+                    $insuranceStatus = 'مفعل';
+                } elseif ($status == 2) {
+                    $insuranceStatus = 'مرفوض';
+                } elseif ($status == 3) {
+                    $insuranceStatus = 'قيد المراجعة';
+                }
+                
+                $warranties = $insurance->warranties;
+                if ($warranties && $warranties->count() > 0) {
+                    $latestWarranty = $warranties->sortByDesc('created_at')->first();
+                    
+                    if ($latestWarranty) {
+                        $warrantyId = $latestWarranty->id;
+                        
+                        if ($latestWarranty->is_applicable == 1) {
+                            $warrantyStatus = 'يشمل الضمان';
+                        } elseif ($latestWarranty->is_applicable == 2) {
+                            $warrantyStatus = 'معلق';
+                        } elseif ($latestWarranty->is_applicable == null) {
+                            $warrantyStatus = 'جديد';
+                        } else {
+                            $warrantyStatus = 'لا يشمل الضمان';
+                        }
+                        
+                        if ($latestWarranty->value) {
+                            $currencyCode = '';
+                            if ($latestWarranty->currency && $latestWarranty->currency->code) {
+                                $currencyCode = $latestWarranty->currency->code;
+                            }
+                            $compensationValue = number_format($latestWarranty->value, 2) . ' ' . $currencyCode;
+                        }
+                        
+                        if ($latestWarranty->application_number) {
+                            $applicationNumber = $latestWarranty->application_number;
+                        }
+                    }
+                }
+            }
+            
+            fputcsv($file, array(
+                $counter,
+                $serialNumber->item_number ? $serialNumber->item_number : '-',
+                $serialNumber->barcode ? $serialNumber->barcode : '-',
+                $serialNumber->product_name_ar ? $serialNumber->product_name_ar : '-',
+                $serialNumber->product_name_en ? $serialNumber->product_name_en : '-',
+                $serialNumber->product_serial ? $serialNumber->product_serial : '-',
+                $serialNumber->formatted_created_at ? $serialNumber->formatted_created_at : '-',
+                $insuranceId,
+                $insuranceStatus,
+                $warrantyId,
+                $warrantyStatus,
+                $compensationValue,
+                $applicationNumber
+            ));
+        }
+        
+        fclose($file);
+        
+        // Download and delete after send
+        if (file_exists($filePath)) {
+            return response()->download($filePath, $fileName)->deleteFileAfterSend(true);
+        }
+        
+        return redirect()->back()->with('error', 'حدث خطأ أثناء إنشاء ملف CSV.');
     }
 }

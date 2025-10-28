@@ -333,13 +333,19 @@
     <script src="<?php echo e(asset('assets/admin/plugins/file-upload/file-upload-with-preview.js')); ?>"></script>
 
     <script>
-        <?php $__currentLoopData = $fileInputs->filter(function($fi){ return stripos($fi->key, 'qr') === false && $fi->key !== 'warranty_image'; }); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $input): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        new FileUploadWithPreview('<?php echo e($input->key); ?>')
+        // تهيئة front_image و back_image و invoice_image أولاً (يتم عرضهم يدوياً في القالب)
+        new FileUploadWithPreview('front_image');
+        new FileUploadWithPreview('back_image');
+        new FileUploadWithPreview('invoice_image');
+        
+        // ثم تهيئة بقية الحقول (ما عدا front/back/invoice لأنهم تم تهيئتهم بالفعل)
+        <?php $__currentLoopData = $fileInputs->filter(function($fi){ 
+            return stripos($fi->key, 'qr') === false 
+                && $fi->key !== 'warranty_image' 
+                && !in_array($fi->key, ['front_image', 'back_image', 'invoice_image']); 
+        }); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $input): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        new FileUploadWithPreview('<?php echo e($input->key); ?>');
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        // Ensure back_image is initialized explicitly (in case it was filtered/missed)
-        try { new FileUploadWithPreview('back_image'); } catch (e) {}
-        // Initialize invoice_image upload
-        try { new FileUploadWithPreview('invoice_image'); } catch (e) {}
     </script>
 
     <?php echo $__env->make('usermodule::front.auth.phone_code_scripts', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
