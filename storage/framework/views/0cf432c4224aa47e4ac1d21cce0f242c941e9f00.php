@@ -8,6 +8,57 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="<?php echo e(asset('assets/admin/plugins/file-upload/file-upload-with-preview.css')); ?>"
           type="text/css">
+    <style>
+        /* تنسيق زر البحث عن الرقم التسلسلي */
+        #search_serial_btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+            white-space: nowrap;
+        }
+        
+        #search_serial_btn:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6a3f92 100%);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+            transform: translateY(-1px);
+        }
+        
+        #search_serial_btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
+        }
+        
+        #search_serial_btn:disabled {
+            background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        #search_serial_btn i {
+            margin-left: 5px;
+        }
+        
+        /* تحسين مظهر الحقل */
+        #package_serial {
+            border-radius: 4px 0 0 4px;
+            border-right: none;
+        }
+        
+        .input-group #package_serial:focus {
+            box-shadow: none;
+            border-color: #667eea;
+        }
+        
+        /* تنسيق مجموعة الإدخال للرقم التسلسلي */
+        #package_serial_group {
+            width: 95%;
+            display: flex;
+        }
+    </style>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -25,12 +76,12 @@
                             <h2><?php echo e(__('skudomodule::insurance.insurance')); ?></h2>
                         </div>
                         
-                        <?php if(!auth()->check()): ?>
+                        <!-- <?php if(!auth()->check()): ?>
                             <div class="alert alert-info">
                                 <strong><?php echo e(__('skudomodule::insurance.guest_notice')); ?></strong>
                                 <p><?php echo e(__('skudomodule::insurance.guest_notice_text')); ?></p>
                             </div>
-                        <?php endif; ?>
+                        <?php endif; ?> -->
                         
                         <form id="insurance-form"
                               action="<?php echo e(route('front.skudo.insurance.store')); ?>" class="form"
@@ -91,7 +142,15 @@
                                         <?php else: ?>
                                             <div class="form-group">
                                                 <label for="package_serial" class="required">الرقم التسلسلي للمنتج (البكج)</label>
-                                                <input type="text" name="package_serial" id="package_serial" class="form-control" maxlength="100" placeholder="الرقم التسلسلي للمنتج (البكج)">
+                                                <div class="input-group" id="package_serial_group">
+                                                    <input type="text" name="package_serial" id="package_serial" class="form-control" maxlength="100" placeholder="الرقم التسلسلي للمنتج (البكج)">
+                                                    <div class="input-group-append">
+                                                        <button type="button" id="search_serial_btn" class="btn btn-primary" style="border-radius: 0 4px 4px 0;">
+                                                            <i class="glyphicon glyphicon-search"></i> تحقق من الرقم
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <small class="form-text text-muted">أدخل الرقم التسلسلي ثم اضغط على "تحقق من الرقم" للتأكد من صحته</small>
                                                 <div id="package_serial_info" class="mt-2" style="display: none;">
                                                     <div class="alert alert-success" style="border-radius: 8px; border-left: 4px solid #28a745;">
                                                         <div class="row">
@@ -209,8 +268,19 @@
                                     <?php endif; ?>
 
                                     
+                                    <div class="col-md-4 custom-file-container" data-upload-id="invoice_image">
+                                        <label for="invoice_image" class="required">صورة الفاتورة</label>
+                                        <label> <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image"></a></label>
+                                        <label class="custom-file-container__custom-file">
+                                            <input type="file" name="invoice_image" id="invoice_image" class="custom-file-container__custom-file__custom-file-input" accept="image/*">
+                                            <span class="custom-file-container__custom-file__custom-file-control"></span>
+                                        </label>
+                                        <div class="custom-file-container__image-preview"></div>
+                                    </div>
+
+                                    
                                     <?php $__currentLoopData = $fileInputs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $fi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <?php if(!in_array($fi->key, ['front_image','back_image'])): ?>
+                                        <?php if(!in_array($fi->key, ['front_image','back_image','invoice_image'])): ?>
                                             <?php if(stripos($fi->key, 'qr') !== false): ?>
                                                 <?php continue; ?>
                                             <?php endif; ?>
@@ -268,6 +338,8 @@
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         // Ensure back_image is initialized explicitly (in case it was filtered/missed)
         try { new FileUploadWithPreview('back_image'); } catch (e) {}
+        // Initialize invoice_image upload
+        try { new FileUploadWithPreview('invoice_image'); } catch (e) {}
     </script>
 
     <?php echo $__env->make('usermodule::front.auth.phone_code_scripts', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
@@ -323,30 +395,56 @@
             });
         })
 
-        // البحث التلقائي في الأرقام التسلسلية
-        let searchTimeout;
+        // البحث عند النقر على زر البحث
+        let isSearching = false;
+        
+        // إخفاء الرسائل عند تعديل الحقل
         $('#package_serial').on('input', function() {
-            const serialNumber = $(this).val().trim();
+            // إخفاء المعلومات السابقة عند تعديل الحقل
+            $('#package_serial_info').hide();
+            $('#package_serial_error').hide();
+            // إزالة الـ serial_number_id عند تعديل الحقل
+            $('#serial_number_id').remove();
+        });
+        
+        // البحث عند النقر على الزر
+        $('#search_serial_btn').on('click', function() {
+            const serialNumber = $('#package_serial').val().trim();
             
             // إخفاء المعلومات السابقة
             $('#package_serial_info').hide();
             $('#package_serial_error').hide();
+            $('#loading_indicator').remove();
             
-            // إلغاء البحث السابق إذا كان موجود
-            if (searchTimeout) {
-                clearTimeout(searchTimeout);
+            // التحقق من أن الرقم التسلسلي ليس فارغاً
+            if (!serialNumber) {
+                $('#error_message').text('يرجى إدخال الرقم التسلسلي أولاً');
+                $('#package_serial_error').show();
+                return;
             }
             
-            // البحث بعد 500ms من توقف الكتابة
-            if (serialNumber.length >= 3) {
-                // إضافة مؤشر تحميل
-                $('#package_serial').after('<div id="loading_indicator" class="text-center mt-2"><i class="fa fa-spinner fa-spin text-primary"></i> جاري البحث...</div>');
+            // التحقق من الحد الأدنى للطول
+            if (serialNumber.length < 3) {
+                $('#error_message').text('يرجى إدخال رقم تسلسلي صحيح (3 أحرف على الأقل)');
+                $('#package_serial_error').show();
+                return;
+            }
+            
+            if (!isSearching) {
+                isSearching = true;
                 
-                searchTimeout = setTimeout(function() {
-                    searchSerialNumber(serialNumber);
-                }, 500);
-            } else {
-                $('#loading_indicator').remove();
+                // تعطيل الزر وإضافة مؤشر تحميل
+                $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> جاري التحقق...');
+                
+                searchSerialNumber(serialNumber);
+            }
+        });
+        
+        // السماح بالبحث عند الضغط على Enter في حقل الرقم التسلسلي
+        $('#package_serial').on('keypress', function(e) {
+            if (e.which === 13) { // Enter key
+                e.preventDefault();
+                $('#search_serial_btn').click();
             }
         });
 
@@ -356,8 +454,9 @@
                 method: 'GET',
                 data: { serial: serialNumber },
                 success: function(response) {
-                    // إزالة مؤشر التحميل
-                    $('#loading_indicator').remove();
+                    // إعادة تفعيل الزر وإعادة تعيين flag
+                    $('#search_serial_btn').prop('disabled', false).html('<i class="glyphicon glyphicon-search"></i> تحقق من الرقم');
+                    isSearching = false;
                     
                     // إخفاء جميع الرسائل أولاً
                     $('#package_serial_info').hide();
@@ -375,6 +474,9 @@
                         } else {
                             $('#serial_number_id').val(response.data.serial_number_id);
                         }
+                        
+                        // عرض رسالة نجاح
+                        toastr["success"]("تم العثور على الرقم التسلسلي بنجاح");
                     } else {
                         // إذا كان الرقم مستخدم مسبقاً، عرض رسالة خطأ منفصلة
                         if (response.is_used) {
@@ -383,15 +485,27 @@
                             
                             // إزالة hidden input
                             $('#serial_number_id').remove();
+                        } else {
+                            // إذا لم يتم العثور على الرقم التسلسلي
+                            $('#error_message').text('لم يتم العثور على الرقم التسلسلي في قاعدة البيانات');
+                            $('#package_serial_error').show();
+                            
+                            // إزالة hidden input
+                            $('#serial_number_id').remove();
                         }
                     }
                 },
                 error: function() {
-                    // إزالة مؤشر التحميل
-                    $('#loading_indicator').remove();
+                    // إعادة تفعيل الزر وإعادة تعيين flag
+                    $('#search_serial_btn').prop('disabled', false).html('<i class="glyphicon glyphicon-search"></i> تحقق من الرقم');
+                    isSearching = false;
                     $('#package_serial_info').hide();
                     $('#package_serial_error').hide();
                     $('#serial_number_id').remove();
+                    
+                    // عرض رسالة خطأ
+                    $('#error_message').text('حدث خطأ أثناء البحث. يرجى المحاولة مرة أخرى');
+                    $('#package_serial_error').show();
                 }
             });
         }

@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="007cca39-ba69-4f74-ada1-1e05824c52c4" name="Changes" comment="" />
+    <list default="true" id="007cca39-ba69-4f74-ada1-1e05824c52c4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/front/insurance/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/front/insurance/create.blade.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -262,6 +265,8 @@
       <workItem from="1761038574002" duration="16000" />
       <workItem from="1761056198283" duration="2484000" />
       <workItem from="1761389434181" duration="61000" />
+      <workItem from="1761400043981" duration="1299000" />
+      <workItem from="1761567984838" duration="6000" />
     </task>
     <servers />
   </component>

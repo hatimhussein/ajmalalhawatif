@@ -89,6 +89,7 @@
                                 <table id="zero-config" class="table table-hover table-bordered" style="width:100%">
                                     <thead>
                                     <tr class="text-center">
+                                        <th>#</th>
                                         <th>رقم الصنف</th>
                                         <th>الباركود</th>
                                         <th>اسم الصنف (عربي)</th>
@@ -104,6 +105,7 @@
                                     <tbody>
                                     <?php $__empty_1 = true; $__currentLoopData = $serialNumbers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $serialNumber): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                         <tr class="text-center">
+                                            <td><?php echo e(($serialNumbers->currentPage() - 1) * $serialNumbers->perPage() + $loop->iteration); ?></td>
                                             <td><?php echo e($serialNumber->item_number ?? '-'); ?></td>
                                             <td><?php echo e($serialNumber->barcode ?? '-'); ?></td>
                                             <td><?php echo e($serialNumber->product_name_ar ?? '-'); ?></td>
@@ -224,7 +226,7 @@
                                         </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                         <tr>
-                                            <td colspan="10" class="text-center">لا توجد أرقام تسلسلية</td>
+                                            <td colspan="11" class="text-center">لا توجد أرقام تسلسلية</td>
                                         </tr>
                                     <?php endif; ?>
                                     </tbody>

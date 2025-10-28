@@ -29,7 +29,7 @@
                                                 <form action="{{ route('front.skudo.insurance.index') }}" method="get">
                                                     <input type="search" name="q" id="insurance-search"
                                                            value="{{ $search }}"
-                                                           placeholder="{{ __('skudomodule::insurance.search_by') }}">
+                                                           placeholder="البحث برقم التسجيل أو الرقم التسلسلي للمنتج">
                                                     <button class="btn btn-info" type="submit">{{ __('usermodule::admin.search') }}</button>
                                                 </form>
                                             </div>
@@ -95,10 +95,10 @@
                                                         rowspan="1">الرقم التسلسلي للجهاز</th>
                                                     <th class="a-center"
                                                         rowspan="1">الرقم التسلسلي للمنتج (البكج)</th>
-                                                    <th colspan="1"
+                                                    <!-- <th colspan="1"
                                                         class="a-center">{{__('skudomodule::insurance.dummy_text_1')}}</th>
                                                     <th colspan="1"
-                                                        class="a-center">{{__('skudomodule::insurance.dummy_text_2')}}</th>
+                                                        class="a-center">{{__('skudomodule::insurance.dummy_text_2')}}</th> -->
                                                     <th colspan="1"
                                                         class="a-center">وقت وتاريخ الارسال</th>
                                                     <th colspan="1"
@@ -115,8 +115,8 @@
                                                         <td>{{ $insurance->phone ? ($insurance->phone_code->code ?? '') : '' }} {{ $insurance->phone }}</td>
                                                         <td>{{ $insurance->device_serial }}</td>
                                                         <td>{{ $insurance->package_serial }}</td>
-                                                        <td>{{ $insurance->dummy_text_1 }}</td>
-                                                        <td>{{ $insurance->dummy_text_2 }}</td>
+                                                        <!-- <td>{{ $insurance->dummy_text_1 }}</td>
+                                                        <td>{{ $insurance->dummy_text_2 }}</td> -->
                                                         <td>{{ $insurance->created_at ? $insurance->created_at->format('Y-m-d H:i') : '' }}</td>
                                                         <td>
                                                             @if ($insurance->isClosed())

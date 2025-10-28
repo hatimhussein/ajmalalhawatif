@@ -114,6 +114,11 @@ class InsuranceController extends Controller
             $data['back_image'] = $request->file('back_image');
         }
 
+        // Ensure invoice_image is persisted even if not part of enabled config
+        if ($request->hasFile('invoice_image')) {
+            $data['invoice_image'] = $request->file('invoice_image');
+        }
+
         $data = $this->insuranceService->uploadFiles($data);
 
         $data['phone_code_id'] = $data['phone'] ? $data['phone_code_id'] : null;
@@ -180,6 +185,10 @@ class InsuranceController extends Controller
 
         if ($request->hasFile('back_image')) {
             $data['back_image'] = $request->file('back_image');
+        }
+
+        if ($request->hasFile('invoice_image')) {
+            $data['invoice_image'] = $request->file('invoice_image');
         }
 
         $data = $this->insuranceService->uploadFiles($data);

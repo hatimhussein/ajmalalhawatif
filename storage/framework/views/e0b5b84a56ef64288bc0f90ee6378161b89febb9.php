@@ -438,6 +438,29 @@
                                         </div>
                                     </div>
                                 <?php endif; ?>
+                                <?php if($insurance->invoice_image): ?>
+                                    <div class="col-lg-4">
+                                        <label>صورة الفاتورة</label>
+                                        <div
+                                            class="custom-file-container__image-preview product-list-img">
+                                            <?php if(is_video($insurance->invoice_image)): ?>
+                                                <video controls>
+                                                    <source
+                                                        src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>"
+                                                        type="video/mp4">
+                                                    <source
+                                                        src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>"
+                                                        type="video/quicktime">
+                                                    Your browser does not support the video
+                                                    tag.
+                                                </video>
+                                            <?php else: ?>
+                                                <img
+                                                    src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>"/>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
                                 <?php if($insurance->warranty_image): ?>
                                     <div class="col-lg-4">
                                         <label> <?php echo e(__('warrantymodule::insurance.warranty_image')); ?></label>

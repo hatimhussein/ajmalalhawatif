@@ -72,12 +72,41 @@ class WarrantyController extends Controller
     {
         $this->warrantyService->checkEnabled();
 
-        // Keep index accessible to everyone; for guests show empty list
+        // Allow search for both authenticated and guest users
         if (auth()->check()) {
-            $warranties = $this->warrantyRepository->getUserWarranties(auth()->id());
+            // If searching, allow access to all warranties
+            if ($request->has('q') && $request->q) {
+                $search = $request->q;
+                $query = $this->warrantyRepository->query();
+                
+                $query->where(function($q) use ($search) {
+                    $q->where('id', (int) $search)
+                      ->orWhere('package_serial', '=', $search);
+                });
+                
+                $warranties = $query->orderBy('created_at', 'desc')->get();
+            } else {
+                // If not searching, show only user's warranties
+                $query = $this->warrantyRepository->query()->where('user_id', auth()->id());
+                $warranties = $query->orderBy('created_at', 'desc')->get();
+            }
+            
             $this->warrantyRepository->readUserWarranties(auth()->id());
         } else {
-            $warranties = [];
+            // For guests, allow searching all warranties (including those created while logged in)
+            if ($request->has('q') && $request->q) {
+                $search = $request->q;
+                $query = $this->warrantyRepository->query();
+                
+                $query->where(function($q) use ($search) {
+                    $q->where('id', (int) $search)
+                      ->orWhere('package_serial', '=', $search);
+                });
+                
+                $warranties = $query->orderBy('created_at', 'desc')->get();
+            } else {
+                $warranties = [];
+            }
         }
 
         return view('skudomodule::front.warranty.index', compact('warranties'));
@@ -158,15 +187,13 @@ class WarrantyController extends Controller
      */
     public function show($id)
     {
-        // For guests, only show warranties without user_id or with specific access
-        $query = ['id' => $id];
+        // For authenticated users, only show their warranties
+        // For guests, show any warranty (including those created while logged in previously)
         if (auth()->check()) {
-            $query['user_id'] = auth()->id();
+            $warranty = $this->warrantyRepository->first(['id' => $id, 'user_id' => auth()->id()]);
         } else {
-            $query['user_id'] = null;
+            $warranty = $this->warrantyRepository->first(['id' => $id]);
         }
-
-        $warranty = $this->warrantyRepository->first($query);
 
         if (!$warranty) abort(404);
 

@@ -31,13 +31,16 @@
 
                                             </a>
                                         </div>
-                                        
+                                        <form method="GET" style="width: 38%;" action="<?php echo e(route('front.skudo.warranty.index')); ?>">
                                         <div class="form-group mb-0">
                                             <small><?php echo e(__('ordermodule::admin.search')); ?></small>
                                             <input type="text" class="form-control" name="q"
-                                                   id="warranty-search" value="<?php echo e(request()->get('q')); ?>">
+                                                   id="warranty-search" value="<?php echo e(request()->get('q')); ?>"
+                                                   placeholder="البحث برقم المطالبة أو الرقم التسلسلي للمنتج (البكج) "
+                                                   style="width: 71%;">
+                                            <button type="submit" class="btn btn-sm btn-info mt-1">بحث</button>
                                         </div>
-                                        
+                                        </form>
                                     </div>
                                 </div>
 
@@ -56,15 +59,7 @@
                                                     <th class="a-center"
                                                         rowspan="1"><?php echo e(__('skudomodule::warranty.phone')); ?></th>
                                                     <th class="a-center"
-                                                        rowspan="1"><?php echo e(__('skudomodule::warranty.company_name')); ?></th>
-                                                    <th class="a-center"
-                                                        rowspan="1"><?php echo e(__('skudomodule::warranty.company_account')); ?></th>
-                                                    <th class="a-center"
-                                                        rowspan="1"><?php echo e(__('skudomodule::warranty.dummy_text_1')); ?></th>
-                                                    <th class="a-center"
-                                                        rowspan="1"><?php echo e(__('skudomodule::warranty.dummy_text_2')); ?></th>
-                                                    <th class="a-center"
-                                                        rowspan="1"><?php echo e(__('skudomodule::warranty.dummy_text_3')); ?></th>
+                                                        rowspan="1">الرقم التسلسلي للمنتج</th>
                                                     <th class="a-center"
                                                         rowspan="1"><?php echo e(__('skudomodule::warranty.usage_date')); ?></th>
                                                     <th class="a-center"
@@ -96,23 +91,7 @@
                                                         </td>
 
                                                         <td class="a-center">
-                                                            <span><?php echo e($warranty->merchant->company_name); ?></span>
-                                                        </td>
-
-                                                        <td class="a-center">
-                                                            <span><?php echo e($warranty->merchant->account_number); ?></span>
-                                                        </td>
-
-                                                        <td class="a-center">
-                                                            <span><?php echo e($warranty->dummy_text_1); ?></span>
-                                                        </td>
-
-                                                        <td class="a-center">
-                                                            <span><?php echo e($warranty->dummy_text_2); ?></span>
-                                                        </td>
-
-                                                        <td class="a-center">
-                                                            <span><?php echo e($warranty->dummy_text_3); ?></span>
+                                                            <span><?php echo e($warranty->package_serial ?? '-'); ?></span>
                                                         </td>
 
                                                         <td class="a-center">
@@ -208,23 +187,24 @@
             },
             dom: 't',
             columns: [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
+                null, // id
+                null, // warranty_type
+                null, // user_name
+                null, // phone
+                null, // company_name
+                null, // company_account
+                null, // package_serial (NEW)
+                null, // dummy_text_1
+                null, // dummy_text_2
+                null, // dummy_text_3
 
-                {searchable: false, orderable: false},
-                {searchable: false, orderable: false},
+                {searchable: false, orderable: false}, // usage_date
+                {searchable: false, orderable: false}, // sent_at
 
-                null,
+                null, // status
 
-                {searchable: false, orderable: false},
-                {searchable: false, orderable: false},
+                {searchable: false, orderable: false}, // value
+                {searchable: false, orderable: false}, // actions
             ]
         });
 

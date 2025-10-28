@@ -9,6 +9,56 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{{ asset('assets/admin/plugins/file-upload/file-upload-with-preview.css')}}"
           type="text/css">
+    <style>
+        /* تنسيق زر البحث عن رقم التسجيل */
+        #search_warranty_btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+            white-space: nowrap;
+        }
+        
+        #search_warranty_btn:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6a3f92 100%);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+            transform: translateY(-1px);
+        }
+        
+        #search_warranty_btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
+        }
+        
+        #search_warranty_btn:disabled {
+            background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        #search_warranty_btn i {
+            margin-left: 5px;
+        }
+        
+        /* تحسين مظهر الحقل */
+        #warranty_number_group {
+            width: 95%;
+            display: flex;
+        }
+        
+        #warranty_number {
+            border-radius: 4px 0 0 4px;
+            border-right: none;
+        }
+        
+        .input-group #warranty_number:focus {
+            box-shadow: none;
+            border-color: #667eea;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -27,12 +77,12 @@
                             <h2>{{__('skudomodule::warranty.warranty_card')}}</h2>
                         </div>
                         
-                        @if(!auth()->check())
+                        <!-- @if(!auth()->check())
                             <div class="alert alert-info">
                                 <strong>{{ __('skudomodule::warranty.guest_notice') }}</strong>
                                 <p>{{ __('skudomodule::warranty.guest_notice_text') }}</p>
                             </div>
-                        @endif
+                        @endif -->
                         
                         @if($type == 'sms')
                             <div class="alert alert-success">
@@ -56,8 +106,27 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 @if($inputs->contains('key', 'warranty_number'))
+                                                    @php
+                                                        $warrantyInput = $inputs->where('key', 'warranty_number')->first();
+                                                    @endphp
                                                     <div class="form-group">
-                                                        @include("skudomodule::front.includes.input", ['localeFile' => $localeFile, 'input' => $inputs->where('key', 'warranty_number')->first()])
+                                                        <label for="warranty_number">{{__('skudomodule::'.($localeFile ?? 'warranty').'.warranty_number')}}
+                                                            @if($warrantyInput->value_en)<em class="required">*</em>@endif
+                                                        </label>
+                                                        <div class="input-box">
+                                                            <div class="input-group" id="warranty_number_group">
+                                                                <input type="text" name="warranty_number" id="warranty_number" 
+                                                                       title="{{__('skudomodule::'.($localeFile ?? 'warranty').'.warranty_number')}}"
+                                                                       class="input-text form-control {{ $warrantyInput->value_en ? 'required-entry' : '' }}" 
+                                                                       placeholder="أدخل رقم تسجيل الضمان">
+                                                                <div class="input-group-append">
+                                                                    <button type="button" id="search_warranty_btn" class="btn btn-primary" style="border-radius: 0 4px 4px 0;">
+                                                                        <i class="glyphicon glyphicon-search"></i> تحقق من الرقم
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <small class="form-text text-muted">أدخل رقم تسجيل الضمان ثم اضغط على "تحقق من الرقم" لجلب البيانات</small>
+                                                        </div>
                                                     </div>
                                                 @endif
                                                 {{--                                                @if($inputs->contains('key', 'company_name'))--}}
@@ -280,26 +349,44 @@
         <script type="text/javascript">
             const url = '{!! route('skudo.warranty.insurance', 'replaceable') !!}';
             let isLoading = false;
-            let searchTimeout;
             
+            // إخفاء البيانات عند تعديل الحقل
             $('#warranty_number').on('input', function () {
                 const id = $(this).val().trim();
-                
-                // Clear previous timeout
-                if (searchTimeout) {
-                    clearTimeout(searchTimeout);
-                }
                 
                 // Clear previous data if input is empty
                 if (!id) {
                     fillInsuranceInputs();
+                }
+            });
+            
+            // البحث عند النقر على الزر
+            $('#search_warranty_btn').on('click', function() {
+                const id = $('#warranty_number').val().trim();
+                
+                // التحقق من أن الرقم ليس فارغاً
+                if (!id) {
+                    toastr["warning"]("يرجى إدخال رقم تسجيل الضمان أولاً");
                     return;
                 }
                 
-                // Set timeout to search after user stops typing (1000ms delay)
-                searchTimeout = setTimeout(() => {
+                // التحقق من الحد الأدنى للطول
+                if (id.length < 1) {
+                    toastr["warning"]("يرجى إدخال رقم تسجيل صحيح");
+                    return;
+                }
+                
+                if (!isLoading) {
                     performSearch(id);
-                }, 1000);
+                }
+            });
+            
+            // السماح بالبحث عند الضغط على Enter في حقل الرقم
+            $('#warranty_number').on('keypress', function(e) {
+                if (e.which === 13) { // Enter key
+                    e.preventDefault();
+                    $('#search_warranty_btn').click();
+                }
             });
 
             function performSearch(id) {
@@ -307,6 +394,10 @@
                 if (isLoading) return;
                 
                 isLoading = true;
+                
+                // تعطيل الزر وإضافة مؤشر تحميل
+                $('#search_warranty_btn').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> جاري التحقق...');
+                
                 showLoader();
                 
                 $.get(url.replace('replaceable', id))
@@ -336,6 +427,8 @@
                     })
                     .always(() => {
                         isLoading = false;
+                        // إعادة تفعيل الزر
+                        $('#search_warranty_btn').prop('disabled', false).html('<i class="glyphicon glyphicon-search"></i> تحقق من الرقم');
                     });
             }
 
@@ -483,19 +576,6 @@
                     }, 300);
                 }
             }
-            
-            // Clear timeout when user focuses out or presses Enter
-            $('#warranty_number').on('blur keypress', function(e) {
-                if (e.type === 'keypress' && e.which === 13) { // Enter key
-                    if (searchTimeout) {
-                        clearTimeout(searchTimeout);
-                        const id = $(this).val().trim();
-                        if (id) {
-                            performSearch(id);
-                        }
-                    }
-                }
-            });
         </script>
         
         <style>

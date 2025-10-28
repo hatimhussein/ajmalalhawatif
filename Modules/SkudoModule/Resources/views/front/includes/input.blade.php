@@ -1,5 +1,5 @@
 @if($input->key == 'phone')
-    <div class="row">
+    <div class="row" style="display: flex;">
         <div class="col-md-8 col-xs-8">
             <label for="phone"
                    class="required">{{__('skudomodule::insurance.phone')}}

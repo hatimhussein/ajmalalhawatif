@@ -434,6 +434,29 @@
                                         </div>
                                     </div>
                                 @endif
+                                @if($insurance->invoice_image)
+                                    <div class="col-lg-4">
+                                        <label>صورة الفاتورة</label>
+                                        <div
+                                            class="custom-file-container__image-preview product-list-img">
+                                            @if(is_video($insurance->invoice_image))
+                                                <video controls>
+                                                    <source
+                                                        src="{{asset('images/warranty/'.$insurance->invoice_image)}}"
+                                                        type="video/mp4">
+                                                    <source
+                                                        src="{{asset('images/warranty/'.$insurance->invoice_image)}}"
+                                                        type="video/quicktime">
+                                                    Your browser does not support the video
+                                                    tag.
+                                                </video>
+                                            @else
+                                                <img
+                                                    src="{{asset('images/warranty/'.$insurance->invoice_image)}}"/>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endif
                                 @if($insurance->warranty_image)
                                     <div class="col-lg-4">
                                         <label> {{__('warrantymodule::insurance.warranty_image')}}</label>

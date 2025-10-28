@@ -28,8 +28,11 @@ class InsuranceService
     public function getSearch($keyword, $user_id = null)
     {
         if ($keyword !== null && $keyword !== '') {
-            // Search strictly by registration id (skudo_insurances.id)
-            $query = $this->insuranceRepository->query()->where('id', (int) $keyword);
+            // Search by registration id or package serial number
+            $query = $this->insuranceRepository->query()->where(function($q) use ($keyword) {
+                $q->where('id', (int) $keyword)
+                  ->orWhere('package_serial', '=', $keyword);
+            });
             return $query->get();
         }
         // No keyword: return empty collection (index should handle empty state)
@@ -212,7 +215,7 @@ class InsuranceService
 
     public function uploadFiles($data)
     {
-        $files = ['front_image', 'back_image', 'warranty_image'];
+        $files = ['front_image', 'back_image', 'invoice_image', 'warranty_image'];
         foreach ($files as $file) {
             if (isset($data[$file]) && !empty($data[$file]))
                 $data[$file] = $this->uploadVideo($data[$file], 'warranty');

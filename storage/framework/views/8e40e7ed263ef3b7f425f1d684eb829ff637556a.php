@@ -28,7 +28,7 @@
                                                 <form action="<?php echo e(route('front.skudo.insurance.index')); ?>" method="get">
                                                     <input type="search" name="q" id="insurance-search"
                                                            value="<?php echo e($search); ?>"
-                                                           placeholder="<?php echo e(__('skudomodule::insurance.search_by')); ?>">
+                                                           placeholder="البحث برقم التسجيل أو الرقم التسلسلي للمنتج">
                                                     <button class="btn btn-info" type="submit"><?php echo e(__('usermodule::admin.search')); ?></button>
                                                 </form>
                                             </div>
@@ -95,10 +95,10 @@
                                                         rowspan="1">الرقم التسلسلي للجهاز</th>
                                                     <th class="a-center"
                                                         rowspan="1">الرقم التسلسلي للمنتج (البكج)</th>
-                                                    <th colspan="1"
+                                                    <!-- <th colspan="1"
                                                         class="a-center"><?php echo e(__('skudomodule::insurance.dummy_text_1')); ?></th>
                                                     <th colspan="1"
-                                                        class="a-center"><?php echo e(__('skudomodule::insurance.dummy_text_2')); ?></th>
+                                                        class="a-center"><?php echo e(__('skudomodule::insurance.dummy_text_2')); ?></th> -->
                                                     <th colspan="1"
                                                         class="a-center">وقت وتاريخ الارسال</th>
                                                     <th colspan="1"
@@ -115,8 +115,8 @@
                                                         <td><?php echo e($insurance->phone ? ($insurance->phone_code->code ?? '') : ''); ?> <?php echo e($insurance->phone); ?></td>
                                                         <td><?php echo e($insurance->device_serial); ?></td>
                                                         <td><?php echo e($insurance->package_serial); ?></td>
-                                                        <td><?php echo e($insurance->dummy_text_1); ?></td>
-                                                        <td><?php echo e($insurance->dummy_text_2); ?></td>
+                                                        <!-- <td><?php echo e($insurance->dummy_text_1); ?></td>
+                                                        <td><?php echo e($insurance->dummy_text_2); ?></td> -->
                                                         <td><?php echo e($insurance->created_at ? $insurance->created_at->format('Y-m-d H:i') : ''); ?></td>
                                                         <td>
                                                             <?php if($insurance->isClosed()): ?>

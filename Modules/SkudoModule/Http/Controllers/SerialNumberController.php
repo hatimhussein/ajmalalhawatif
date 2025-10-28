@@ -25,7 +25,7 @@ class SerialNumberController extends Controller
             $query->search($request->search);
         }
 
-        $serialNumbers = $query->orderBy('created_at', 'desc')->paginate(20);
+        $serialNumbers = $query->orderBy('created_at', 'desc')->paginate(2);
 
         return view('skudomodule::admin.serial-numbers.index', compact('serialNumbers'));
     }
