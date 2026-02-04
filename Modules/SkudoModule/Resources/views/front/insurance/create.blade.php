@@ -169,11 +169,65 @@
                 padding: 5px 8px !important;
             }
         }
+        
+        /* Loader Overlay Styles */
+        .form-loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            flex-direction: column;
+        }
+        
+        .form-loader-overlay.active {
+            display: flex;
+        }
+        
+        .form-loader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        .form-loader-text {
+            color: #fff;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .form-loader-subtext {
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 8px;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 @endsection
 
 @section('content')
 
+    <!-- Form Loader Overlay -->
+    <div id="formLoaderOverlay" class="form-loader-overlay">
+        <div class="form-loader-spinner"></div>
+        <div class="form-loader-text">جاري تسجيل الضمان...</div>
+        <div class="form-loader-subtext">يرجى الانتظار وعدم إغلاق الصفحة</div>
+    </div>
 
     @include('fronthomemodule::content.breadCrumbs',['pages'=>[__('commonmodule::front.warranty')]])
     <!-- main-container -->
@@ -233,9 +287,7 @@
                                                     class="glyphicon glyphicon-file"></i></h2>
                                     </div>
                                     @php
-                                        $deviceSerialKeys = ['device_serial', 'serial_number', 'imei', 'imei_number'];
                                         $packageSerialKeys = ['package_serial', 'box_serial', 'product_serial'];
-                                        $firstDeviceKey = collect($deviceSerialKeys)->first(fn($k) => $inputs->contains('key', $k));
                                         $firstPackageKey = collect($packageSerialKeys)->first(fn($k) => $inputs->contains('key', $k));
                                     @endphp
                                     <div class="col-md-6">
@@ -297,20 +349,7 @@
                                         @endif
                                     </div>
 
-                                    <div class="col-md-6">
-                                        @if(isset($firstDeviceKey))
-                                            <div class="form-group">
-                                                @include("warrantymodule::front.includes.input", ['input' => $inputs->where('key', $firstDeviceKey)->first(), 'localeFile' => 'insurance'])
-                                            </div>
-                                        @else
-                                            <div class="form-group">
-                                                <label for="device_serial" class="required">الرقم التسلسلي للجهاز</label>
-                                                <small class="help-block" style="font-size: 11px; font-weight: bold; color: black;">الرقم التسلسلي للجهاز من خلال النقر على: <strong>#06#*</strong> ثم اتصال</small>
-
-                                                <input type="text" name="device_serial" id="device_serial" class="form-control" maxlength="100" placeholder="الرقم التسلسلي للجهاز">
-                                            </div>
-                                        @endif
-                                    </div>
+                                    {{-- device_serial field removed - no longer required --}}
 
                                     @if($inputs->contains('key', 'usage_date'))
                                         <div class="col-md-6">
@@ -337,7 +376,7 @@
                                     @if($hasFront)
                                         @php $input = $fileInputs->where('key', 'front_image')->first(); @endphp
                                         <div class="col-md-3 custom-file-container" data-upload-id="front_image">
-                                            <label for="front_image" class="required"> صورة الجهاز من الأمام بعد التركيب (تُظهر الرقم التسلسلي) @if($input->value_en)<em class="required">*</em>@endif</label>
+                                            <label for="front_image" class="required"> صورة الجهاز من الأمام بعد التركيب (تُظهر الرقم التسلسلي للجهاز) @if($input->value_en)<em class="required">*</em>@endif</label>
                                             <label> <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image"></a></label>
                                             <label class="custom-file-container__custom-file">
                                                 <input type="file" name="front_image" id="front_image" class="custom-file-container__custom-file__custom-file-input" accept="image/*,video/*">
@@ -559,6 +598,9 @@
                 return;
             }
             
+            // عرض الـ Loader
+            $('#formLoaderOverlay').addClass('active');
+            
             submitter.prop('disabled', true);
             let oldText = submitter.text();
             submitter.text('....');
@@ -576,18 +618,30 @@
                 'statusCode': {
                     200: function (response) {
                         if (response.code === 201) {
+                            // إخفاء الـ Loader
+                            $('#formLoaderOverlay').removeClass('active');
                             toastr["error"](response.message);
                             submitter.text(oldText);
                             submitter.prop('disabled', false);
                         } else {
+                            // تحديث نص الـ Loader للنجاح
+                            $('.form-loader-text').text('تم التسجيل بنجاح!');
+                            $('.form-loader-subtext').text('جاري التحويل...');
                             toastr["success"](response.message);
 
                             setTimeout(function () {
-                                window.location = "{{route('front.skudo.insurance.index')}}";
+                                // إعادة التوجيه مع رقم الهاتف للبحث
+                                let redirectUrl = "{{route('front.skudo.insurance.index')}}";
+                                if (response.data && response.data.phone) {
+                                    redirectUrl += "?q=" + encodeURIComponent(response.data.phone);
+                                }
+                                window.location = redirectUrl;
                             }, 3000);
                         }
                     },
                     422: function (response) {
+                        // إخفاء الـ Loader
+                        $('#formLoaderOverlay').removeClass('active');
                         $.map(response.responseJSON.errors, function (error) {
                             toastr["error"](error)
                         });
@@ -596,6 +650,8 @@
                     }
                 },
                 error: function (xhr, textStatus, errorThrown) {
+                    // إخفاء الـ Loader
+                    $('#formLoaderOverlay').removeClass('active');
                     // Friendly hint for common mobile failure: large uploads => 413 or status 0.
                     if (xhr && xhr.status === 413) {
                         toastr["error"]("حجم الملفات كبير جداً. حاول تصغير الصور ثم أعد المحاولة.");

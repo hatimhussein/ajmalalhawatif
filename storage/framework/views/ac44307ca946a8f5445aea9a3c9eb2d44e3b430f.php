@@ -77,14 +77,14 @@
                                                 </button>
                                             </div>
                                             <div class="col-md-2">
-                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('import_skudo_serial_numbers')): ?>
+                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('add_skudo_serial_numbers')): ?>
                                                     <a href="<?php echo e(route('skudo.serial-numbers.import')); ?>" class="btn btn-primary">
                                                         <i class="flaticon-upload"></i> استيراد
                                                     </a>
                                                 <?php endif; ?>
                                             </div>
                                             <div class="col-md-3">
-                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('export_skudo_serial_numbers')): ?>
+                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('show_skudo_serial_numbers')): ?>
                                                     <a href="<?php echo e(route('skudo.serial-numbers.export', ['search' => request('search')])); ?>" 
                                                        class="btn btn-info" 
                                                        data-toggle="tooltip" 

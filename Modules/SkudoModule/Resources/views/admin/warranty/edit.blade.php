@@ -167,7 +167,7 @@
                                                                 {{__('warrantymodule::' . $localeFile . '.phone')}}:
                                                             </label>
                                                             <input type="text" readonly id="phone"
-                                                                   class="form-control"
+                                                                   class="form-control" dir="ltr"
                                                                    value="{{ $warranty->phone_code->code ?? '' }} {{ $warranty->phone }}">
                                                         </div>
                                                     @endif
@@ -175,7 +175,7 @@
                                                     {{--
                                                     <div class="statbox widget box box-shadow">
                                                         <label for="usage_date">
-                                                            <b>تاريخ ووقت التركيب:</b>
+                                                            <b>{{__('skudomodule::warranty.sent_at')}}:</b>
                                                         </label>
                                                         <input type="date" readonly id="usage_date"
                                                                class="form-control"

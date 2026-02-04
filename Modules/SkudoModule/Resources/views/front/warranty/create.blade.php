@@ -1,7 +1,7 @@
     @extends('fronthomemodule::layouts.master')
 
     @section('title')
-        {{__('skudomodule::warranty.warranty_card')}}
+        {{__('skudomodule::warranty.page_title')}}
     @endsection
 
     @section('css')

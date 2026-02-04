@@ -1,7 +1,7 @@
     
 
     <?php $__env->startSection('title'); ?>
-        <?php echo e(__('skudomodule::warranty.warranty_card')); ?>
+        <?php echo e(__('skudomodule::warranty.page_title')); ?>
 
     <?php $__env->stopSection(); ?>
 
@@ -58,6 +58,14 @@
             .input-group #warranty_number:focus {
                 box-shadow: none;
                 border-color: #667eea;
+            }
+
+            /* Mobile: make sent_at (date) full width */
+            @media (max-width: 767.98px) {
+                .skudo-sent-at-col #sent_at {
+                    width: 100% !important;
+                }
+
             }
         </style>
     <?php $__env->stopSection(); ?>
@@ -156,7 +164,7 @@
                                                         </div>
                                                     <?php endif; ?>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-6 skudo-sent-at-col">
                                                     <?php if($inputs->contains('key', 'sent_at')): ?>
                                                         <div class="form-group">
                                                             <?php echo $__env->make("skudomodule::front.includes.input", ['localeFile' => $localeFile, 'input' => $inputs->where('key', 'sent_at')->first(), 'disabled' => true], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
@@ -349,6 +357,7 @@
                                                         <th><?php echo e(__('skudomodule::warranty.select_insurance_table_package_serial')); ?></th>
                                                         <th><?php echo e(__('skudomodule::warranty.select_insurance_table_device_serial')); ?></th>
                                                         <th><?php echo e(__('skudomodule::warranty.select_insurance_table_created_at')); ?></th>
+                                                        <th><?php echo e(__('skudomodule::insurance.status')); ?></th>
                                                         <th><?php echo e(__('skudomodule::warranty.select_insurance_table_action')); ?></th>
                                                     </tr>
                                                     </thead>
@@ -366,6 +375,26 @@
             </div>
         </div>
         <!--End main-container -->
+
+        <div class="modal fade" id="reason-modal" tabindex="-1" role="dialog" aria-labelledby="reasonModalTitle"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3 id="reason-body" class="text-center">
+
+                        </h3>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
 
     <?php $__env->stopSection(); ?>
 
@@ -390,6 +419,15 @@
                 const phoneUrl = '<?php echo route('skudo.warranty.insurances_by_phone'); ?>';
                 let isLoading = false;
                 window._skudoInsuranceById = {};
+                
+                // نصوص الحالات المترجمة
+                const statusTexts = {
+                    closed: '<?php echo e(__('skudomodule::insurance.closed')); ?>',
+                    activated: '<?php echo e(__('skudomodule::insurance.activated')); ?>',
+                    in_progress: '<?php echo e(__('skudomodule::warranty.in_progress')); ?>',
+                    pending: '<?php echo e(__('skudomodule::insurance.pending')); ?>',
+                    rejected: '<?php echo e(__('skudomodule::insurance.rejected')); ?>'
+                };
                 
                 // إخفاء البيانات عند تعديل الحقل
                 $('#warranty_number').on('input', function () {
@@ -478,12 +516,48 @@
                     tbody.html('');
                     insurances.forEach(ins => {
                         const createdAt = ins.created_at ? (new Date(ins.created_at)).toLocaleString() : '';
+                        
+                        // تحديد class الصف حسب الحالة
+                        let rowClass = '';
+                        if (ins.is_closed) {
+                            rowClass = 'bg-dark';
+                        } else if (ins.status == 0) {
+                            rowClass = 'bg-info';
+                        } else if (ins.status == 1) {
+                            rowClass = 'bg-success';
+                        } else if (ins.status == 3) {
+                            rowClass = 'bg-warning';
+                        } else {
+                            rowClass = 'bg-danger';
+                        }
+                        
+                        // تحديد نص الحالة
+                        let statusHtml = '';
+                        if (ins.is_closed) {
+                            statusHtml = `<span class="btn btn-dark btn-sm">${statusTexts.closed}</span>`;
+                        } else if (ins.status == 1) {
+                            statusHtml = `<span class="btn btn-success btn-sm">${statusTexts.activated}</span>`;
+                        } else if (ins.status == 3) {
+                            statusHtml = `<span class="btn btn-warning btn-sm">${statusTexts.in_progress}</span>`;
+                        } else if (ins.status == 0) {
+                            const disabledAttr = ins.store_reason ? '' : 'disabled';
+                            const reasonClass = ins.store_reason ? 'reason-details' : '';
+                            const escapedReason = (ins.store_reason || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                            const reasonAttr = ins.store_reason ? `data-reason="${escapedReason}"` : '';
+                            statusHtml = `<button ${disabledAttr} class="btn btn-info btn-sm ${reasonClass}" ${reasonAttr}>${statusTexts.pending}</button>`;
+                        } else {
+                            const escapedReason = (ins.reason || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                            const reasonAttr = ins.reason ? `data-reason="${escapedReason}"` : '';
+                            statusHtml = `<span class="btn btn-danger btn-sm reason-details" ${reasonAttr}>${statusTexts.rejected}</span>`;
+                        }
+                        
                         tbody.append(`
-                            <tr>
+                            <tr class="${rowClass}">
                                 <td>${ins.id}</td>
                                 <td>${ins.package_serial ?? ''}</td>
                                 <td>${ins.device_serial ?? ''}</td>
                                 <td>${createdAt}</td>
+                                <td>${statusHtml}</td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-info" onclick="selectInsuranceById(${ins.id})">
                                         <?php echo e(__('skudomodule::warranty.select_insurance_choose')); ?>
@@ -492,6 +566,15 @@
                                 </td>
                             </tr>
                         `);
+                    });
+                    
+                    // إضافة event listener للأزرار التي تعرض السبب
+                    $('.reason-details').off('click').on('click', function() {
+                        const reason = $(this).data('reason');
+                        if (reason) {
+                            $('#reason-modal #reason-body').text(reason);
+                            $('#reason-modal').modal('show');
+                        }
                     });
                 }
 

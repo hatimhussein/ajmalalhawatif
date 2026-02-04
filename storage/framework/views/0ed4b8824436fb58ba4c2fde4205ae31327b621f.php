@@ -100,12 +100,6 @@
                     <div class="row mt-5">
                         <div class="col-lg-6 col-md-6">
                             <h5>
-                                الرقم التسلسلي للجهاز:
-                            </h5>
-                            <span><?php echo e($insurance->device_serial); ?></span>
-                        </div>
-                        <div class="col-lg-6 col-md-6">
-                            <h5>
                                 الرقم التسلسلي للمنتج (البكج):
                             </h5>
                             <span><?php echo e($insurance->package_serial); ?></span>

@@ -2,7 +2,7 @@
 
 return array(
     'page_title' => 'المطالبة والضمان سكودو',
-    'warranty_card' => 'المطالبة والضمان سكودو باستخدام رقم الجوال',
+    'warranty_card' => 'المطالبة والضمان سكودو ',
     'applicable' => 'يشمل الضمان',
     'application_number' => 'رقم الاعتماد',
 
@@ -33,7 +33,7 @@ return array(
     'empty_search_hint' => 'لا يوجد طلبات مسجلة ذات علاقة بـ :q',
     'response_info' => 'بيانات الرد',
 
-    'sent_at' => 'وقت الارسال',
+    'sent_at' => 'تاريخ ووقت رفع المطالبة',
     'status' => 'الحاله',
     'store_reason' => 'السبب المرسل للمتجر',
 

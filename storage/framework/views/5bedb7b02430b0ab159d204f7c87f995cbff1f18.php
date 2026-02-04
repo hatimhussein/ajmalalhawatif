@@ -536,6 +536,8 @@
                     </ul>
                 </li>
 
+            <?php endif; ?>
+
             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['show_skudo_warranty', 'show_skudo_insurance', 'show_skudo_serial_numbers'])): ?>
                 <li class="menu">
                     <a href="#skudo-management" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -607,7 +609,6 @@
 
                 <!--   </ul> -->
                 <!--      </li> -->
-            <!--         <?php endif; ?> -->
         </ul>
 
 

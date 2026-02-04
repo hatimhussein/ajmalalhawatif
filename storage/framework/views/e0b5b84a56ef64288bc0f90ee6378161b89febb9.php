@@ -47,6 +47,29 @@
             height: auto;
             cursor: pointer;
         }
+
+        /* GLightbox RTL arrow fix (CSS-only) */
+        .glightbox-clean .gprev svg,
+        .glightbox-clean .gnext svg {
+            transform: rotate(180deg);
+        }
+
+        .glightbox-clean .gprev {
+            right: 30px;
+            left: auto;
+        }
+
+        .glightbox-clean .gnext {
+            left: 30px;
+            right: auto;
+        }
+
+        .glightbox-clean .gslide-desc {
+            color: black;
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+        }
     </style>
     <!--  END CUSTOM STYLE FILE  -->
 
@@ -106,7 +129,7 @@
 
                                                     <div class="statbox widget box box-shadow">
                                                         <label for="created_at">
-                                                            <b><?php echo e(__('warrantymodule::insurance.sent_at')); ?>:</b>
+                                                            <b><?php echo e(__('skudomodule::insurance.sent_at')); ?>:</b>
                                                         </label>
                                                         <input type="date" readonly id="created_at"
                                                                class="form-control"
@@ -127,7 +150,7 @@
                                                             <b><?php echo e(__('warrantymodule::insurance.phone')); ?>:</b>
                                                         </label>
                                                         <input type="text" readonly id="phone"
-                                                               class="form-control"
+                                                               class="form-control" dir="ltr"
                                                                value="<?php echo e($insurance->phone ? ($insurance->phone_code->code ?? '') : ''); ?> <?php echo e($insurance->phone); ?>">
                                                     </div>
 
@@ -140,14 +163,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <div class="statbox widget box box-shadow">
+                                                    <!-- <div class="statbox widget box box-shadow">
                                                         <label for="usage_date" style="font-weight: bold;">
                                                             <?php echo e(__('warrantymodule::insurance.usage_date')); ?>:
                                                         </label>
                                                         <input type="date" readonly id="usage_date"
                                                                class="form-control"
                                                                value="<?php echo e($insurance->usage_date ? $insurance->usage_date->toDateString() : ''); ?>">
-                                                    </div>
+                                                    </div> -->
 
                                                     <div class="statbox widget box box-shadow">
                                                         <label for="dummy_text_1">
@@ -413,117 +436,102 @@
                                         <i class="flaticon-attachment"></i>
                                     </h2>
                                 </div>
-                                <?php if($insurance->front_image): ?>
-                                    <div class="col-lg-6">
-                                        <label style="font-weight: bold;">  صورة الجهاز من الأمام بعد التركيب (تُظهر الرقم التسلسلي)                                        </label>
-                                        <div
-                                            class="custom-file-container__image-preview product-list-img">
+                                
+                                
+                                <div class="col-lg-3 col-md-6">
+                                    <label style="font-weight: bold;">صورة الجهاز من الأمام بعد التركيب (تُظهر الرقم التسلسلي)</label>
+                                    <div class="custom-file-container__image-preview product-list-img">
+                                        <?php if($insurance->front_image): ?>
                                             <?php if(is_video($insurance->front_image)): ?>
-                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery">
+                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery" data-glightbox="description: صورة الجهاز من الأمام بعد التركيب (تُظهر الرقم التسلسلي)">
                                                     <video>
-                                                        <source
-                                                            src="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>"
-                                                            type="video/mp4">
-                                                        <source
-                                                            src="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>"
-                                                            type="video/quicktime">
-                                                        Your browser does not support the video
-                                                        tag.
+                                                        <source src="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>" type="video/mp4">
+                                                        <source src="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>" type="video/quicktime">
+                                                        Your browser does not support the video tag.
                                                     </video>
                                                 </a>
                                             <?php else: ?>
-                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery" data-glightbox="description: صورة الجهاز من الأمام بعد التركيب">
-                                                    <img
-                                                        src="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>"
-                                                        alt="صورة الجهاز من الأمام"/>
+                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery" data-glightbox="description: صورة الجهاز من الأمام بعد التركيب (تُظهر الرقم التسلسلي)">
+                                                    <img src="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>" alt="صورة الجهاز من الأمام بعد التركيب"/>
                                                 </a>
                                             <?php endif; ?>
-                                        </div>
+                                        <?php else: ?>
+                                            <div class="text-muted text-center py-4" style="width:100%;"><?php echo e(__('skudomodule::insurance.image_not_available')); ?></div>
+                                        <?php endif; ?>
                                     </div>
-                                <?php endif; ?>
-                                <?php if($insurance->device_back_image): ?>
-                                    <div class="col-lg-6">
-                                        <label style="font-weight: bold;"><?php echo e(__('skudomodule::insurance.device_back_image')); ?></label>
-                                        <div class="custom-file-container__image-preview product-list-img">
+                                </div>
+
+                                
+                                <div class="col-lg-3 col-md-6">
+                                    <label style="font-weight: bold;"><?php echo e(__('skudomodule::insurance.device_back_image')); ?></label>
+                                    <div class="custom-file-container__image-preview product-list-img">
+                                        <?php if($insurance->device_back_image): ?>
                                             <?php if(is_video($insurance->device_back_image)): ?>
-                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery">
+                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery" data-glightbox="description: <?php echo e(__('skudomodule::insurance.device_back_image')); ?>">
                                                     <video>
-                                                        <source
-                                                            src="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>"
-                                                            type="video/mp4">
-                                                        <source
-                                                            src="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>"
-                                                            type="video/quicktime">
-                                                        Your browser does not support the video
-                                                        tag.
+                                                        <source src="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>" type="video/mp4">
+                                                        <source src="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>" type="video/quicktime">
+                                                        Your browser does not support the video tag.
                                                     </video>
                                                 </a>
                                             <?php else: ?>
-                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery" data-glightbox="description: صورة الجهاز من الخلف">
-                                                    <img
-                                                        src="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>"
-                                                        alt="صورة الجهاز من الخلف"/>
+                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery" data-glightbox="description: <?php echo e(__('skudomodule::insurance.device_back_image')); ?>">
+                                                    <img src="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>" alt="<?php echo e(__('skudomodule::insurance.device_back_image')); ?>"/>
                                                 </a>
                                             <?php endif; ?>
-                                        </div>
+                                        <?php else: ?>
+                                            <div class="text-muted text-center py-4" style="width:100%;"><?php echo e(__('skudomodule::insurance.image_not_available')); ?></div>
+                                        <?php endif; ?>
                                     </div>
-                                <?php endif; ?>
-                                <?php if($insurance->back_image): ?>
-                                    <div class="col-lg-6">
-                                        <label style="font-weight: bold;">صورة الرقم التسلسلي الموجود على المنتج (لبكج)</label>
-                                        <div
-                                            class="custom-file-container__image-preview product-list-img">
+                                </div>
+
+                                
+                                <div class="col-lg-3 col-md-6">
+                                    <label style="font-weight: bold;">صورة الرقم التسلسلي الموجود على المنتج (لبكج)</label>
+                                    <div class="custom-file-container__image-preview product-list-img">
+                                        <?php if($insurance->back_image): ?>
                                             <?php if(is_video($insurance->back_image)): ?>
-                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery">
+                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery" data-glightbox="description: صورة الرقم التسلسلي الموجود على المنتج (لبكج)">
                                                     <video>
-                                                        <source
-                                                            src="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>"
-                                                            type="video/mp4">
-                                                        <source
-                                                            src="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>"
-                                                            type="video/quicktime">
-                                                        Your browser does not support the video
-                                                        tag.
+                                                        <source src="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>" type="video/mp4">
+                                                        <source src="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>" type="video/quicktime">
+                                                        Your browser does not support the video tag.
                                                     </video>
                                                 </a>
                                             <?php else: ?>
-                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery" data-glightbox="description: صورة الرقم التسلسلي الموجود على المنتج">
-                                                    <img
-                                                        src="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>"
-                                                        alt="صورة الرقم التسلسلي"/>
+                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery" data-glightbox="description: صورة الرقم التسلسلي الموجود على المنتج (لبكج)">
+                                                    <img src="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>" alt="صورة الرقم التسلسلي الموجود على المنتج"/>
                                                 </a>
                                             <?php endif; ?>
-                                        </div>
+                                        <?php else: ?>
+                                            <div class="text-muted text-center py-4" style="width:100%;"><?php echo e(__('skudomodule::insurance.image_not_available')); ?></div>
+                                        <?php endif; ?>
                                     </div>
-                                <?php endif; ?>
-                                <?php if($insurance->invoice_image): ?>
-                                    <div class="col-lg-6">
-                                        <label style="font-weight: bold;">صورة الفاتورة</label>
-                                        <div
-                                            class="custom-file-container__image-preview product-list-img">
+                                </div>
+
+                                
+                                <div class="col-lg-3 col-md-6">
+                                    <label style="font-weight: bold;">صورة الفاتورة</label>
+                                    <div class="custom-file-container__image-preview product-list-img">
+                                        <?php if($insurance->invoice_image): ?>
                                             <?php if(is_video($insurance->invoice_image)): ?>
-                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery">
+                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery" data-glightbox="description: صورة الفاتورة">
                                                     <video>
-                                                        <source
-                                                            src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>"
-                                                            type="video/mp4">
-                                                        <source
-                                                            src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>"
-                                                            type="video/quicktime">
-                                                        Your browser does not support the video
-                                                        tag.
+                                                        <source src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>" type="video/mp4">
+                                                        <source src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>" type="video/quicktime">
+                                                        Your browser does not support the video tag.
                                                     </video>
                                                 </a>
                                             <?php else: ?>
                                                 <a href="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery" data-glightbox="description: صورة الفاتورة">
-                                                    <img
-                                                        src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>"
-                                                        alt="صورة الفاتورة"/>
+                                                    <img src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>" alt="صورة الفاتورة"/>
                                                 </a>
                                             <?php endif; ?>
-                                        </div>
+                                        <?php else: ?>
+                                            <div class="text-muted text-center py-4" style="width:100%;"><?php echo e(__('skudomodule::insurance.image_not_available')); ?></div>
+                                        <?php endif; ?>
                                     </div>
-                                <?php endif; ?>
+                                </div>
                                 
                             </div>
                         </div>

@@ -42,6 +42,10 @@ class WarrantyAdminController extends Controller
     public function index(Request $request)
     {
         $type = $request->get('type', 'card');
+
+        // Mark all unseen warranties as seen (regardless of type to sync with notification counter)
+        $this->warrantyRepository->query()->whereNull('seen_at')->update(['seen_at' => now()]);
+
         $warranties = $this->warrantyRepository->query()->where('type', $type);
 
         switch ($request->get('filter')) {

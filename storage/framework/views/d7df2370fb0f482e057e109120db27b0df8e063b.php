@@ -1,14 +1,28 @@
 <div class="notification-item position-relative  mb-3 row justify-content-center">
+
+    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('show_skudo_insurance')): ?>
     <div class="col-md-3 col-3 notification-box">
-        <a href="<?php echo e(route('merchants.index')); ?>" class="notification-link">
-            
-            <img src="<?php echo e(asset('assets/admin/img/Notifications/merchant.svg')); ?>" alt="merchant">
-            <p><?php echo e(__('commonmodule::sidebar.merchants')); ?></p>
-            <span id="merchant-counter"
-                  class="badge badge-success"><?php echo e($merchantCount ?? ''); ?></span>
+        <a href="<?php echo e(route('skudo.insurance.index')); ?>" class="notification-link">
+            <img src="<?php echo e(asset('assets/admin/img/Notifications/insurance.svg')); ?>" alt="skudo_insurance">
+            <p><?php echo e(__('commonmodule::sidebar.insurance_skudo')); ?></p>
+            <span id="skudo_insurance-counter"
+                  class="badge badge-success"><?php echo e($skudoInsuranceCount ?? ''); ?></span>
         </a>
     </div>
+    <?php endif; ?>
 
+    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('show_skudo_warranty')): ?>
+    <div class="col-md-3 col-3 notification-box">
+        <a href="<?php echo e(route('skudo.warranty.index')); ?>" class="notification-link">
+            <img src="<?php echo e(asset('assets/admin/img/Notifications/warranty_card.svg')); ?>" alt="skudo_warranty">
+            <p><?php echo e(__('commonmodule::sidebar.warranty_skudo')); ?></p>
+            <span id="skudo_warranty-counter"
+                  class="badge badge-success"><?php echo e($skudoWarrantyCount ?? ''); ?></span>
+        </a>
+    </div>
+    <?php endif; ?>
+
+    
     <div class="col-md-3 col-3 notification-box">
         <a href="<?php echo e(route('insurance.index')); ?>" class="notification-link">
             
@@ -16,16 +30,6 @@
             <p><?php echo e(__('commonmodule::sidebar.insurance')); ?></p>
             <span id="insurance-counter"
                   class="badge badge-success"><?php echo e($insuranceCount ?? ''); ?></span>
-        </a>
-    </div>
-
-    <div class="col-md-3 col-3 notification-box">
-        <a href="<?php echo e(route('warranty.index')); ?>" class="notification-link">
-            
-            <img src="<?php echo e(asset('assets/admin/img/Notifications/warranty_card.svg')); ?>" alt="warranty_card">
-            <p><?php echo e(__('commonmodule::sidebar.card_warranty')); ?></p>
-            <span id="card_warranty-counter"
-                  class="badge badge-success"><?php echo e($cardWarrantyCount ?? ''); ?></span>
         </a>
     </div>
 

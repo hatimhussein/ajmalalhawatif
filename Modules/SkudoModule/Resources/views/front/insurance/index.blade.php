@@ -24,22 +24,23 @@
                                     {{--                                    @if(request()->get('q'))--}}
                                     <h2>{{__('skudomodule::insurance.insurance')}}</h2>
                                     <div class="row mt-5">
+                                    <div class="col-md-3 col-sm-4">
+                                            <div class="corner-buttons d-flex">
+                                                <a href="{{route('front.skudo.insurance.create')}}" class="btn btn-info">
+                                                    {{ __('skudomodule::insurance.add_insurance') }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <hr class="mobile-separator">
+
                                         <div class="col-md-9 col-sm-8">
-                                            <div class="insurance-search-box">
+                                            <div class="insurance-search-box d-flex" style="justify-content: flex-end;">
                                                 <form action="{{ route('front.skudo.insurance.index') }}" method="get">
                                                     <input type="search" name="q" id="insurance-search"
                                                            value="{{ $search }}"
                                                            placeholder="{{ __('skudomodule::insurance.search_by_phone_placeholder') }}">
                                                     <button class="btn btn-info" type="submit">{{ __('usermodule::admin.search') }}</button>
                                                 </form>
-                                            </div>
-                                        </div>
-                                        <hr class="mobile-separator">
-                                        <div class="col-md-3 col-sm-4">
-                                            <div class="corner-buttons">
-                                                <a href="{{route('front.skudo.insurance.create')}}" class="btn btn-info">
-                                                    {{ __('skudomodule::insurance.add_insurance') }}
-                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -92,15 +93,13 @@
                                                     <th colspan="1"
                                                         class="a-center">{{__('skudomodule::insurance.phone')}}</th>
                                                     <th class="a-center"
-                                                        rowspan="1">الرقم التسلسلي للجهاز</th>
-                                                    <th class="a-center"
                                                         rowspan="1">الرقم التسلسلي للمنتج (البكج)</th>
                                                     <!-- <th colspan="1"
                                                         class="a-center">{{__('skudomodule::insurance.dummy_text_1')}}</th>
                                                     <th colspan="1"
                                                         class="a-center">{{__('skudomodule::insurance.dummy_text_2')}}</th> -->
                                                     <th colspan="1"
-                                                        class="a-center">وقت وتاريخ الارسال</th>
+                                                        class="a-center">تاريخ ووقت الارسال</th>
                                                     <th colspan="1"
                                                         class="a-center">{{__('skudomodule::insurance.status')}}</th>
                                                     <th colspan="1"
@@ -112,8 +111,7 @@
                                                     <tr class="{{ $insurance->isClosed() ? 'bg-dark' : ($insurance->status == 0 ? 'bg-info' : (($insurance->status == 1) ? 'bg-success': (($insurance->status == 3) ? 'bg-warning':'bg-danger'))) }}">
                                                         <td>{{ $insurance->id }}</td>
                                                         <td>{{ $insurance->user_name }}</td>
-                                                        <td>{{ $insurance->phone ? ($insurance->phone_code->code ?? '') : '' }} {{ $insurance->phone }}</td>
-                                                        <td>{{ $insurance->device_serial }}</td>
+                                                        <td dir="ltr">{{ $insurance->phone ? ($insurance->phone_code->code ?? '') : '' }} {{ $insurance->phone }}</td>
                                                         <td>{{ $insurance->package_serial }}</td>
                                                         <!-- <td>{{ $insurance->dummy_text_1 }}</td>
                                                         <td>{{ $insurance->dummy_text_2 }}</td> -->

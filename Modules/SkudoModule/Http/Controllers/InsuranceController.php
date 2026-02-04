@@ -216,7 +216,7 @@ class InsuranceController extends Controller
         $data['user_id'] = auth()->check() ? auth()->id() : null;
 
         try {
-            $this->insuranceRepository->create($data);
+            $insurance = $this->insuranceRepository->create($data);
         } catch (\Throwable $e) {
             $this->logInsuranceRequest('store.exception', $request, [
                 'error' => $e->getMessage(),
@@ -227,6 +227,7 @@ class InsuranceController extends Controller
         }
 
         return $this->setCode(200)
+            ->setData(['phone' => $data['phone'] ?? null])
             ->setSuccess(__('ordermodule::order.order_success'))->send();
     }
 

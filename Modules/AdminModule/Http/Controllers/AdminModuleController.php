@@ -25,6 +25,8 @@ use Modules\UserModule\Entities\User;
 use Modules\WarrantyModule\Entities\Insurance;
 use Modules\WarrantyModule\Entities\Returned;
 use Modules\WarrantyModule\Entities\Warranty;
+use Modules\SkudoModule\Entities\Insurance as SkudoInsurance;
+use Modules\SkudoModule\Entities\Warranty as SkudoWarranty;
 use Modules\OrderModule\Repository\OrderRepository;
 use Modules\OrderModule\Repository\OrderAdminRepository;
 use Modules\UserModule\Repository\UserRepository;
@@ -87,6 +89,8 @@ class AdminModuleController extends Controller
     {
         $notifications = [
             'merchant' => User::where('is_merchant', 1)->unseen()->count(),
+            'skudo_insurance' => SkudoInsurance::unseen()->count(),
+            'skudo_warranty' => SkudoWarranty::unseen()->count(),
             'insurance' => Insurance::unseen()->count(),
             'card_warranty' => Warranty::where('type', 'card')->unseen()->count(),
             'sms_warranty' => Warranty::where('type', 'sms')->unseen()->count(),

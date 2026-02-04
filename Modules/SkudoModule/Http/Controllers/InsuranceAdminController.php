@@ -46,6 +46,9 @@ class InsuranceAdminController extends Controller
      */
     public function index(Request $request): Renderable
     {
+        // Mark all unseen insurances as seen
+        $this->insuranceRepository->query()->whereNull('seen_at')->update(['seen_at' => now()]);
+
         $insurances = $this->insuranceRepository->query();
 
         if ($request->get('filter') == 'completed'){

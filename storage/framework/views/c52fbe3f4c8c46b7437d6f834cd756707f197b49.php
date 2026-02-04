@@ -73,8 +73,6 @@
                     </p>
                     <a href="<?php echo e(url('/contact_us')); ?>"><?php echo e(__('fronthomemodule::home.contact_us')); ?></a>
                     <a href="<?php echo e(url('/catalog')); ?>"><?php echo e(__('commonmodule::front.catalogs')); ?></a>
-                    <a href="<?php echo e(url('/config/5')); ?>"><?php echo LanguageHelper::configTranslate($site_data->where('key','privacy')->first()); ?></a>
-                    <a href="<?php echo e(url('/config/3')); ?>"><?php echo LanguageHelper::configTranslate($site_data->where('key','aman')->first()); ?></a>
                     <?php if(auth()->guard()->check()): ?>
                         <a href="<?php echo e(route('front.insurance.index')); ?>"><?php echo e(__('warrantymodule::insurance.insurance')); ?></a>
                         <a href="<?php echo e(route('front.warranty.index')); ?>"><?php echo e(__('commonmodule::front.warranty')); ?></a>
@@ -86,9 +84,10 @@
                 <div class="policy">
                     <h3><?php echo e(__('fronthomemodule::home.policies')); ?></h3>
 
-                    <a href="<?php echo e(url('/config/2')); ?>"><?php echo LanguageHelper::configTranslate($site_data->where('key','map')->first()); ?></a>
                     <a href="<?php echo e(url('/config/5')); ?>"><?php echo LanguageHelper::configTranslate($site_data->where('key','privacy')->first()); ?></a>
-                    <a href="<?php echo e(url('/config/3')); ?>"><?php echo LanguageHelper::configTranslate($site_data->where('key','aman')->first()); ?></a>
+                    <a href="<?php echo e(url('/config/4')); ?>"><?php echo LanguageHelper::configTranslate($site_data->where('key','aman')->first()); ?></a>
+                    <a href="<?php echo e(url('/config/3')); ?>"><?php echo LanguageHelper::configTranslate($site_data->where('key','return')->first()); ?></a>
+                    <a href="<?php echo e(url('/config/63')); ?>"><?php echo LanguageHelper::configTranslate($site_data->where('key','insurance')->first()); ?></a>
                 </div>
 
                 <div class="shipping-payment">
@@ -115,7 +114,7 @@
     </div>
     <div class="footer-bottom">
         <div class="container">
-            <div class="col-sm-12 coppyright">&copy; 2021 AJMAL ALHWATIF. All Rights Reserved.</div>
+            <div class="col-sm-12 coppyright">&copy; <?php echo e(date('Y')); ?> AJMAL ALHWATIF. All Rights Reserved.</div>
         </div>
     </div>
 </footer>

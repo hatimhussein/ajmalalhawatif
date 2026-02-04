@@ -101,12 +101,6 @@
                     <div class="row mt-5">
                         <div class="col-lg-6 col-md-6">
                             <h5>
-                                الرقم التسلسلي للجهاز:
-                            </h5>
-                            <span>{{ $insurance->device_serial }}</span>
-                        </div>
-                        <div class="col-lg-6 col-md-6">
-                            <h5>
                                 الرقم التسلسلي للمنتج (البكج):
                             </h5>
                             <span>{{ $insurance->package_serial }}</span>
@@ -122,7 +116,7 @@
                         </div>
                         <div class="col-lg-6 col-md-6">
                             <h5>
-                                وقت وتاريخ الارسال:
+                                تاريخ ووقت الارسال:
                             </h5>
                             <span>{{ $insurance->created_at ? $insurance->created_at->format('Y-m-d H:i') : '' }}</span>
                         </div>

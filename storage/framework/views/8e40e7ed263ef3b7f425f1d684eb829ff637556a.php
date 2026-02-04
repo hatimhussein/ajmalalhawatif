@@ -23,23 +23,24 @@
                                     
                                     <h2><?php echo e(__('skudomodule::insurance.insurance')); ?></h2>
                                     <div class="row mt-5">
+                                    <div class="col-md-3 col-sm-4">
+                                            <div class="corner-buttons d-flex">
+                                                <a href="<?php echo e(route('front.skudo.insurance.create')); ?>" class="btn btn-info">
+                                                    <?php echo e(__('skudomodule::insurance.add_insurance')); ?>
+
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <hr class="mobile-separator">
+
                                         <div class="col-md-9 col-sm-8">
-                                            <div class="insurance-search-box">
+                                            <div class="insurance-search-box d-flex" style="justify-content: flex-end;">
                                                 <form action="<?php echo e(route('front.skudo.insurance.index')); ?>" method="get">
                                                     <input type="search" name="q" id="insurance-search"
                                                            value="<?php echo e($search); ?>"
                                                            placeholder="<?php echo e(__('skudomodule::insurance.search_by_phone_placeholder')); ?>">
                                                     <button class="btn btn-info" type="submit"><?php echo e(__('usermodule::admin.search')); ?></button>
                                                 </form>
-                                            </div>
-                                        </div>
-                                        <hr class="mobile-separator">
-                                        <div class="col-md-3 col-sm-4">
-                                            <div class="corner-buttons">
-                                                <a href="<?php echo e(route('front.skudo.insurance.create')); ?>" class="btn btn-info">
-                                                    <?php echo e(__('skudomodule::insurance.add_insurance')); ?>
-
-                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -92,15 +93,13 @@
                                                     <th colspan="1"
                                                         class="a-center"><?php echo e(__('skudomodule::insurance.phone')); ?></th>
                                                     <th class="a-center"
-                                                        rowspan="1">الرقم التسلسلي للجهاز</th>
-                                                    <th class="a-center"
                                                         rowspan="1">الرقم التسلسلي للمنتج (البكج)</th>
                                                     <!-- <th colspan="1"
                                                         class="a-center"><?php echo e(__('skudomodule::insurance.dummy_text_1')); ?></th>
                                                     <th colspan="1"
                                                         class="a-center"><?php echo e(__('skudomodule::insurance.dummy_text_2')); ?></th> -->
                                                     <th colspan="1"
-                                                        class="a-center">وقت وتاريخ الارسال</th>
+                                                        class="a-center">تاريخ ووقت الارسال</th>
                                                     <th colspan="1"
                                                         class="a-center"><?php echo e(__('skudomodule::insurance.status')); ?></th>
                                                     <th colspan="1"
@@ -112,8 +111,7 @@
                                                     <tr class="<?php echo e($insurance->isClosed() ? 'bg-dark' : ($insurance->status == 0 ? 'bg-info' : (($insurance->status == 1) ? 'bg-success': (($insurance->status == 3) ? 'bg-warning':'bg-danger')))); ?>">
                                                         <td><?php echo e($insurance->id); ?></td>
                                                         <td><?php echo e($insurance->user_name); ?></td>
-                                                        <td><?php echo e($insurance->phone ? ($insurance->phone_code->code ?? '') : ''); ?> <?php echo e($insurance->phone); ?></td>
-                                                        <td><?php echo e($insurance->device_serial); ?></td>
+                                                        <td dir="ltr"><?php echo e($insurance->phone ? ($insurance->phone_code->code ?? '') : ''); ?> <?php echo e($insurance->phone); ?></td>
                                                         <td><?php echo e($insurance->package_serial); ?></td>
                                                         <!-- <td><?php echo e($insurance->dummy_text_1); ?></td>
                                                         <td><?php echo e($insurance->dummy_text_2); ?></td> -->

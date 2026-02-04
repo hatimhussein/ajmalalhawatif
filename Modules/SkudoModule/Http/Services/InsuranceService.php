@@ -155,20 +155,8 @@ class InsuranceService
     {
         $rules = $this->getGeneralCustomRules($rules);
 
-        // device_serial is mandatory on Skudo insurance (front)
-        if (request()->routeIs('front.skudo.insurance.*')) {
-            $existing = isset($rules['device_serial']) ? (array) $rules['device_serial'] : [];
-
-            // Remove nullable if present and enforce required
-            $existing = array_values(array_filter($existing, function ($r) {
-                return !(is_string($r) && $r === 'nullable');
-            }));
-
-            $rules['device_serial'] = array_values(array_unique(array_merge(
-                ['required', 'string', 'max:100'],
-                $existing
-            )));
-        }
+        // device_serial is now optional on Skudo insurance (front)
+        // No longer enforce required rule
 
         if (isset($rules['install_date'])) {
             $rules['install_date'][] = 'date';

@@ -129,7 +129,7 @@
 
                                                     <div class="statbox widget box box-shadow">
                                                         <label for="created_at">
-                                                            <b>{{__('warrantymodule::insurance.sent_at')}}:</b>
+                                                            <b>{{__('skudomodule::insurance.sent_at')}}:</b>
                                                         </label>
                                                         <input type="date" readonly id="created_at"
                                                                class="form-control"
@@ -150,7 +150,7 @@
                                                             <b>{{__('warrantymodule::insurance.phone')}}:</b>
                                                         </label>
                                                         <input type="text" readonly id="phone"
-                                                               class="form-control"
+                                                               class="form-control" dir="ltr"
                                                                value="{{ $insurance->phone ? ($insurance->phone_code->code ?? '') : '' }} {{ $insurance->phone }}">
                                                     </div>
 
@@ -163,14 +163,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <div class="statbox widget box box-shadow">
+                                                    <!-- <div class="statbox widget box box-shadow">
                                                         <label for="usage_date" style="font-weight: bold;">
                                                             {{__('warrantymodule::insurance.usage_date')}}:
                                                         </label>
                                                         <input type="date" readonly id="usage_date"
                                                                class="form-control"
                                                                value="{{ $insurance->usage_date ? $insurance->usage_date->toDateString() : '' }}">
-                                                    </div>
+                                                    </div> -->
 
                                                     <div class="statbox widget box box-shadow">
                                                         <label for="dummy_text_1">

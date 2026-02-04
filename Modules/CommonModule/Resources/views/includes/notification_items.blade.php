@@ -1,14 +1,28 @@
 <div class="notification-item position-relative  mb-3 row justify-content-center">
+
+    @can('show_skudo_insurance')
     <div class="col-md-3 col-3 notification-box">
-        <a href="{{ route('merchants.index') }}" class="notification-link">
-            {{--            <i class="flaticon-user-group-2"></i>--}}
-            <img src="{{ asset('assets/admin/img/Notifications/merchant.svg') }}" alt="merchant">
-            <p>{{ __('commonmodule::sidebar.merchants') }}</p>
-            <span id="merchant-counter"
-                  class="badge badge-success">{{ $merchantCount ?? '' }}</span>
+        <a href="{{ route('skudo.insurance.index') }}" class="notification-link">
+            <img src="{{ asset('assets/admin/img/Notifications/insurance.svg') }}" alt="skudo_insurance">
+            <p>{{ __('commonmodule::sidebar.insurance_skudo') }}</p>
+            <span id="skudo_insurance-counter"
+                  class="badge badge-success">{{ $skudoInsuranceCount ?? '' }}</span>
         </a>
     </div>
+    @endcan
 
+    @can('show_skudo_warranty')
+    <div class="col-md-3 col-3 notification-box">
+        <a href="{{ route('skudo.warranty.index') }}" class="notification-link">
+            <img src="{{ asset('assets/admin/img/Notifications/warranty_card.svg') }}" alt="skudo_warranty">
+            <p>{{ __('commonmodule::sidebar.warranty_skudo') }}</p>
+            <span id="skudo_warranty-counter"
+                  class="badge badge-success">{{ $skudoWarrantyCount ?? '' }}</span>
+        </a>
+    </div>
+    @endcan
+
+    
     <div class="col-md-3 col-3 notification-box">
         <a href="{{ route('insurance.index') }}" class="notification-link">
             {{--            <i class="flaticon-lock-2"></i>--}}
@@ -16,16 +30,6 @@
             <p>{{ __('commonmodule::sidebar.insurance') }}</p>
             <span id="insurance-counter"
                   class="badge badge-success">{{ $insuranceCount ?? '' }}</span>
-        </a>
-    </div>
-
-    <div class="col-md-3 col-3 notification-box">
-        <a href="{{ route('warranty.index') }}" class="notification-link">
-            {{--            <i class="flaticon-credit-card-1"></i>--}}
-            <img src="{{ asset('assets/admin/img/Notifications/warranty_card.svg') }}" alt="warranty_card">
-            <p>{{ __('commonmodule::sidebar.card_warranty') }}</p>
-            <span id="card_warranty-counter"
-                  class="badge badge-success">{{ $cardWarrantyCount ?? '' }}</span>
         </a>
     </div>
 
