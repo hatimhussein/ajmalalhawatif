@@ -11,6 +11,9 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/css-toggle-switch/latest/toggle-switch.css" type="text/css">
 
+    <!-- GLightbox CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
+
     <style>
         .row [class*="col-"] .widget .widget-header h4 {
             color: #00d1c1;
@@ -26,6 +29,23 @@
 
         .switch-toggle label {
             white-space: nowrap;
+        }
+
+        /* Lightbox Styles */
+        .lightbox-trigger {
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-trigger:hover {
+            opacity: 0.8;
+        }
+
+        .custom-file-container__image-preview img,
+        .custom-file-container__image-preview video {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
         }
     </style>
     <!--  END CUSTOM STYLE FILE  -->
@@ -76,7 +96,7 @@
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="statbox widget box box-shadow">
-                                                        <label for="quote_number">
+                                                        <label for="quote_number" style="font-weight: bold;">
                                                             <?php echo e(__('warrantymodule::insurance.quote_number')); ?>:
                                                         </label>
                                                         <input type="text" readonly id="quote_number"
@@ -112,7 +132,7 @@
                                                     </div>
 
                                                     <div class="statbox widget box box-shadow">
-                                                        <label for="user_notes">
+                                                        <label for="user_notes" style="font-weight: bold;">
                                                             <?php echo e(__('warrantymodule::insurance.user_notes')); ?>:
                                                         </label>
                                                         <textarea readonly id="user_notes" rows="4"
@@ -121,7 +141,7 @@
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="statbox widget box box-shadow">
-                                                        <label for="usage_date">
+                                                        <label for="usage_date" style="font-weight: bold;">
                                                             <?php echo e(__('warrantymodule::insurance.usage_date')); ?>:
                                                         </label>
                                                         <input type="date" readonly id="usage_date"
@@ -202,6 +222,7 @@
                                 <div class="col-xl-4 col-lg-4 col-12">
                                     <form action="<?php echo e(route('skudo.insurance.update', $insurance->id)); ?>"
                                           class="col-12" method="POST"
+                                          enctype="multipart/form-data"
                                           data-role="validator" data-on-before-submit="no_submit"
                                           data-on-error-input="notifyOnErrorInput"
                                           data-show-error-hint="false" novalidate="novalidate">
@@ -265,7 +286,7 @@
                                                     <div class="col-md-12 mb-4 input-control status-tab" id="value-cont"
                                                          style="<?php echo e($insurance->status == 1 ? '' : 'display: none'); ?>">
                                                         <div class="statbox widget box box-shadow">
-                                                            <label for="replied_at">
+                                                            <label for="replied_at" style="font-weight: bold;">
                                                                 <?php echo e(__('warrantymodule::sms_warranty.sms_warranty')); ?>:
                                                             </label>
                                                             <input type="text" disabled
@@ -273,7 +294,7 @@
                                                                    class="form-control" autocomplete="off">
                                                         </div>
                                                         <div class="statbox widget box box-shadow">
-                                                            <label for="replied_at">
+                                                            <label for="replied_at" style="font-weight: bold;">
                                                                 <?php echo e(__('warrantymodule::sms_warranty.status')); ?>:
                                                             </label>
                                                             <input type="text" disabled
@@ -285,7 +306,7 @@
                                                     <div class="col-md-12 mb-4 input-control status-tab" id="value-cont"
                                                          style="<?php echo e($insurance->status == 1 ? '' : 'display: none'); ?>">
                                                         <div class="statbox widget box box-shadow">
-                                                            <label for="replied_at">
+                                                            <label for="replied_at" style="font-weight: bold;">
                                                                 <?php echo e(__('warrantymodule::insurance.replied_at')); ?>:
                                                             </label>
                                                             <input name="replied_at" id="replied_at" type="date"
@@ -296,7 +317,7 @@
                                                         </div>
 
                                                         <div class="statbox widget box box-shadow">
-                                                            <label for="application_number">
+                                                            <label for="application_number" style="font-weight: bold;">
                                                                 <?php echo e(__('warrantymodule::insurance.expire_date'),':'); ?>
 
                                                             </label>
@@ -312,7 +333,7 @@
                                                 <div class="col-md-12 mb-4 input-control status-tab" id="value-cont"
                                                      style="<?php echo e($insurance->status == 1 ? '' : 'display: none'); ?>">
                                                     <div class="statbox widget box box-shadow">
-                                                        <label for="replied_at">
+                                                        <label for="replied_at" style="font-weight: bold;">
                                                             <?php echo e(__('warrantymodule::insurance.replied_at')); ?>:
                                                         </label>
                                                         <input name="replied_at" id="replied_at" type="date" readonly
@@ -322,7 +343,7 @@
                                                     </div>
 
                                                     <div class="statbox widget box box-shadow">
-                                                        <label for="application_number">
+                                                        <label for="application_number" style="font-weight: bold;">
                                                             <?php echo e(__('warrantymodule::insurance.expire_date'),':'); ?>
 
                                                         </label>
@@ -336,7 +357,7 @@
                                                      id="store-reason-cont"
                                                      style="<?php echo e($insurance->status == 0 ? '' : 'display: none'); ?>">
                                                     <div class="statbox widget box box-shadow">
-                                                        <label for="store_reason">
+                                                        <label for="store_reason" style="font-weight: bold;">
                                                             <?php echo e(__('warrantymodule::insurance.store_reason')); ?>:
                                                         </label>
                                                         <textarea name="store_reason" id="store_reason"
@@ -355,7 +376,7 @@
                                                      id="reason-cont"
                                                      style="<?php echo e(($insurance->status == 2) ? '' : 'display: none'); ?>">
                                                     <div class="statbox widget box box-shadow">
-                                                        <label for="reason">
+                                                        <label for="reason" style="font-weight: bold;">
                                                             <?php echo e(__('warrantymodule::insurance.reason')); ?>:
                                                         </label>
                                                         <textarea name="reason" id="reason" class="form-control"
@@ -372,6 +393,7 @@
                                             <?php endif; ?>
                                         </div>
                                         <?php if(!$insurance->isClosed()): ?>
+                                            
                                             <div class="row mt-3">
                                                 <div class="col-12">
                                                     <button class="btn btn-gradient-danger mb-4"
@@ -392,97 +414,117 @@
                                     </h2>
                                 </div>
                                 <?php if($insurance->front_image): ?>
-                                    <div class="col-lg-4">
-                                        <label> <?php echo e(__('warrantymodule::insurance.front_image')); ?></label>
+                                    <div class="col-lg-6">
+                                        <label style="font-weight: bold;">  صورة الجهاز من الأمام بعد التركيب (تُظهر الرقم التسلسلي)                                        </label>
                                         <div
                                             class="custom-file-container__image-preview product-list-img">
                                             <?php if(is_video($insurance->front_image)): ?>
-                                                <video controls>
-                                                    <source
-                                                        src="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>"
-                                                        type="video/mp4">
-                                                    <source
-                                                        src="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>"
-                                                        type="video/quicktime">
-                                                    Your browser does not support the video
-                                                    tag.
-                                                </video>
+                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery">
+                                                    <video>
+                                                        <source
+                                                            src="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>"
+                                                            type="video/mp4">
+                                                        <source
+                                                            src="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>"
+                                                            type="video/quicktime">
+                                                        Your browser does not support the video
+                                                        tag.
+                                                    </video>
+                                                </a>
                                             <?php else: ?>
-                                                <img
-                                                    src="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>"
-                                                    alt=""/>
+                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery" data-glightbox="description: صورة الجهاز من الأمام بعد التركيب">
+                                                    <img
+                                                        src="<?php echo e(asset('images/warranty/'.$insurance->front_image)); ?>"
+                                                        alt="صورة الجهاز من الأمام"/>
+                                                </a>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if($insurance->device_back_image): ?>
+                                    <div class="col-lg-6">
+                                        <label style="font-weight: bold;"><?php echo e(__('skudomodule::insurance.device_back_image')); ?></label>
+                                        <div class="custom-file-container__image-preview product-list-img">
+                                            <?php if(is_video($insurance->device_back_image)): ?>
+                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery">
+                                                    <video>
+                                                        <source
+                                                            src="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>"
+                                                            type="video/mp4">
+                                                        <source
+                                                            src="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>"
+                                                            type="video/quicktime">
+                                                        Your browser does not support the video
+                                                        tag.
+                                                    </video>
+                                                </a>
+                                            <?php else: ?>
+                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery" data-glightbox="description: صورة الجهاز من الخلف">
+                                                    <img
+                                                        src="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>"
+                                                        alt="صورة الجهاز من الخلف"/>
+                                                </a>
                                             <?php endif; ?>
                                         </div>
                                     </div>
                                 <?php endif; ?>
                                 <?php if($insurance->back_image): ?>
-                                    <div class="col-lg-4">
-                                        <label>صورة الرقم التسلسلي الموجود على المنتج (لبكج)</label>
+                                    <div class="col-lg-6">
+                                        <label style="font-weight: bold;">صورة الرقم التسلسلي الموجود على المنتج (لبكج)</label>
                                         <div
                                             class="custom-file-container__image-preview product-list-img">
                                             <?php if(is_video($insurance->back_image)): ?>
-                                                <video controls>
-                                                    <source
-                                                        src="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>"
-                                                        type="video/mp4">
-                                                    <source
-                                                        src="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>"
-                                                        type="video/quicktime">
-                                                    Your browser does not support the video
-                                                    tag.
-                                                </video>
+                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery">
+                                                    <video>
+                                                        <source
+                                                            src="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>"
+                                                            type="video/mp4">
+                                                        <source
+                                                            src="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>"
+                                                            type="video/quicktime">
+                                                        Your browser does not support the video
+                                                        tag.
+                                                    </video>
+                                                </a>
                                             <?php else: ?>
-                                                <img
-                                                    src="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>"/>
+                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery" data-glightbox="description: صورة الرقم التسلسلي الموجود على المنتج">
+                                                    <img
+                                                        src="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>"
+                                                        alt="صورة الرقم التسلسلي"/>
+                                                </a>
                                             <?php endif; ?>
                                         </div>
                                     </div>
                                 <?php endif; ?>
                                 <?php if($insurance->invoice_image): ?>
-                                    <div class="col-lg-4">
-                                        <label>صورة الفاتورة</label>
+                                    <div class="col-lg-6">
+                                        <label style="font-weight: bold;">صورة الفاتورة</label>
                                         <div
                                             class="custom-file-container__image-preview product-list-img">
                                             <?php if(is_video($insurance->invoice_image)): ?>
-                                                <video controls>
-                                                    <source
-                                                        src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>"
-                                                        type="video/mp4">
-                                                    <source
-                                                        src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>"
-                                                        type="video/quicktime">
-                                                    Your browser does not support the video
-                                                    tag.
-                                                </video>
+                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery">
+                                                    <video>
+                                                        <source
+                                                            src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>"
+                                                            type="video/mp4">
+                                                        <source
+                                                            src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>"
+                                                            type="video/quicktime">
+                                                        Your browser does not support the video
+                                                        tag.
+                                                    </video>
+                                                </a>
                                             <?php else: ?>
-                                                <img
-                                                    src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>"/>
+                                                <a href="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>" class="glightbox lightbox-trigger" data-gallery="insurance-gallery" data-glightbox="description: صورة الفاتورة">
+                                                    <img
+                                                        src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>"
+                                                        alt="صورة الفاتورة"/>
+                                                </a>
                                             <?php endif; ?>
                                         </div>
                                     </div>
                                 <?php endif; ?>
-                                <?php if($insurance->warranty_image): ?>
-                                    <div class="col-lg-4">
-                                        <label> <?php echo e(__('warrantymodule::insurance.warranty_image')); ?></label>
-                                        <div
-                                            class="custom-file-container__image-preview product-list-img">
-                                            <?php if(is_video($insurance->warranty_image)): ?>
-                                                <video controls>
-                                                    <source
-                                                        src="<?php echo e(asset('images/warranty/'.$insurance->warranty_image)); ?>"
-                                                        type="video/mp4">
-                                                    <source
-                                                        src="<?php echo e(asset('images/warranty/'.$insurance->warranty_image)); ?>"
-                                                        type="video/quicktime">
-                                                    Your browser does not support the video
-                                                    tag.
-                                                </video>
-                                            <?php else: ?>
-                                                <img src="<?php echo e(asset('images/warranty/'.$insurance->warranty_image)); ?>"/>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                <?php endif; ?>
+                                
                             </div>
                         </div>
                     </div>
@@ -497,6 +539,9 @@
 
     <script src="<?php echo e(asset('assets/admin/js/design-js/design.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/admin/js/forms/form_validation/form_validation_material.js')); ?>"></script>
+
+    <!-- GLightbox JS -->
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
 
     <script>
         const is_applicable = document.querySelector('#is_applicable');
@@ -545,6 +590,40 @@
                 $(item).data('validate-func', '');
             });
         })
+    </script>
+
+    <script>
+        // Initialize GLightbox
+        const lightbox = GLightbox({
+            selector: '.glightbox',
+            touchNavigation: true,
+            loop: true,
+            autoplayVideos: true,
+            closeButton: true,
+            zoomable: true,
+            draggable: true,
+            skin: 'clean',
+            plyr: {
+                config: {
+                    ratio: '16:9',
+                    muted: false,
+                    hideControls: true,
+                    youtube: {
+                        noCookie: true,
+                        rel: 0,
+                        showinfo: 0,
+                        iv_load_policy: 3
+                    },
+                    vimeo: {
+                        byline: false,
+                        portrait: false,
+                        title: false,
+                        speed: true,
+                        transparent: false
+                    }
+                }
+            }
+        });
     </script>
 <?php $__env->stopSection(); ?>
 

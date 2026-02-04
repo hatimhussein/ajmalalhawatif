@@ -6,7 +6,47 @@
   <component name="ChangeListManager">
     <list default="true" id="007cca39-ba69-4f74-ada1-1e05824c52c4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/AdminModule/Resources/views/Permissions/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/AdminModule/Resources/views/Permissions/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/CommonModule/Resources/views/includes/aside.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/CommonModule/Resources/views/includes/aside.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/OrderModule.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/SkudoModule.zip" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/SkudoModule/Database/Seeders/SkudoModuleDatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule/Database/Seeders/SkudoModuleDatabaseSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/SkudoModule/Entities/Warranty.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule/Entities/Warranty.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/SkudoModule/Http/Controllers/InsuranceAdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule/Http/Controllers/InsuranceAdminController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/SkudoModule/Http/Controllers/SerialNumberController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule/Http/Controllers/SerialNumberController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/SkudoModule/Http/Controllers/WarrantyAdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule/Http/Controllers/WarrantyAdminController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/includes/attachment_modal.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/includes/attachment_modal.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/includes/insurance_modal.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/includes/insurance_modal.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/insurance/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/insurance/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/insurance/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/insurance/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/insurance/insurance-fields.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/insurance/insurance-fields.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/serial-numbers/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/serial-numbers/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/serial-numbers/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/serial-numbers/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/warranty/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/warranty/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/warranty/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/admin/warranty/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/front/insurance/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/front/insurance/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/front/warranty/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/SkudoModule/Resources/views/front/warranty/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/WarrantyModule/Http/Controllers/InsuranceAdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/WarrantyModule/Http/Controllers/InsuranceAdminController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/WarrantyModule/Resources/views/admin/includes/attachment_modal.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/WarrantyModule/Resources/views/admin/includes/attachment_modal.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/WarrantyModule/Resources/views/admin/includes/insurance_modal.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/WarrantyModule/Resources/views/admin/includes/insurance_modal.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/WarrantyModule/Resources/views/admin/warranty/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/WarrantyModule/Resources/views/admin/warranty/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/WarrantyModule/Routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/WarrantyModule/Routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/warranty/17616519896900ad1534f17zmPx5Www_400x400.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/warranty/17616519896900ad1534f17zmPx5Www_400x400.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/framework/cache/data/85/5f/855f92484c8c414d36c1b25cb24876e30229cbbf" beforeDir="false" afterPath="$PROJECT_DIR$/storage/framework/cache/data/85/5f/855f92484c8c414d36c1b25cb24876e30229cbbf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/framework/sessions/R4jW70u8tUWFMFDCrS7i4pLeERZYtlPoWgTWhMIV" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/framework/sessions/VQIZ8LeTfpHUvoELT5cYCfUpWau8qhqZrF7lKbxC" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/framework/views/00dc146146333d7a31198a6c14ff5b85988826c4.php" beforeDir="false" afterPath="$PROJECT_DIR$/storage/framework/views/00dc146146333d7a31198a6c14ff5b85988826c4.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/framework/views/0cf432c4224aa47e4ac1d21cce0f242c941e9f00.php" beforeDir="false" afterPath="$PROJECT_DIR$/storage/framework/views/0cf432c4224aa47e4ac1d21cce0f242c941e9f00.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/framework/views/2fcf5465ce1100de079afb19cba3c1abd2090466.php" beforeDir="false" afterPath="$PROJECT_DIR$/storage/framework/views/2fcf5465ce1100de079afb19cba3c1abd2090466.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/framework/views/37d5b139c832eacf9f64b9f0199583bfd26802cd.php" beforeDir="false" afterPath="$PROJECT_DIR$/storage/framework/views/37d5b139c832eacf9f64b9f0199583bfd26802cd.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/framework/views/518278b46cb81e18b7c0541b3052dcc4d8590d5d.php" beforeDir="false" afterPath="$PROJECT_DIR$/storage/framework/views/518278b46cb81e18b7c0541b3052dcc4d8590d5d.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/framework/views/5bedb7b02430b0ab159d204f7c87f995cbff1f18.php" beforeDir="false" afterPath="$PROJECT_DIR$/storage/framework/views/5bedb7b02430b0ab159d204f7c87f995cbff1f18.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/framework/views/67fb1c0d3e559acec2e55fb07dc639849cb2fb3d.php" beforeDir="false" afterPath="$PROJECT_DIR$/storage/framework/views/67fb1c0d3e559acec2e55fb07dc639849cb2fb3d.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/framework/views/995316e37ff176e1b44cbe52fbe493475b5de728.php" beforeDir="false" afterPath="$PROJECT_DIR$/storage/framework/views/995316e37ff176e1b44cbe52fbe493475b5de728.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/framework/views/ac44307ca946a8f5445aea9a3c9eb2d44e3b430f.php" beforeDir="false" afterPath="$PROJECT_DIR$/storage/framework/views/ac44307ca946a8f5445aea9a3c9eb2d44e3b430f.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/framework/views/e0b5b84a56ef64288bc0f90ee6378161b89febb9.php" beforeDir="false" afterPath="$PROJECT_DIR$/storage/framework/views/e0b5b84a56ef64288bc0f90ee6378161b89febb9.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/framework/views/f78c02845bb45f193599f1379b716d5e12789693.php" beforeDir="false" afterPath="$PROJECT_DIR$/storage/framework/views/f78c02845bb45f193599f1379b716d5e12789693.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -267,6 +307,8 @@
       <workItem from="1761389434181" duration="61000" />
       <workItem from="1761400043981" duration="1299000" />
       <workItem from="1761567984838" duration="6000" />
+      <workItem from="1762176645017" duration="1734000" />
+      <workItem from="1762784378263" duration="48000" />
     </task>
     <servers />
   </component>

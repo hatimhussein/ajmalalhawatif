@@ -12,8 +12,8 @@ return array(
     'my_orders' => 'My Orders',
     'wishlist' => 'Wishlist',
     'returns' => 'Returns',
-    'warranty' => 'Claim & warranty',
-    'warranty_skudo' => 'Skudo Claim & warranty',
+    'warranty' => 'Skudo Warranty',
+    'warranty_skudo' => 'Skudo warranty',
     'logout' => 'Logout',
     'lang' => 'Language',
 

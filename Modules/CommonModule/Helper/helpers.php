@@ -35,11 +35,11 @@ function is_image($fileName): bool
 if (!function_exists('notify')) {
     function notify($notifiable, $notification)
     {
-//        try {
-//            $notifiable->notify($notification);
-//        } catch (Exception $exception) {
-//            dd($exception->getMessage());
-//        }
+       try {
+           $notifiable->notify($notification);
+       } catch (Exception $exception) {
+           dd($exception->getMessage());
+       }
     }
 }
 

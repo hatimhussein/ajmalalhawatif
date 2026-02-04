@@ -14,7 +14,7 @@
     <div class="main-container col2-right-layout">
         <div class="main container warranty-container">
             <div class="row w-attachments box">
-                <div class="col-lg-4 col-md-4">
+                <div class="col-lg-6 col-md-3">
                     <?php if($insurance->front_image): ?>
                         <h5> صورة الجهاز من الأمام بعد التركيب</h5>
                         <?php if(is_video($insurance->front_image)): ?>
@@ -30,9 +30,25 @@
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>
-                <div class="col-lg-4 col-md-4">
+                <div class="col-lg-6 col-md-3">
+                    <?php if($insurance->device_back_image): ?>
+                        <h5> <?php echo e(__('skudomodule::insurance.device_back_image')); ?></h5>
+                        <?php if(is_video($insurance->device_back_image)): ?>
+                            <video class="img-responsive" controls>
+                                <source src="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>" type="video/mp4">
+                                <source src="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>"
+                                        type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                        <?php else: ?>
+                            <img class="img-responsive"
+                                 src="<?php echo e(asset('images/warranty/'.$insurance->device_back_image)); ?>"/>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+                <div class="col-lg-6 col-md-3">
                     <?php if($insurance->back_image): ?>
-                        <h5> صورة الرقم التسلسلي الموجود على المنتج (لبكج)</h5>
+                        <h5> <?php echo e(__('skudomodule::insurance.back_image')); ?></h5>
                         <?php if(is_video($insurance->back_image)): ?>
                             <video class="img-responsive" controls>
                                 <source src="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>" type="video/mp4">
@@ -43,6 +59,20 @@
                         <?php else: ?>
                             <img class="img-responsive"
                                  src="<?php echo e(asset('images/warranty/'.$insurance->back_image)); ?>"/>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+                <div class="col-lg-6 col-md-3">
+                    <?php if($insurance->invoice_image): ?>
+                        <h5> صورة الفاتورة</h5>
+                        <?php if(is_video($insurance->invoice_image)): ?>
+                            <video class="img-responsive" controls>
+                                <source src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>" type="video/mp4">
+                                <source src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                        <?php else: ?>
+                            <img class="img-responsive" src="<?php echo e(asset('images/warranty/'.$insurance->invoice_image)); ?>"/>
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>

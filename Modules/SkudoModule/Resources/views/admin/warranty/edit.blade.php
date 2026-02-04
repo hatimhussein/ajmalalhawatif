@@ -13,6 +13,9 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/css-toggle-switch/latest/toggle-switch.css" type="text/css">
 
+    <!-- GLightbox CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
+
     <style>
         .row [class*="col-"] .widget .widget-header h4 {
             color: #00d1c1;
@@ -28,6 +31,23 @@
 
         .switch-toggle label {
             white-space: nowrap;
+        }
+
+        /* Lightbox Styles */
+        .lightbox-trigger {
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-trigger:hover {
+            opacity: 0.8;
+        }
+
+        .custom-file-container__image-preview img,
+        .custom-file-container__image-preview video {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
         }
 
     </style>
@@ -77,8 +97,8 @@
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="statbox widget box box-shadow">
-                                                        <label for="quote_number">
-                                                            {{__('warrantymodule::' . $localeFile . '.quote_number')}}:
+                                                        <label for="quote_number" style="font-weight: bold;">
+                                                            رقم المطالبة:
                                                         </label>
                                                         <input type="text" readonly id="quote_number"
                                                                class="form-control"
@@ -95,7 +115,7 @@
                                                     </div>
 
                                                     <div class="statbox widget box box-shadow">
-                                                        <label for="company_account">
+                                                        <label for="company_account" style="font-weight: bold;">
                                                             {{__('warrantymodule::' . $localeFile . '.company_account')}}:
                                                         </label>
                                                         <input type="text" readonly id="company_account"
@@ -104,8 +124,8 @@
                                                     </div>
 
                                                     <div class="statbox widget box box-shadow">
-                                                        <label for="created_at">
-                                                            {{__('warrantymodule::' . $localeFile . '.sent_at')}}:
+                                                        <label for="created_at" style="font-weight: bold;">
+                                                        تاريخ ووقت التركيب:
                                                         </label>
                                                         <input type="datetime" readonly id="created_at"
                                                                class="form-control"
@@ -114,7 +134,7 @@
 
                                                     @if($warranty->type == 'sms')
                                                         <div class="statbox widget box box-shadow">
-                                                            <label for="user_notes">
+                                                            <label for="user_notes" style="font-weight: bold;">
                                                                 {{__('warrantymodule::' . $localeFile . '.user_notes')}}:
                                                             </label>
                                                             <textarea readonly id="user_notes" rows="6"
@@ -125,8 +145,8 @@
                                                 <div class="col-lg-6">
                                                     @if($warranty->type == 'sms')
                                                         <div class="statbox widget box box-shadow">
-                                                            <label for="warranty_number">
-                                                                {{__('warrantymodule::' . $localeFile . '.warranty_number')}}:
+                                                            <label for="warranty_number" style="font-weight: bold;">
+                                                                رقم تسجيل الضمان:
                                                             </label>
                                                             <input type="text" readonly id="warranty_number"
                                                                    class="form-control"
@@ -143,7 +163,7 @@
                                                         </div>
 
                                                         <div class="statbox widget box box-shadow">
-                                                            <label for="phone">
+                                                            <label for="phone" style="font-weight: bold;">
                                                                 {{__('warrantymodule::' . $localeFile . '.phone')}}:
                                                             </label>
                                                             <input type="text" readonly id="phone"
@@ -152,14 +172,16 @@
                                                         </div>
                                                     @endif
 
+                                                    {{--
                                                     <div class="statbox widget box box-shadow">
                                                         <label for="usage_date">
-                                                            <b>{{__('warrantymodule::' . $localeFile . '.usage_date')}}:</b>
+                                                            <b>تاريخ ووقت التركيب:</b>
                                                         </label>
                                                         <input type="date" readonly id="usage_date"
                                                                class="form-control"
-                                                               value="{{ $warranty->usage_date ? $warranty->usage_date->toDateString() : '' }}">
+                                                               value="{{ $warranty->insurance && $warranty->insurance->created_at ? $warranty->insurance->created_at->toDateString() : '' }}">
                                                     </div>
+                                                    --}}
 
                                                     <div class="statbox widget box box-shadow">
                                                         <label for="dummy_text_1">
@@ -191,7 +213,7 @@
                                                 <div class="col-lg-12">
                                                     @if($warranty->type == 'card')
                                                         <div class="statbox widget box box-shadow">
-                                                            <label for="user_notes">
+                                                            <label for="user_notes" style="font-weight: bold;">
                                                                 {{__('warrantymodule::' . $localeFile . '.user_notes')}}:
                                                             </label>
                                                             <textarea readonly id="user_notes" rows="4"
@@ -264,7 +286,7 @@
                                             <div class="col-md-12 mb-4 input-control status-tab" id="value-cont"
                                                  style="{{ $warranty->is_applicable ? '' : 'display: none' }}">
                                                 <div class="statbox widget box box-shadow">
-                                                    <label for="value">
+                                                    <label for="value" style="font-weight: bold;">
                                                         {{__('warrantymodule::' . $localeFile . '.value')}}:
                                                     </label>
                                                     <input type="number" name="value" id="value"
@@ -281,7 +303,7 @@
                                                 </div>
 
                                                 <div class="statbox widget box box-shadow">
-                                                    <label for="application_number">
+                                                    <label for="application_number" style="font-weight: bold;">
                                                         {{__('warrantymodule::' . $localeFile . '.application_number'),':'}}
                                                     </label>
                                                     <input name="application_number" id="application_number"
@@ -301,7 +323,7 @@
                                                  id="store-reason-cont"
                                                  style="{{ is_null($warranty->is_applicable) ? '' : 'display: none' }}">
                                                 <div class="statbox widget box box-shadow">
-                                                    <label for="store_reason">
+                                                    <label for="store_reason" style="font-weight: bold;">
                                                         {{__('warrantymodule::' . $localeFile . '.store_reason')}}:
                                                     </label>
                                                     <textarea name="store_reason" id="store_reason" class="form-control"
@@ -319,7 +341,7 @@
                                                  id="reason-cont"
                                                  style="{{ ($warranty->is_applicable !== 0) ? 'display: none' : '' }}">
                                                 <div class="statbox widget box box-shadow">
-                                                    <label for="reason">
+                                                    <label for="reason" style="font-weight: bold;">
                                                         {{__('warrantymodule::' . $localeFile . '.reason')}}:
                                                     </label>
                                                     <textarea name="reason" id="reason" class="form-control"
@@ -393,76 +415,124 @@
                                     </h2>
                                 </div>
 
+                                {{-- Row 1: broken device image (client upload) --}}
                                 <div class="col-lg-12">
+                                    <label style="font-weight: bold;"> {{ __('skudomodule::warranty.broken_device_image') }}</label>
+                                    <div class="custom-file-container__image-preview product-list-img">
                                     @if($warranty->broken_device_image)
-                                        <label> صورة الجهاز المكسور</label>
-                                        <div
-                                                class="custom-file-container__image-preview product-list-img">
                                             @if(is_video($warranty->broken_device_image))
-                                                <video controls>
-                                                    <source
-                                                            src="{{asset('images/warranty/'.$warranty->broken_device_image)}}"
-                                                            type="video/mp4">
-                                                    <source
-                                                            src="{{asset('images/warranty/'.$warranty->broken_device_image)}}"
-                                                            type="video/quicktime">
-                                                    Your browser does not support the video
-                                                    tag.
-                                                </video>
+                                                <a href="{{asset('images/warranty/'.$warranty->broken_device_image)}}" class="glightbox lightbox-trigger" data-gallery="warranty-gallery">
+                                                    <video>
+                                                        <source src="{{asset('images/warranty/'.$warranty->broken_device_image)}}" type="video/mp4">
+                                                        <source src="{{asset('images/warranty/'.$warranty->broken_device_image)}}" type="video/quicktime">
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                </a>
                                             @else
-                                                <img
-                                                        src="{{asset('images/warranty/'.$warranty->broken_device_image)}}"/>
+                                                <a href="{{asset('images/warranty/'.$warranty->broken_device_image)}}" class="glightbox lightbox-trigger" data-gallery="warranty-gallery" data-glightbox="description: {{ __('skudomodule::warranty.broken_device_image') }}">
+                                                    <img src="{{asset('images/warranty/'.$warranty->broken_device_image)}}" alt="{{ __('skudomodule::warranty.broken_device_image') }}"/>
+                                                </a>
+                                            @endif
+                                        @else
+                                            <div class="text-muted text-center py-4" style="width:100%;">{{ __('skudomodule::warranty.image_not_available') }}</div>
                                             @endif
                                         </div>
-                                    @endif
                                 </div>
 
+                                <div class="w-100"></div>
 
-                                <div class="col-lg-4">
-                                    @if($warranty->insurance->front_image)
-                                        <label> صورة الجهاز من الامام بعد التركيب</label>
-                                        <div
-                                            class="custom-file-container__image-preview product-list-img">
-                                            @if(is_video($warranty->insurance->front_image))
-                                                <video controls>
-                                                    <source
-                                                        src="{{asset('images/warranty/'.$warranty->insurance->front_image)}}"
-                                                        type="video/mp4">
-                                                    <source
-                                                        src="{{asset('images/warranty/'.$warranty->insurance->front_image)}}"
-                                                        type="video/quicktime">
-                                                    Your browser does not support the video
-                                                    tag.
-                                                </video>
+                                {{-- Row 2: 4 insurance registration images (same order as client insurance UI) --}}
+                                @php $ins = $warranty->insurance; @endphp
+                                <div class="col-lg-3">
+                                        <label style="font-weight: bold;"> صورة الجهاز من الأمام بعد التركيب (تُظهر الرقم التسلسلي)</label>
+                                    <div class="custom-file-container__image-preview product-list-img">
+                                        @if($ins && $ins->front_image)
+                                            @if(is_video($ins->front_image))
+                                                <a href="{{asset('images/warranty/'.$ins->front_image)}}" class="glightbox lightbox-trigger" data-gallery="warranty-gallery">
+                                                    <video>
+                                                        <source src="{{asset('images/warranty/'.$ins->front_image)}}" type="video/mp4">
+                                                        <source src="{{asset('images/warranty/'.$ins->front_image)}}" type="video/quicktime">
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                </a>
                                             @else
-                                                <img
-                                                    src="{{asset('images/warranty/'.$warranty->insurance->front_image)}}" alt=""/>
+                                                <a href="{{asset('images/warranty/'.$ins->front_image)}}" class="glightbox lightbox-trigger" data-gallery="warranty-gallery" data-glightbox="description: صورة الجهاز من الأمام بعد التركيب (تُظهر الرقم التسلسلي)">
+                                                    <img src="{{asset('images/warranty/'.$ins->front_image)}}" alt="صورة الجهاز من الامام"/>
+                                                </a>
                                             @endif
+                                        @else
+                                            <div class="text-muted text-center py-4" style="width:100%;">{{ __('skudomodule::insurance.image_not_available') }}</div>
+                                        @endif
+                                    </div>
                                         </div>
+
+                                <div class="col-lg-3">
+                                    <label style="font-weight: bold;"> {{ __('skudomodule::insurance.device_back_image') }}</label>
+                                    <div class="custom-file-container__image-preview product-list-img">
+                                        @if($ins && $ins->device_back_image)
+                                            @if(is_video($ins->device_back_image))
+                                                <a href="{{asset('images/warranty/'.$ins->device_back_image)}}" class="glightbox lightbox-trigger" data-gallery="warranty-gallery">
+                                                    <video>
+                                                        <source src="{{asset('images/warranty/'.$ins->device_back_image)}}" type="video/mp4">
+                                                        <source src="{{asset('images/warranty/'.$ins->device_back_image)}}" type="video/quicktime">
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                </a>
+                                            @else
+                                                <a href="{{asset('images/warranty/'.$ins->device_back_image)}}" class="glightbox lightbox-trigger" data-gallery="warranty-gallery" data-glightbox="description: {{ __('skudomodule::insurance.device_back_image') }}">
+                                                    <img src="{{asset('images/warranty/'.$ins->device_back_image)}}" alt="{{ __('skudomodule::insurance.device_back_image') }}"/>
+                                                </a>
+                                            @endif
+                                        @else
+                                            <div class="text-muted text-center py-4" style="width:100%;">{{ __('skudomodule::insurance.image_not_available') }}</div>
                                     @endif
+                                    </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    @if($warranty->insurance->back_image)
-                                        <label> صورة الرقم التسلسلي الموجود على المنتج (البكج)</label>
-                                        <div
-                                            class="custom-file-container__image-preview product-list-img">
-                                            @if(is_video($warranty->insurance->back_image))
-                                                <video controls>
-                                                    <source
-                                                        src="{{asset('images/warranty/'.$warranty->insurance->back_image)}}"
-                                                        type="video/mp4">
-                                                    <source
-                                                        src="{{asset('images/warranty/'.$warranty->insurance->back_image)}}"
-                                                        type="video/quicktime">
-                                                    Your browser does not support the video
-                                                    tag.
-                                                </video>
+
+                                <div class="col-lg-3">
+                                    <label style="font-weight: bold;"> {{ __('skudomodule::insurance.back_image') }}</label>
+                                    <div class="custom-file-container__image-preview product-list-img">
+                                        @if($ins && $ins->back_image)
+                                            @if(is_video($ins->back_image))
+                                                <a href="{{asset('images/warranty/'.$ins->back_image)}}" class="glightbox lightbox-trigger" data-gallery="warranty-gallery">
+                                                    <video>
+                                                        <source src="{{asset('images/warranty/'.$ins->back_image)}}" type="video/mp4">
+                                                        <source src="{{asset('images/warranty/'.$ins->back_image)}}" type="video/quicktime">
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                </a>
                                             @else
-                                                <img
-                                                    src="{{asset('images/warranty/'.$warranty->insurance->back_image)}}"/>
+                                                <a href="{{asset('images/warranty/'.$ins->back_image)}}" class="glightbox lightbox-trigger" data-gallery="warranty-gallery" data-glightbox="description: {{ __('skudomodule::insurance.back_image') }}">
+                                                    <img src="{{asset('images/warranty/'.$ins->back_image)}}" alt="{{ __('skudomodule::insurance.back_image') }}"/>
+                                                </a>
+                                            @endif
+                                        @else
+                                            <div class="text-muted text-center py-4" style="width:100%;">{{ __('skudomodule::insurance.image_not_available') }}</div>
                                             @endif
                                         </div>
-                                    @endif
+                                </div>
+
+                                <div class="col-lg-3">
+                                        <label style="font-weight: bold;"> صورة الفاتورة</label>
+                                    <div class="custom-file-container__image-preview product-list-img">
+                                        @if($ins && $ins->invoice_image)
+                                            @if(is_video($ins->invoice_image))
+                                                <a href="{{asset('images/warranty/'.$ins->invoice_image)}}" class="glightbox lightbox-trigger" data-gallery="warranty-gallery">
+                                                    <video>
+                                                        <source src="{{asset('images/warranty/'.$ins->invoice_image)}}" type="video/mp4">
+                                                        <source src="{{asset('images/warranty/'.$ins->invoice_image)}}" type="video/quicktime">
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                </a>
+                                            @else
+                                                <a href="{{asset('images/warranty/'.$ins->invoice_image)}}" class="glightbox lightbox-trigger" data-gallery="warranty-gallery" data-glightbox="description: صورة الفاتورة">
+                                                    <img src="{{asset('images/warranty/'.$ins->invoice_image)}}" alt="صورة الفاتورة"/>
+                                                </a>
+                                            @endif
+                                        @else
+                                            <div class="text-muted text-center py-4" style="width:100%;">{{ __('skudomodule::insurance.image_not_available') }}</div>
+                                            @endif
+                                        </div>
                                 </div>
                             </div>
 
@@ -534,6 +604,9 @@
     <script src="{{ asset('assets/admin/js/design-js/design.js')}}"></script>
     <script src="{{ asset('assets/admin/js/forms/form_validation/form_validation_material.js')}}"></script>
 
+    <!-- GLightbox JS -->
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+
     <script>
         const is_applicable = '.is_applicable-switch';
 
@@ -569,5 +642,38 @@
                 $(item).data('validate-func', '');
             });
         })
+    </script>
+    <script>
+        // Initialize GLightbox
+        const lightbox = GLightbox({
+            selector: '.glightbox',
+            touchNavigation: true,
+            loop: true,
+            autoplayVideos: true,
+            closeButton: true,
+            zoomable: true,
+            draggable: true,
+            skin: 'clean',
+            plyr: {
+                config: {
+                    ratio: '16:9',
+                    muted: false,
+                    hideControls: true,
+                    youtube: {
+                        noCookie: true,
+                        rel: 0,
+                        showinfo: 0,
+                        iv_load_policy: 3
+                    },
+                    vimeo: {
+                        byline: false,
+                        portrait: false,
+                        title: false,
+                        speed: true,
+                        transparent: false
+                    }
+                }
+            }
+        });
     </script>
 @endsection

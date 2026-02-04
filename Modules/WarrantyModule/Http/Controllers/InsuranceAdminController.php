@@ -110,7 +110,7 @@ class InsuranceAdminController extends Controller
         $insurance->update($data);
 
         if ($insurance->status == 1) {
-//            $insurance->merchant->notify(new InsuranceRepliedNotification($insurance));
+           $insurance->merchant->notify(new InsuranceRepliedNotification($insurance));
             notify($insurance->user, new InsuranceRepliedNotification($insurance));
         }
 
@@ -217,14 +217,15 @@ class InsuranceAdminController extends Controller
             $merchant = $insurance->merchant->company_name ?? '';
             $merchant_account = $insurance->merchant->account_number ?? '';
              $user_name = $insurance->user_name;
-             $phone = $insurance->phone ? ($insurance->phone_code->code ?? '') : ''.$insurance->phone;
+             $phone = $insurance->phone ? (($insurance->phone_code->code ?? '') . ' ' . $insurance->phone) : '';
              $email = $insurance->email;
              $dummy_text_1= $insurance->dummy_text_1;
              $dummy_text_2 = $insurance->dummy_text_2;
              $dummy_text_3 = $insurance->dummy_text_3;
             $att = addslashes($insurance->attachments_str);
+            $inv = addslashes($insurance->invoice_image ?? '');
             $attachments = '<ul class="table-controls">
-                              <li><a href="javascript: void(0)" onclick="showAttachments(\''.$att.'\')"
+                              <li><a href="javascript: void(0)" onclick="showAttachments(\''.$att.'\', \''.$inv.'\')"
                                                            data-toggle="tooltip" data-placement="top"
                                                            title="Shot">
                                                             <i class="flaticon-view-1 bg-info p-1 text-white"></i>

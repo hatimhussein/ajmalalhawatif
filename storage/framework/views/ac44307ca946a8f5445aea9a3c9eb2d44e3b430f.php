@@ -23,10 +23,12 @@
                     </div>
                 </div>
                 <div class="page-title" style="float:right">
-                    <a class="mt-4 btn btn-button-16 mr-2"
-                       href="<?php echo e(route('skudo.serial-numbers.create')); ?>">
-                        إضافة رقم تسلسلي جديد
-                    </a>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('add_skudo_serial_numbers')): ?>
+                        <a class="mt-4 btn btn-button-16 mr-2"
+                           href="<?php echo e(route('skudo.serial-numbers.create')); ?>">
+                            إضافة رقم تسلسلي جديد
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -75,18 +77,22 @@
                                                 </button>
                                             </div>
                                             <div class="col-md-2">
-                                                <a href="<?php echo e(route('skudo.serial-numbers.import')); ?>" class="btn btn-primary">
-                                                    <i class="flaticon-upload"></i> استيراد
-                                                </a>
+                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('import_skudo_serial_numbers')): ?>
+                                                    <a href="<?php echo e(route('skudo.serial-numbers.import')); ?>" class="btn btn-primary">
+                                                        <i class="flaticon-upload"></i> استيراد
+                                                    </a>
+                                                <?php endif; ?>
                                             </div>
                                             <div class="col-md-3">
-                                                <a href="<?php echo e(route('skudo.serial-numbers.export', ['search' => request('search')])); ?>" 
-                                                   class="btn btn-info" 
-                                                   data-toggle="tooltip" 
-                                                   data-placement="top" 
-                                                   title="تصدير جميع الأرقام التسلسلية إلى CSV (يمكن فتحه في Excel)">
-                                                    <i class="flaticon-download"></i> تصدير CSV
-                                                </a>
+                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('export_skudo_serial_numbers')): ?>
+                                                    <a href="<?php echo e(route('skudo.serial-numbers.export', ['search' => request('search')])); ?>" 
+                                                       class="btn btn-info" 
+                                                       data-toggle="tooltip" 
+                                                       data-placement="top" 
+                                                       title="تصدير جميع الأرقام التسلسلية إلى CSV (يمكن فتحه في Excel)">
+                                                        <i class="flaticon-download"></i> تصدير CSV
+                                                    </a>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </form>
@@ -124,8 +130,10 @@
                                             <td>
                                                 <?php if($serialNumber->insurance): ?>
                                                     <div class="d-flex flex-column">
+                                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update_skudo_insurance')): ?>
                                                         <a href="<?php echo e(route('skudo.insurance.edit', $serialNumber->insurance->id)); ?>" 
                                                            class="badge badge-primary mb-1 text-decoration-none">#<?php echo e($serialNumber->insurance->id); ?></a>
+                                                        <?php endif; ?>
                                                         <span class="badge 
                                                             <?php if($serialNumber->insurance->status == 0): ?> badge-secondary
                                                             <?php elseif($serialNumber->insurance->status == 1): ?> badge-success
@@ -149,8 +157,10 @@
                                                         $latestWarranty = $serialNumber->insurance->warranties->sortByDesc('created_at')->first();
                                                     ?>
                                                     <div class="d-flex flex-column">
+                                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update_skudo_warranty')): ?>
                                                         <a href="<?php echo e(route('skudo.warranty.edit', $latestWarranty->id)); ?>" 
                                                            class="badge badge-info mb-1 text-decoration-none">#<?php echo e($latestWarranty->id); ?></a>
+                                                        <?php endif; ?>
                                                         <span class="badge 
                                                             <?php if($latestWarranty->is_applicable == 1): ?> badge-success
                                                             <?php elseif($latestWarranty->is_applicable == 2): ?> badge-warning
@@ -200,35 +210,41 @@
                                             </td>
                                             <td>
                                                 <ul class="table-controls">
-                                                    <li>
-                                                        <a href="<?php echo e(route('skudo.serial-numbers.show', $serialNumber->id)); ?>" 
-                                                           class="btn btn-info p-0" data-toggle="tooltip" data-placement="top" title="عرض">
-                                                            <i class="flaticon-view bg-info p-1 text-white br-6 mb-1"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="<?php echo e(route('skudo.serial-numbers.edit', $serialNumber->id)); ?>" 
-                                                           class="btn btn-warning p-0" data-toggle="tooltip" data-placement="top" title="تعديل">
-                                                            <i class="flaticon-edit bg-warning p-1 text-white br-6 mb-1"></i>
-                                                        </a>
-                                                    </li>
-                                                    <?php if(!$serialNumber->insurance): ?>
+                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('show_skudo_serial_numbers')): ?>
                                                         <li>
-                                                            <form class="inline" action="<?php echo e(route('skudo.serial-numbers.destroy', $serialNumber->id)); ?>" 
-                                                                  method="POST" onsubmit="return confirm('هل أنت متأكد من حذف هذا الرقم التسلسلي؟')">
-                                                                <?php echo csrf_field(); ?>
-                                                                <?php echo method_field('DELETE'); ?>
-                                                                <button type="submit" class="btn btn-danger p-0" data-toggle="tooltip" data-placement="top" title="حذف">
+                                                            <a href="<?php echo e(route('skudo.serial-numbers.show', $serialNumber->id)); ?>" 
+                                                               class="btn btn-info p-0" data-toggle="tooltip" data-placement="top" title="عرض">
+                                                                <i class="flaticon-view bg-info p-1 text-white br-6 mb-1"></i>
+                                                            </a>
+                                                        </li>
+                                                    <?php endif; ?>
+                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update_skudo_serial_numbers')): ?>
+                                                        <li>
+                                                            <a href="<?php echo e(route('skudo.serial-numbers.edit', $serialNumber->id)); ?>" 
+                                                               class="btn btn-warning p-0" data-toggle="tooltip" data-placement="top" title="تعديل">
+                                                                <i class="flaticon-edit bg-warning p-1 text-white br-6 mb-1"></i>
+                                                            </a>
+                                                        </li>
+                                                    <?php endif; ?>
+                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete_skudo_serial_numbers')): ?>
+                                                        <?php if(!$serialNumber->insurance): ?>
+                                                            <li>
+                                                                <form class="inline" action="<?php echo e(route('skudo.serial-numbers.destroy', $serialNumber->id)); ?>" 
+                                                                      method="POST" onsubmit="return confirm('هل أنت متأكد من حذف هذا الرقم التسلسلي؟')">
+                                                                    <?php echo csrf_field(); ?>
+                                                                    <?php echo method_field('DELETE'); ?>
+                                                                    <button type="submit" class="btn btn-danger p-0" data-toggle="tooltip" data-placement="top" title="حذف">
+                                                                        <i class="flaticon-delete bg-danger p-1 text-white br-6"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </li>
+                                                        <?php else: ?>
+                                                            <li>
+                                                                <button class="btn btn-danger p-0" data-toggle="tooltip" data-placement="top" title="لا يمكن الحذف - مرتبط بضمان" disabled>
                                                                     <i class="flaticon-delete bg-danger p-1 text-white br-6"></i>
                                                                 </button>
-                                                            </form>
-                                                        </li>
-                                                    <?php else: ?>
-                                                        <li>
-                                                            <button class="btn btn-danger p-0" data-toggle="tooltip" data-placement="top" title="لا يمكن الحذف - مرتبط بضمان" disabled>
-                                                                <i class="flaticon-delete bg-danger p-1 text-white br-6"></i>
-                                                            </button>
-                                                        </li>
+                                                            </li>
+                                                        <?php endif; ?>
                                                     <?php endif; ?>
                                                 </ul>
                                             </td>

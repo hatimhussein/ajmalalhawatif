@@ -1,7 +1,7 @@
 @extends('commonmodule::layouts.master')
 
 @section('title')
-    {{__('warrantymodule::admin.warranty')}}
+    {{__('skudomodule::admin.warranty')}}
 @endsection
 
 @section('css')
@@ -29,10 +29,12 @@
                     </div>
                 </div>
                 <div class="page-title" style="float:right">
-                    <a class="mt-4 btn btn-button-16 mr-2"
-                       href="{{route('skudo.warranty.export')}}">
-                        {{__('productmodule::category.download')}}
-                    </a>
+                    @can('show_skudo_warranty')
+                        <a class="mt-4 btn btn-button-16 mr-2"
+                           href="{{route('skudo.warranty.export')}}">
+                            {{__('productmodule::category.download')}}
+                        </a>
+                    @endcan
                 </div>
             </div>
 
@@ -127,7 +129,7 @@
                                                 <ul class="table-controls">
                                                     <li>
                                                         <a href="javascript: void(0)"
-                                                           onclick="showAttachments('{{addslashes($warranty->attachments_str)}}')"
+                                                           onclick="showWarrantyAttachments('{{ addslashes($warranty->broken_device_image ?? '') }}', '{{ addslashes($warranty->insurance ? $warranty->insurance->attachments_str : '') }}')"
                                                            data-toggle="tooltip" data-placement="top"
                                                            title="Shot">
                                                             <i class="flaticon-view-1 bg-info p-1 text-white"></i>
@@ -170,22 +172,26 @@
                                             <td>{{ $warranty->admin->name ?? '-' }}</td>
                                             <td>
                                                 <ul class="table-controls">
-                                                    <li><a href="{{route('skudo.warranty.edit', $warranty->id)}}"
-                                                           data-toggle="tooltip" data-placement="top"
-                                                           title="Edit"><i
-                                                                class="flaticon-edit  bg-success p-1 text-white"></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <form class="inline"
-                                                              action="{{ route('skudo.warranty.destroy', $warranty->id) }}"
-                                                              method="POST">
-                                                            {{ method_field('DELETE') }} {!! csrf_field() !!}
-                                                            <button class="unst" title="Delete" type="submit"
-                                                                    onclick="return confirm('{{__("warrantymodule::admin.delete_warranty")}}')">
-                                                                <i class="flaticon-delete  bg-danger p-1 text-white"></i>
-                                                            </button>
-                                                        </form>
-                                                    </li>
+                                                    @can('update_skudo_warranty')
+                                                        <li><a href="{{route('skudo.warranty.edit', $warranty->id)}}"
+                                                               data-toggle="tooltip" data-placement="top"
+                                                               title="Edit"><i
+                                                                    class="flaticon-edit  bg-success p-1 text-white"></i></a>
+                                                        </li>
+                                                    @endcan
+                                                    @can('delete_skudo_warranty')
+                                                        <li>
+                                                            <form class="inline"
+                                                                  action="{{ route('skudo.warranty.destroy', $warranty->id) }}"
+                                                                  method="POST">
+                                                                {{ method_field('DELETE') }} {!! csrf_field() !!}
+                                                                <button class="unst" title="Delete" type="submit"
+                                                                        onclick="return confirm('{{__("warrantymodule::admin.delete_warranty")}}')">
+                                                                    <i class="flaticon-delete  bg-danger p-1 text-white"></i>
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    @endcan
                                                 </ul>
                                             </td>
                                         </tr>
@@ -199,8 +205,8 @@
 
             </div>
 
-            @include('warrantymodule::admin.includes.attachment_modal')
-            @include('warrantymodule::admin.includes.insurance_modal')
+            @include('skudomodule::admin.includes.attachment_modal')
+            @include('skudomodule::admin.includes.insurance_modal')
 
         </div>
     </div>

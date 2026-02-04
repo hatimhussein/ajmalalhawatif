@@ -72,10 +72,10 @@
                     </p>
                     <a href="{{url('/contact_us')}}">{{__('fronthomemodule::home.contact_us')}}</a>
                     <a href="{{url('/catalog')}}">{{__('commonmodule::front.catalogs')}}</a>
-                    <a href="{{url('/config/5')}}">{!! LanguageHelper::configTranslate($site_data->where('key','privacy')->first())  !!}</a>
-                    <a href="{{url('/config/3')}}">{!! LanguageHelper::configTranslate($site_data->where('key','aman')->first())  !!}</a>
-                    <a href="{{route('front.insurance.index')}}">{{__('warrantymodule::insurance.insurance')}}</a>
-                    <a href="{{route('front.warranty.index')}}">{{__('commonmodule::front.warranty')}}</a>
+                    @auth
+                        <a href="{{route('front.insurance.index')}}">{{__('warrantymodule::insurance.insurance')}}</a>
+                        <a href="{{route('front.warranty.index')}}">{{__('commonmodule::front.warranty')}}</a>
+                    @endauth
                     <a href="{{route('front.skudo.insurance.index')}}">{{__('commonmodule::front.insurance_skudo')}}</a>
                     <a href="{{route('front.skudo.warranty.index')}}">{{__('commonmodule::front.warranty_skudo')}}</a>
                 </div>
@@ -83,9 +83,10 @@
                 <div class="policy">
                     <h3>{{__('fronthomemodule::home.policies')}}</h3>
 
-                    <a href="{{url('/config/2')}}">{!! LanguageHelper::configTranslate($site_data->where('key','map')->first())  !!}</a>
                     <a href="{{url('/config/5')}}">{!! LanguageHelper::configTranslate($site_data->where('key','privacy')->first())  !!}</a>
-                    <a href="{{url('/config/3')}}">{!! LanguageHelper::configTranslate($site_data->where('key','aman')->first())  !!}</a>
+                    <a href="{{url('/config/4')}}">{!! LanguageHelper::configTranslate($site_data->where('key','aman')->first())  !!}</a>
+                    <a href="{{url('/config/3')}}">{!! LanguageHelper::configTranslate($site_data->where('key','return')->first())  !!}</a>
+                    <a href="{{url('/config/63')}}">{!! LanguageHelper::configTranslate($site_data->where('key','insurance')->first())  !!}</a>
                 </div>
 
                 <div class="shipping-payment">
@@ -112,7 +113,7 @@
     </div>
     <div class="footer-bottom">
         <div class="container">
-            <div class="col-sm-12 coppyright">&copy; 2021 AJMAL ALHWATIF. All Rights Reserved.</div>
+            <div class="col-sm-12 coppyright">&copy; {{ date('Y') }} AJMAL ALHWATIF. All Rights Reserved.</div>
         </div>
     </div>
 </footer>

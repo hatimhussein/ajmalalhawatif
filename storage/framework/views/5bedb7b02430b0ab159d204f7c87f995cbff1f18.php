@@ -286,7 +286,7 @@
             <?php endif; ?>
 
 
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['users', 'warranty', 'insurance'])): ?>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['users', 'warranty', 'insurance', 'show_skudo_warranty', 'show_skudo_insurance'])): ?>
                 <li class="menu">
                     <a href="#users" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
@@ -536,7 +536,7 @@
                     </ul>
                 </li>
 
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['warranty', 'insurance', 'returns'])): ?>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['show_skudo_warranty', 'show_skudo_insurance', 'show_skudo_serial_numbers'])): ?>
                 <li class="menu">
                     <a href="#skudo-management" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
@@ -549,14 +549,13 @@
                     </a>
                     <ul class="collapse submenu list-unstyled" id="skudo-management" data-parent="#accordionExample">
 
-
-                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('insurance')): ?>
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['show_skudo_insurance'])): ?>
                             <li>
                                 <a href="<?php echo e(route('skudo.insurance.index')); ?>"> <?php echo e(__('commonmodule::sidebar.insurance_skudo')); ?> </a>
                             </li>
                         <?php endif; ?>
 
-                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('warranty')): ?>
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['show_skudo_warranty'])): ?>
                             <li>
                                 <a href="<?php echo e(route('skudo.warranty.index')); ?>?type=sms"> <?php echo e(__('commonmodule::sidebar.warranty_skudo')); ?> </a>
                             </li>
@@ -564,10 +563,12 @@
                             
                             
 
+                        <?php endif; ?>
+
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['show_skudo_serial_numbers'])): ?>
                             <li>
                                 <a href="<?php echo e(route('skudo.serial-numbers.index')); ?>"> الأرقام التسلسلية </a>
                             </li>
-
                         <?php endif; ?>
 
 

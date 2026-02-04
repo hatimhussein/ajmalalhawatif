@@ -20,7 +20,7 @@ class Insurance extends Model
     protected $fillable = [
         'user_name', 'email', 'phone_code_id', 'phone', 'usage_date', 'dummy_text_1', 'dummy_text_2', 'dummy_text_3',
         'device_serial', 'package_serial', 'serial_number_id',
-        'front_image', 'back_image', 'invoice_image', 'warranty_image', 'user_notes', 'user_id',
+        'front_image', 'device_back_image', 'back_image', 'invoice_image', 'warranty_image', 'user_notes', 'user_id',
         'replied_at', 'expire_date', 'admin_id', 'status', 'reason', 'store_reason', 'seen_at','client_update','updated_at'
     ];
 
@@ -33,7 +33,10 @@ class Insurance extends Model
 
     public function getAttachmentsStrAttribute(): string
     {
-        return "$this->front_image,$this->back_image,$this->invoice_image,$this->warranty_image";
+        // Order is important for attachment modal labels:
+        // 1) front_image, 2) device_back_image, 3) back_image (package serial), 4) invoice_image
+        // Note: insurance UI expects 4 core attachments; warranty_image is intentionally excluded.
+        return "$this->front_image,$this->device_back_image,$this->back_image,$this->invoice_image";
     }
 
     public function getUserAttribute(): User

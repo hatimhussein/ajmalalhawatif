@@ -2,7 +2,7 @@
 
 return array(
     'returns' => 'Return Requests',
-    'warranty' => 'Warranty',
+    'warranty' => 'Skudo Warranty and Claims',
     'insurance' => 'Insurance',
 
     'client' => 'Client',

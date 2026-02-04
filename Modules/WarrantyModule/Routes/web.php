@@ -33,13 +33,13 @@ Route::middleware(['auth', 'is_active'])->group(function () {
     Route::get('returns/orders', 'ReturnController@myOrders')->name('front.returns.orders');
     Route::resource('returns', 'ReturnController')->names('front.returns')->only(['index', 'show', 'store']);
 
-    Route::resource('warranty', 'WarrantyController')->names('front.warranty');
-    Route::get('warranty-insurance/{insurance}', 'WarrantyController@findInsurance')->name('warranty.insurance');
-    Route::get('warranty-new', function () {
+    Route::resource('warranty-protection', 'WarrantyController')->names('front.warranty');
+    Route::get('warranty-protection-insurance/{insurance}', 'WarrantyController@findInsurance')->name('warranty.insurance');
+    Route::get('warranty-protection-new', function () {
         return view('warrantymodule::front.warranty.new');
     })->name('front.warranty.new');
 
-    Route::resource('insurance', 'InsuranceController')->names('front.insurance');
+    Route::resource('insurance-protection', 'InsuranceController')->names('front.insurance');
 
 });
 

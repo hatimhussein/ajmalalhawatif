@@ -14,19 +14,107 @@
     <div class="main-container col2-right-layout">
         <div class="main container warranty-container">
             <div class="row w-attachments box">
+                
+                <div class="col-lg-12 col-md-12">
+                    <h5><?php echo e(__('skudomodule::warranty.broken_device_image')); ?></h5>
+                    <?php if($warranty->broken_device_image): ?>
+                        <?php if(is_video($warranty->broken_device_image)): ?>
+                            <video class="img-responsive" controls>
+                                <source src="<?php echo e(asset('images/warranty/'.$warranty->broken_device_image)); ?>" type="video/mp4">
+                                <source src="<?php echo e(asset('images/warranty/'.$warranty->broken_device_image)); ?>" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                        <?php else: ?>
+                            <img class="img-responsive" src="<?php echo e(asset('images/warranty/'.$warranty->broken_device_image)); ?>" alt=""/>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <div class="text-muted text-center py-4"><?php echo e(__('skudomodule::warranty.image_not_available')); ?></div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="w-100"></div>
+
+                
+                <?php $ins = $warranty->insurance; ?>
+                <div class="col-lg-3 col-md-3">
+                    <h5> صورة الجهاز من الأمام بعد التركيب</h5>
+                    <?php if($ins && $ins->front_image): ?>
+                        <?php if(is_video($ins->front_image)): ?>
+                            <video class="img-responsive" controls>
+                                <source src="<?php echo e(asset('images/warranty/'.$ins->front_image)); ?>" type="video/mp4">
+                                <source src="<?php echo e(asset('images/warranty/'.$ins->front_image)); ?>" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                        <?php else: ?>
+                            <img class="img-responsive" src="<?php echo e(asset('images/warranty/'.$ins->front_image)); ?>"/>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <div class="text-muted text-center py-4"><?php echo e(__('skudomodule::insurance.image_not_available')); ?></div>
+                    <?php endif; ?>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <h5> <?php echo e(__('skudomodule::insurance.device_back_image')); ?></h5>
+                    <?php if($ins && $ins->device_back_image): ?>
+                        <?php if(is_video($ins->device_back_image)): ?>
+                            <video class="img-responsive" controls>
+                                <source src="<?php echo e(asset('images/warranty/'.$ins->device_back_image)); ?>" type="video/mp4">
+                                <source src="<?php echo e(asset('images/warranty/'.$ins->device_back_image)); ?>" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                        <?php else: ?>
+                            <img class="img-responsive" src="<?php echo e(asset('images/warranty/'.$ins->device_back_image)); ?>"/>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <div class="text-muted text-center py-4"><?php echo e(__('skudomodule::insurance.image_not_available')); ?></div>
+                    <?php endif; ?>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <h5> <?php echo e(__('skudomodule::insurance.back_image')); ?></h5>
+                    <?php if($ins && $ins->back_image): ?>
+                        <?php if(is_video($ins->back_image)): ?>
+                            <video class="img-responsive" controls>
+                                <source src="<?php echo e(asset('images/warranty/'.$ins->back_image)); ?>" type="video/mp4">
+                                <source src="<?php echo e(asset('images/warranty/'.$ins->back_image)); ?>" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                        <?php else: ?>
+                            <img class="img-responsive" src="<?php echo e(asset('images/warranty/'.$ins->back_image)); ?>"/>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <div class="text-muted text-center py-4"><?php echo e(__('skudomodule::insurance.image_not_available')); ?></div>
+                    <?php endif; ?>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <h5> صورة الفاتورة</h5>
+                    <?php if($ins && $ins->invoice_image): ?>
+                        <?php if(is_video($ins->invoice_image)): ?>
+                            <video class="img-responsive" controls>
+                                <source src="<?php echo e(asset('images/warranty/'.$ins->invoice_image)); ?>" type="video/mp4">
+                                <source src="<?php echo e(asset('images/warranty/'.$ins->invoice_image)); ?>" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                        <?php else: ?>
+                            <img class="img-responsive" src="<?php echo e(asset('images/warranty/'.$ins->invoice_image)); ?>"/>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <div class="text-muted text-center py-4"><?php echo e(__('skudomodule::insurance.image_not_available')); ?></div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="w-100"></div>
+
+                
                 <div class="col-lg-4 col-md-4">
                     <?php if($warranty->front_image): ?>
                         <h5> <?php echo e(__('warrantymodule::warranty.front_image')); ?></h5>
                         <?php if(is_video($warranty->front_image)): ?>
                             <video class="img-responsive" controls>
                                 <source src="<?php echo e(asset('images/warranty/'.$warranty->front_image)); ?>" type="video/mp4">
-                                <source src="<?php echo e(asset('images/warranty/'.$warranty->front_image)); ?>"
-                                        type="video/quicktime">
+                                <source src="<?php echo e(asset('images/warranty/'.$warranty->front_image)); ?>" type="video/quicktime">
                                 Your browser does not support the video tag.
                             </video>
                         <?php else: ?>
-                            <img class="img-responsive"
-                                 src="<?php echo e(asset('images/warranty/'.$warranty->front_image)); ?>"/>
+                            <img class="img-responsive" src="<?php echo e(asset('images/warranty/'.$warranty->front_image)); ?>"/>
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>
@@ -36,13 +124,11 @@
                         <?php if(is_video($warranty->back_image)): ?>
                             <video class="img-responsive" controls>
                                 <source src="<?php echo e(asset('images/warranty/'.$warranty->back_image)); ?>" type="video/mp4">
-                                <source src="<?php echo e(asset('images/warranty/'.$warranty->back_image)); ?>"
-                                        type="video/quicktime">
+                                <source src="<?php echo e(asset('images/warranty/'.$warranty->back_image)); ?>" type="video/quicktime">
                                 Your browser does not support the video tag.
                             </video>
                         <?php else: ?>
-                            <img class="img-responsive"
-                                 src="<?php echo e(asset('images/warranty/'.$warranty->back_image)); ?>"/>
+                            <img class="img-responsive" src="<?php echo e(asset('images/warranty/'.$warranty->back_image)); ?>"/>
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>
@@ -52,13 +138,11 @@
                         <?php if(is_video($warranty->warranty_image)): ?>
                             <video class="img-responsive" controls>
                                 <source src="<?php echo e(asset('images/warranty/'.$warranty->warranty_image)); ?>" type="video/mp4">
-                                <source src="<?php echo e(asset('images/warranty/'.$warranty->warranty_image)); ?>"
-                                        type="video/quicktime">
+                                <source src="<?php echo e(asset('images/warranty/'.$warranty->warranty_image)); ?>" type="video/quicktime">
                                 Your browser does not support the video tag.
                             </video>
                         <?php else: ?>
-                            <img class="img-responsive"
-                                 src="<?php echo e(asset('images/warranty/'.$warranty->warranty_image)); ?>" alt=""/>
+                            <img class="img-responsive" src="<?php echo e(asset('images/warranty/'.$warranty->warranty_image)); ?>" alt=""/>
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>

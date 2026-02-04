@@ -286,7 +286,7 @@
             @endcan
 
 
-            @canany(['users', 'warranty', 'insurance'])
+            @canany(['users', 'warranty', 'insurance', 'show_skudo_warranty', 'show_skudo_insurance'])
                 <li class="menu">
                     <a href="#users" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
@@ -351,7 +351,7 @@
 
                     </ul>
                 </li>
-            @endcan
+            @endcanany
 
             @can('orders')
                 <li class="menu">
@@ -536,7 +536,9 @@
                     </ul>
                 </li>
 
-            @canany(['warranty', 'insurance', 'returns'])
+            @endcan
+
+            @canany(['show_skudo_warranty', 'show_skudo_insurance', 'show_skudo_serial_numbers'])
                 <li class="menu">
                     <a href="#skudo-management" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
@@ -549,14 +551,13 @@
                     </a>
                     <ul class="collapse submenu list-unstyled" id="skudo-management" data-parent="#accordionExample">
 
-
-                        @can('insurance')
+                        @canany(['show_skudo_insurance'])
                             <li>
                                 <a href="{{route('skudo.insurance.index')}}"> {{__('commonmodule::sidebar.insurance_skudo')}} </a>
                             </li>
-                        @endcan
+                        @endcanany
 
-                        @can('warranty')
+                        @canany(['show_skudo_warranty'])
                             <li>
                                 <a href="{{route('skudo.warranty.index')}}?type=sms"> {{__('commonmodule::sidebar.warranty_skudo')}} </a>
                             </li>
@@ -564,11 +565,13 @@
                             {{--                                <a href="{{route('skudo.warranty.index')}}?type=sms"> {{__('commonmodule::sidebar.sms_warranty')}} سكودو</a>--}}
                             {{--                            </li>--}}
 
+                        @endcanany
+
+                        @canany(['show_skudo_serial_numbers'])
                             <li>
                                 <a href="{{route('skudo.serial-numbers.index')}}"> الأرقام التسلسلية </a>
                             </li>
-
-                        @endcan
+                        @endcanany
 
 
                             {{--                        @can('returns')--}}
@@ -579,7 +582,7 @@
 
                     </ul>
                 </li>
-            @endcan
+            @endcanany
 
             <!--
 
@@ -606,7 +609,6 @@
 
                 <!--   </ul> -->
                 <!--      </li> -->
-            <!--         @endcan -->
         </ul>
 
 

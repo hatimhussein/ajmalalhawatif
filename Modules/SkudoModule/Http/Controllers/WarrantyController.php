@@ -72,44 +72,35 @@ class WarrantyController extends Controller
     {
         $this->warrantyService->checkEnabled();
 
-        // Allow search for both authenticated and guest users
-        if (auth()->check()) {
-            // If searching, allow access to all warranties
-            if ($request->has('q') && $request->q) {
-                $search = $request->q;
-                $query = $this->warrantyRepository->query();
-                
-                $query->where(function($q) use ($search) {
-                    $q->where('id', (int) $search)
-                      ->orWhere('package_serial', '=', $search);
-                });
-                
-                $warranties = $query->orderBy('created_at', 'desc')->get();
-            } else {
+        $search = trim((string) $request->get('q', ''));
+
+        // Search is by phone number only (to show related claims), not by request id.
+        if ($search !== '') {
+            $normalized = preg_replace('/\D+/', '', $search) ?? $search;
+            $phones = array_values(array_unique(array_filter([$search, $normalized], fn($v) => $v !== '')));
+
+            $query = $this->warrantyRepository->query();
+            $query->whereIn('phone', $phones);
+
+            // If user is logged in, still allow viewing/searching by phone, but mark seen for their account.
+            if (auth()->check()) {
+                $this->warrantyRepository->readUserWarranties(auth()->id());
+            }
+
+            $warranties = $query->orderBy('created_at', 'desc')->get();
+        } else {
+            if (auth()->check()) {
                 // If not searching, show only user's warranties
                 $query = $this->warrantyRepository->query()->where('user_id', auth()->id());
                 $warranties = $query->orderBy('created_at', 'desc')->get();
-            }
-            
-            $this->warrantyRepository->readUserWarranties(auth()->id());
-        } else {
-            // For guests, allow searching all warranties (including those created while logged in)
-            if ($request->has('q') && $request->q) {
-                $search = $request->q;
-                $query = $this->warrantyRepository->query();
-                
-                $query->where(function($q) use ($search) {
-                    $q->where('id', (int) $search)
-                      ->orWhere('package_serial', '=', $search);
-                });
-                
-                $warranties = $query->orderBy('created_at', 'desc')->get();
+                $this->warrantyRepository->readUserWarranties(auth()->id());
             } else {
                 $warranties = [];
             }
         }
 
-        return view('skudomodule::front.warranty.index', compact('warranties'));
+        return view('skudomodule::front.warranty.index', compact('warranties'))
+            ->with('search', $search);
     }
 
     /**
@@ -284,5 +275,56 @@ class WarrantyController extends Controller
         }
         
         return response()->json(['insurance' => $insurance]);
+    }
+
+    /**
+     * Find insurances by phone (to avoid guessing registration id).
+     * Used by warranty create (sms) to let user pick from multiple insurances.
+     */
+    public function findInsurancesByPhone(Request $request): JsonResponse
+    {
+        $phone = trim((string)$request->get('phone', ''));
+        if ($phone === '') {
+            return response()->json(['insurances' => []]);
+        }
+
+        // Normalize to digits-only as well
+        $normalized = preg_replace('/\D+/', '', $phone) ?? '';
+        $phones = array_values(array_unique(array_filter([$phone, $normalized], fn($v) => $v !== '')));
+
+        $insurances = $this->insuranceRepository->query()
+            ->with(['phone_code'])
+            ->where('status', '!=', 2) // exclude rejected
+            ->whereIn('phone', $phones)
+            ->orderByDesc('created_at')
+            ->limit(20)
+            ->get();
+
+        $payload = $insurances->map(function (Insurance $insurance) {
+            return [
+                'id' => $insurance->id,
+                'user_name' => $insurance->user_name,
+                'phone' => $insurance->phone,
+                'phone_code_id' => $insurance->phone_code_id,
+                'phone_code' => [
+                    'code' => $insurance->phone_code->code ?? null,
+                ],
+                'device_serial' => $insurance->device_serial,
+                'package_serial' => $insurance->package_serial,
+                'usage_date' => $insurance->usage_date,
+                'created_at' => $insurance->created_at,
+                'front_image' => $insurance->front_image,
+                'device_back_image' => $insurance->device_back_image,
+                'back_image' => $insurance->back_image,
+                'invoice_image' => $insurance->invoice_image,
+                'status' => $insurance->status,
+                'expire_date' => $insurance->expire_date,
+                'is_closed' => $insurance->isClosed(),
+                'store_reason' => $insurance->store_reason,
+                'reason' => $insurance->reason,
+            ];
+        })->values();
+
+        return response()->json(['insurances' => $payload]);
     }
 }

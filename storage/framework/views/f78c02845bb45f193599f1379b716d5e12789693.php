@@ -1,5 +1,5 @@
 <?php $__env->startSection('title'); ?>
-    <?php echo e(__('warrantymodule::admin.warranty')); ?>
+    <?php echo e(__('skudomodule::admin.warranty')); ?>
 
 <?php $__env->stopSection(); ?>
 
@@ -28,11 +28,13 @@
                     </div>
                 </div>
                 <div class="page-title" style="float:right">
-                    <a class="mt-4 btn btn-button-16 mr-2"
-                       href="<?php echo e(route('skudo.warranty.export')); ?>">
-                        <?php echo e(__('productmodule::category.download')); ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('show_skudo_warranty')): ?>
+                        <a class="mt-4 btn btn-button-16 mr-2"
+                           href="<?php echo e(route('skudo.warranty.export')); ?>">
+                            <?php echo e(__('productmodule::category.download')); ?>
 
-                    </a>
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -131,7 +133,7 @@
                                                 <ul class="table-controls">
                                                     <li>
                                                         <a href="javascript: void(0)"
-                                                           onclick="showAttachments('<?php echo e(addslashes($warranty->attachments_str)); ?>')"
+                                                           onclick="showWarrantyAttachments('<?php echo e(addslashes($warranty->broken_device_image ?? '')); ?>', '<?php echo e(addslashes($warranty->insurance ? $warranty->insurance->attachments_str : '')); ?>')"
                                                            data-toggle="tooltip" data-placement="top"
                                                            title="Shot">
                                                             <i class="flaticon-view-1 bg-info p-1 text-white"></i>
@@ -174,23 +176,27 @@
                                             <td><?php echo e($warranty->admin->name ?? '-'); ?></td>
                                             <td>
                                                 <ul class="table-controls">
-                                                    <li><a href="<?php echo e(route('skudo.warranty.edit', $warranty->id)); ?>"
-                                                           data-toggle="tooltip" data-placement="top"
-                                                           title="Edit"><i
-                                                                class="flaticon-edit  bg-success p-1 text-white"></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <form class="inline"
-                                                              action="<?php echo e(route('skudo.warranty.destroy', $warranty->id)); ?>"
-                                                              method="POST">
-                                                            <?php echo e(method_field('DELETE')); ?> <?php echo csrf_field(); ?>
+                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update_skudo_warranty')): ?>
+                                                        <li><a href="<?php echo e(route('skudo.warranty.edit', $warranty->id)); ?>"
+                                                               data-toggle="tooltip" data-placement="top"
+                                                               title="Edit"><i
+                                                                    class="flaticon-edit  bg-success p-1 text-white"></i></a>
+                                                        </li>
+                                                    <?php endif; ?>
+                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete_skudo_warranty')): ?>
+                                                        <li>
+                                                            <form class="inline"
+                                                                  action="<?php echo e(route('skudo.warranty.destroy', $warranty->id)); ?>"
+                                                                  method="POST">
+                                                                <?php echo e(method_field('DELETE')); ?> <?php echo csrf_field(); ?>
 
-                                                            <button class="unst" title="Delete" type="submit"
-                                                                    onclick="return confirm('<?php echo e(__("warrantymodule::admin.delete_warranty")); ?>')">
-                                                                <i class="flaticon-delete  bg-danger p-1 text-white"></i>
-                                                            </button>
-                                                        </form>
-                                                    </li>
+                                                                <button class="unst" title="Delete" type="submit"
+                                                                        onclick="return confirm('<?php echo e(__("warrantymodule::admin.delete_warranty")); ?>')">
+                                                                    <i class="flaticon-delete  bg-danger p-1 text-white"></i>
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    <?php endif; ?>
                                                 </ul>
                                             </td>
                                         </tr>
@@ -204,8 +210,8 @@
 
             </div>
 
-            <?php echo $__env->make('warrantymodule::admin.includes.attachment_modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-            <?php echo $__env->make('warrantymodule::admin.includes.insurance_modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            <?php echo $__env->make('skudomodule::admin.includes.attachment_modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            <?php echo $__env->make('skudomodule::admin.includes.insurance_modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
         </div>
     </div>

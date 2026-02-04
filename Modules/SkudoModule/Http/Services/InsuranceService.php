@@ -15,8 +15,11 @@ class InsuranceService
 {
     use UploaderHelper;
 
-    private InsuranceRepository $insuranceRepository;
-    private ConfigRepository $configRepository;
+    /** @var InsuranceRepository */
+    private $insuranceRepository;
+
+    /** @var ConfigRepository */
+    private $configRepository;
 
     public function __construct(InsuranceRepository $insuranceRepository,
                                 ConfigRepository    $configRepository)
@@ -27,16 +30,28 @@ class InsuranceService
 
     public function getSearch($keyword, $user_id = null)
     {
-        if ($keyword !== null && $keyword !== '') {
-            // Search by registration id or package serial number
-            $query = $this->insuranceRepository->query()->where(function($q) use ($keyword) {
-                $q->where('id', (int) $keyword)
-                  ->orWhere('package_serial', '=', $keyword);
-            });
-            return $query->get();
+        $keyword = is_string($keyword) ? trim($keyword) : $keyword;
+        if ($keyword === null || $keyword === '') {
+            // No keyword: return empty collection (index should handle empty state)
+            return collect();
         }
-        // No keyword: return empty collection (index should handle empty state)
-        return collect();
+
+        // Search by phone only (do not search by insurance id on public pages).
+        $normalized = preg_replace('/\D+/', '', $keyword) ?? $keyword;
+        $phones = array_values(array_unique(array_filter([$keyword, $normalized], function ($v) {
+            return $v !== '';
+        })));
+
+        $query = $this->insuranceRepository->query()->whereIn('phone', $phones);
+
+        // Limit exposure: logged-in users see their own, guests only see guest insurances
+        if ($user_id) {
+            $query->where('user_id', $user_id);
+        } else {
+            $query->whereNull('user_id');
+        }
+
+        return $query->get();
     }
 
     public function getEnabledConfigs(): Collection
@@ -98,7 +113,8 @@ class InsuranceService
             }
 
             if ($input->properties['type'] == 'file') {
-                $rules[$input->key][] = 'mimes:jpeg,png,jpg,mp4,qt,mov';
+                // Mobile phones (especially iPhone) often upload images as HEIC/HEIF or WEBP
+                $rules[$input->key][] = 'mimes:jpeg,png,jpg,webp,heic,heif,mp4,qt,mov';
             }
         }
         return $rules;
@@ -122,7 +138,8 @@ class InsuranceService
 
             if ($input->properties['type'] == 'file') {
                 $rules[$input->key][] = 'nullable';
-                $rules[$input->key][] = 'mimes:jpeg,png,jpg,mp4,qt,mov';
+                // Mobile phones (especially iPhone) often upload images as HEIC/HEIF or WEBP
+                $rules[$input->key][] = 'mimes:jpeg,png,jpg,webp,heic,heif,mp4,qt,mov';
             } else {
                 if ($input->value_en == 1) {
                     $rules[$input->key][] = 'required';
@@ -137,6 +154,21 @@ class InsuranceService
     public function getCustomRules($rules): array
     {
         $rules = $this->getGeneralCustomRules($rules);
+
+        // device_serial is mandatory on Skudo insurance (front)
+        if (request()->routeIs('front.skudo.insurance.*')) {
+            $existing = isset($rules['device_serial']) ? (array) $rules['device_serial'] : [];
+
+            // Remove nullable if present and enforce required
+            $existing = array_values(array_filter($existing, function ($r) {
+                return !(is_string($r) && $r === 'nullable');
+            }));
+
+            $rules['device_serial'] = array_values(array_unique(array_merge(
+                ['required', 'string', 'max:100'],
+                $existing
+            )));
+        }
 
         if (isset($rules['install_date'])) {
             $rules['install_date'][] = 'date';
@@ -215,7 +247,7 @@ class InsuranceService
 
     public function uploadFiles($data)
     {
-        $files = ['front_image', 'back_image', 'invoice_image', 'warranty_image'];
+        $files = ['front_image', 'device_back_image', 'back_image', 'invoice_image', 'warranty_image'];
         foreach ($files as $file) {
             if (isset($data[$file]) && !empty($data[$file]))
                 $data[$file] = $this->uploadVideo($data[$file], 'warranty');

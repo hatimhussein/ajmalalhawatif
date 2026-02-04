@@ -41,6 +41,7 @@ Route::get('skudo-warranty-new', function () {
 
 Route::resource('skudo-warranty', 'WarrantyController')->names('front.skudo.warranty');
 Route::get('skudo-warranty-insurance/{insurance}', 'WarrantyController@findInsurance')->name('skudo.warranty.insurance');
+Route::get('skudo-warranty-insurances-by-phone', 'WarrantyController@findInsurancesByPhone')->name('skudo.warranty.insurances_by_phone');
 
 Route::resource('skudo-insurance', 'InsuranceController')->names('front.skudo.insurance');
 

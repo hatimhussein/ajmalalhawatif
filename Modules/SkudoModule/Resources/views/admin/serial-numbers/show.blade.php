@@ -30,10 +30,12 @@
                     </div>
                 </div>
                 <div class="page-title" style="float:right">
-                    <a class="mt-4 btn btn-button-16 mr-2"
-                       href="{{route('skudo.serial-numbers.edit', $serialNumber->id)}}">
-                        تعديل
-                    </a>
+                    @can('update_skudo_serial_numbers')
+                        <a class="mt-4 btn btn-button-16 mr-2"
+                           href="{{route('skudo.serial-numbers.edit', $serialNumber->id)}}">
+                            تعديل
+                        </a>
+                    @endcan
                     <a class="mt-4 btn btn-button-16 mr-2"
                        href="{{route('skudo.serial-numbers.index')}}">
                         العودة
@@ -111,9 +113,11 @@
                                         <div class="widget-content widget-content-area">
                                             <div class="row">
                                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                    <a href="{{ route('skudo.serial-numbers.edit', $serialNumber->id) }}" class="btn btn-warning btn-block">
-                                                        <i class="flaticon-edit-1"></i> تعديل
-                                                    </a>
+                                                    @can('update_skudo_serial_numbers')
+                                                        <a href="{{ route('skudo.serial-numbers.edit', $serialNumber->id) }}" class="btn btn-warning btn-block">
+                                                            <i class="flaticon-edit-1"></i> تعديل
+                                                        </a>
+                                                    @endcan
                                                 </div>
                                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                     <a href="{{ route('skudo.serial-numbers.index') }}" class="btn btn-secondary btn-block">

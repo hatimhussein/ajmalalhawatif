@@ -29,7 +29,7 @@
                                                 <form action="{{ route('front.skudo.insurance.index') }}" method="get">
                                                     <input type="search" name="q" id="insurance-search"
                                                            value="{{ $search }}"
-                                                           placeholder="البحث برقم التسجيل أو الرقم التسلسلي للمنتج">
+                                                           placeholder="{{ __('skudomodule::insurance.search_by_phone_placeholder') }}">
                                                     <button class="btn btn-info" type="submit">{{ __('usermodule::admin.search') }}</button>
                                                 </form>
                                             </div>
@@ -145,7 +145,7 @@
                                                             <ul class="warranty-actions">
                                                                 <li>
                                                                     <a class="btn btn-info a-button p-0"
-                                                                       href="{{ route('front.skudo.insurance.show', $insurance->id) }}"
+                                                                       href="{{ route('front.skudo.insurance.show', $insurance->id) }}?phone={{ urlencode($search) }}"
                                                                        title="{{__('ordermodule::order.order_details')}}">
                                                                         <i class="icon-eye-open"></i>
                                                                     </a>
@@ -170,7 +170,18 @@
                                 @else
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <h3 class="text-center">{{__('skudomodule::insurance.no_result')}}</h3>
+                                            @php $qText = trim((string) ($search ?? request()->get('q', ''))); @endphp
+                                            @if($qText !== '')
+                                                <h3 class="text-center mb-2">{{ __('skudomodule::insurance.empty_search_title') }}</h3>
+                                                <p class="text-center text-muted" style="font-size: 14px;">
+                                                    {{ __('skudomodule::insurance.empty_search_hint', ['q' => $qText]) }}
+                                                </p>
+                                            @else
+                                                <h3 class="text-center mb-2">{{ __('skudomodule::insurance.empty_state_title') }}</h3>
+                                                <p class="text-center text-muted" style="font-size: 14px;">
+                                                    {{ __('skudomodule::insurance.empty_state_hint') }}
+                                                </p>
+                                            @endif
                                         </div>
                                     </div>
                                 @endif

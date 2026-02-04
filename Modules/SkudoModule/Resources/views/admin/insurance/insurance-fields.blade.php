@@ -293,75 +293,49 @@
                                 <i class="flaticon-attachment"></i>
                             </h2>
                         </div>
-                        @if($insurance->front_image)
-                            <div class="col-lg-4">
-                                <label> {{__('warrantymodule::insurance.front_image')}}</label>
-                                <div
-                                    class="custom-file-container__image-preview product-list-img">
-                                    @if(is_video($insurance->front_image))
-                                        <video controls>
-                                            <source
-                                                src="{{asset('images/warranty/'.$insurance->front_image)}}"
-                                                type="video/mp4">
-                                            <source
-                                                src="{{asset('images/warranty/'.$insurance->front_image)}}"
-                                                type="video/quicktime">
-                                            Your browser does not support the video
-                                            tag.
-                                        </video>
+                        @php
+                            $notAvailable = __('skudomodule::insurance.image_not_available');
+                            $attachments = [
+                                [
+                                    'label' => 'صورة الجهاز من الأمام بعد التركيب (تُظهر الرقم التسلسلي)',
+                                    'media' => $insurance->front_image,
+                                ],
+                                [
+                                    'label' => __('skudomodule::insurance.device_back_image'),
+                                    'media' => $insurance->device_back_image,
+                                ],
+                                [
+                                    'label' => __('skudomodule::insurance.back_image'),
+                                    'media' => $insurance->back_image,
+                                ],
+                                [
+                                    'label' => 'صورة الفاتورة',
+                                    'media' => $insurance->invoice_image,
+                                ],
+                            ];
+                        @endphp
+
+                        @foreach($attachments as $att)
+                            <div class="col-lg-6 mb-3">
+                                <label>{{ $att['label'] }}</label>
+                                <div class="custom-file-container__image-preview product-list-img">
+                                    @if(!empty($att['media']))
+                                        @if(is_video($att['media']))
+                                            <video controls style="width: 100%; max-height: 300px;">
+                                                <source src="{{asset('images/warranty/'.$att['media'])}}" type="video/mp4">
+                                                <source src="{{asset('images/warranty/'.$att['media'])}}" type="video/quicktime">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        @else
+                                            <img src="{{asset('images/warranty/'.$att['media'])}}" alt=""/>
+                                        @endif
                                     @else
-                                        <img
-                                            src="{{asset('images/warranty/'.$insurance->front_image)}}"
-                                            alt=""/>
+                                        <div class="text-muted text-center py-4" style="width: 100%;">{{ $notAvailable }}</div>
                                     @endif
                                 </div>
                             </div>
-                        @endif
-                        @if($insurance->back_image)
-                            <div class="col-lg-4">
-                                <label> {{__('warrantymodule::insurance.back_image')}}</label>
-                                <div
-                                    class="custom-file-container__image-preview product-list-img">
-                                    @if(is_video($insurance->back_image))
-                                        <video controls>
-                                            <source
-                                                src="{{asset('images/warranty/'.$insurance->back_image)}}"
-                                                type="video/mp4">
-                                            <source
-                                                src="{{asset('images/warranty/'.$insurance->back_image)}}"
-                                                type="video/quicktime">
-                                            Your browser does not support the video
-                                            tag.
-                                        </video>
-                                    @else
-                                        <img
-                                            src="{{asset('images/warranty/'.$insurance->back_image)}}"/>
-                                    @endif
-                                </div>
-                            </div>
-                        @endif
-                        @if($insurance->warranty_image)
-                            <div class="col-lg-4">
-                                <label> {{__('warrantymodule::insurance.warranty_image')}}</label>
-                                <div
-                                    class="custom-file-container__image-preview product-list-img">
-                                    @if(is_video($insurance->warranty_image))
-                                        <video controls>
-                                            <source
-                                                src="{{asset('images/warranty/'.$insurance->warranty_image)}}"
-                                                type="video/mp4">
-                                            <source
-                                                src="{{asset('images/warranty/'.$insurance->warranty_image)}}"
-                                                type="video/quicktime">
-                                            Your browser does not support the video
-                                            tag.
-                                        </video>
-                                    @else
-                                        <img src="{{asset('images/warranty/'.$insurance->warranty_image)}}"/>
-                                    @endif
-                                </div>
-                            </div>
-                        @endif
+                        @endforeach
+                        {{-- warranty_image intentionally not shown for Skudo insurance to match client UI --}}
                     </div>
                 </div>
             </div>

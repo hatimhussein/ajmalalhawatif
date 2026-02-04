@@ -1,5 +1,5 @@
 <?php $__env->startSection('title'); ?>
-    <?php echo e(__('commonmodule::front.warranty')); ?>
+    <?php echo e(__('skudomodule::insurance.page_title')); ?>
 
 <?php $__env->stopSection(); ?>
 
@@ -14,11 +14,11 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
             color: white;
-            font-weight: 600;
             padding: 10px 20px;
             transition: all 0.3s ease;
             box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
             white-space: nowrap;
+            height: 100%;
         }
         
         #search_serial_btn:hover {
@@ -38,16 +38,6 @@
             opacity: 0.7;
         }
         
-        #search_serial_btn i {
-            margin-left: 5px;
-        }
-        
-        /* تحسين مظهر الحقل */
-        #package_serial {
-            border-radius: 4px 0 0 4px;
-            border-right: none;
-        }
-        
         .input-group #package_serial:focus {
             box-shadow: none;
             border-color: #667eea;
@@ -58,6 +48,8 @@
             width: 95%;
             display: flex;
         }
+
+        /* Mobile: keep same phone layout as warranty (code left, number right) */
     </style>
 <?php $__env->stopSection(); ?>
 
@@ -102,17 +94,10 @@
                                                     </div>
                                                 <?php endif; ?>
                                             </div>
-                                            <div class="col-md-6">
-                                                <?php if($inputs->contains('key', 'phone_code_id')): ?>
-                                                    <div class="form-group">
-                                                        <?php echo $__env->make("warrantymodule::front.includes.input", ['input' => $inputs->where('key', 'phone_code_id')->first(), 'localeFile' => 'insurance'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-                                                    </div>
-                                                <?php endif; ?>
-                                            </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-8">
                                                 <?php if($inputs->contains('key', 'phone')): ?>
                                                     <div class="form-group">
-                                                        <?php echo $__env->make("warrantymodule::front.includes.input", ['input' => $inputs->where('key', 'phone')->first(), 'localeFile' => 'insurance'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                                                        <?php echo $__env->make("skudomodule::front.includes.input", ['input' => $inputs->where('key', 'phone')->first(), 'localeFile' => 'insurance'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                                                     </div>
                                                 <?php endif; ?>
                                             </div>
@@ -142,15 +127,25 @@
                                         <?php else: ?>
                                             <div class="form-group">
                                                 <label for="package_serial" class="required">الرقم التسلسلي للمنتج (البكج)</label>
-                                                <div class="input-group" id="package_serial_group">
-                                                    <input type="text" name="package_serial" id="package_serial" class="form-control" maxlength="100" placeholder="الرقم التسلسلي للمنتج (البكج)">
+                                                <small class="help-block" style="font-size: 11px; font-weight: bold; color: black;">أدخل الرقم التسلسلي ثم اضغط على "تحقق من الرقم" للتأكد من صحته</small>
+                                                <div class="input-group" id="package_serial_group" style="direction: rtl;">
+                                                    <input type="text" name="package_serial" id="package_serial" class="form-control" maxlength="100" placeholder="الرقم التسلسلي للمنتج (البكج)"
+                                                           style="border-top-left-radius: 0; border-bottom-left-radius: 0; border-left: 0;">
                                                     <div class="input-group-append">
-                                                        <button type="button" id="search_serial_btn" class="btn btn-primary" style="border-radius: 0 4px 4px 0;">
-                                                            <i class="glyphicon glyphicon-search"></i> تحقق من الرقم
+                                                        <button type="button" id="search_serial_btn" class="btn btn-primary" 
+                                                                style="border-top-left-radius: 4px; border-bottom-left-radius: 4px; border-top-right-radius: 0; border-bottom-right-radius: 0; white-space: nowrap; padding: 0.375rem 1rem;">
+                                                            تحقق من الرقم
                                                         </button>
                                                     </div>
                                                 </div>
-                                                <small class="form-text text-muted">أدخل الرقم التسلسلي ثم اضغط على "تحقق من الرقم" للتأكد من صحته</small>
+                                                <div class="mt-2">
+                                                    <button type="button" id="scan_serial_btn" class="btn btn-dark w-100"
+                                                            style="white-space: nowrap;">
+                                                        <i class="glyphicon glyphicon-camera" style="margin-left: 6px;"></i>
+                                                        <?php echo e(__('skudomodule::insurance.scan_serial')); ?>
+
+                                                    </button>
+                                                </div>
                                                 <div id="package_serial_info" class="mt-2" style="display: none;">
                                                     <div class="alert alert-success" style="border-radius: 8px; border-left: 4px solid #28a745;">
                                                         <div class="row">
@@ -192,7 +187,7 @@
                                         <?php else: ?>
                                             <div class="form-group">
                                                 <label for="device_serial" class="required">الرقم التسلسلي للجهاز</label>
-                                                <small class="help-block text-muted">الرقم التسلسلي للجهاز من خلال النقر على: <strong>#06#*</strong> ثم اتصال</small>
+                                                <small class="help-block" style="font-size: 11px; font-weight: bold; color: black;">الرقم التسلسلي للجهاز من خلال النقر على: <strong>#06#*</strong> ثم اتصال</small>
 
                                                 <input type="text" name="device_serial" id="device_serial" class="form-control" maxlength="100" placeholder="الرقم التسلسلي للجهاز">
                                             </div>
@@ -216,14 +211,15 @@
                                     <?php
                                         $fileInputs = $inputs->where('properties.type', 'file');
                                         $hasFront = $fileInputs->contains('key', 'front_image');
+                                        $hasDeviceBack = $fileInputs->contains('key', 'device_back_image');
                                         $hasBack = $fileInputs->contains('key', 'back_image');
                                     ?>
 
                                     
                                     <?php if($hasFront): ?>
                                         <?php $input = $fileInputs->where('key', 'front_image')->first(); ?>
-                                        <div class="col-md-4 custom-file-container" data-upload-id="front_image">
-                                            <label for="front_image" class="required">صورة الجهاز من الأمام بعد التركيب <?php if($input->value_en): ?><em class="required">*</em><?php endif; ?></label>
+                                        <div class="col-md-3 custom-file-container" data-upload-id="front_image">
+                                            <label for="front_image" class="required"> صورة الجهاز من الأمام بعد التركيب (تُظهر الرقم التسلسلي) <?php if($input->value_en): ?><em class="required">*</em><?php endif; ?></label>
                                             <label> <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image"></a></label>
                                             <label class="custom-file-container__custom-file">
                                                 <input type="file" name="front_image" id="front_image" class="custom-file-container__custom-file__custom-file-input" accept="image/*,video/*">
@@ -232,8 +228,8 @@
                                             <div class="custom-file-container__image-preview" style="min-height: 180px; background-position: center; background-repeat: no-repeat; background-size: contain; background-color: #f7f7f7; border: 1px dashed #ddd;"></div>
                                         </div>
                                     <?php else: ?>
-                                        <div class="col-md-4 custom-file-container" data-upload-id="front_image">
-                                            <label for="front_image" class="required">صورة الجهاز من الأمام بعد التركيب</label>
+                                        <div class="col-md-3 custom-file-container" data-upload-id="front_image">
+                                            <label for="front_image" class="required">  صورة الجهاز من الأمام بعد التركيب (تُظهر الرقم التسلسلي)</label>
                                             <label> <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image"></a></label>
                                             <label class="custom-file-container__custom-file">
                                                 <input type="file" name="front_image" id="front_image" class="custom-file-container__custom-file__custom-file-input" accept="image/*,video/*">
@@ -244,9 +240,33 @@
                                     <?php endif; ?>
 
                                     
+                                    <?php if($hasDeviceBack): ?>
+                                        <?php $input = $fileInputs->where('key', 'device_back_image')->first(); ?>
+                                        <div class="col-md-3 custom-file-container" data-upload-id="device_back_image">
+                                            <label for="device_back_image" class="required"><?php echo e(__('skudomodule::insurance.device_back_image')); ?> <?php if($input->value_en): ?><em class="required">*</em><?php endif; ?></label>
+                                            <label> <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image"></a></label>
+                                            <label class="custom-file-container__custom-file">
+                                                <input type="file" name="device_back_image" id="device_back_image" class="custom-file-container__custom-file__custom-file-input" accept="image/*,video/*">
+                                                <span class="custom-file-container__custom-file__custom-file-control"></span>
+                                            </label>
+                                            <div class="custom-file-container__image-preview"></div>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="col-md-3 custom-file-container" data-upload-id="device_back_image">
+                                            <label for="device_back_image" class="required"><?php echo e(__('skudomodule::insurance.device_back_image')); ?></label>
+                                            <label> <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image"></a></label>
+                                            <label class="custom-file-container__custom-file">
+                                                <input type="file" name="device_back_image" id="device_back_image" class="custom-file-container__custom-file__custom-file-input" accept="image/*,video/*">
+                                                <span class="custom-file-container__custom-file__custom-file-control"></span>
+                                            </label>
+                                            <div class="custom-file-container__image-preview"></div>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    
                                     <?php if($hasBack): ?>
                                         <?php $input = $fileInputs->where('key', 'back_image')->first(); ?>
-                                        <div class="col-md-4 custom-file-container" data-upload-id="back_image">
+                                        <div class="col-md-3 custom-file-container" data-upload-id="back_image">
                                             <label for="back_image" class="required">صورة الرقم التسلسلي الموجود على المنتج (لبكج) <?php if($input->value_en): ?><em class="required">*</em><?php endif; ?></label>
                                             <label> <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image"></a></label>
                                             <label class="custom-file-container__custom-file">
@@ -256,7 +276,7 @@
                                             <div class="custom-file-container__image-preview"></div>
                                         </div>
                                     <?php else: ?>
-                                        <div class="col-md-4 custom-file-container" data-upload-id="back_image">
+                                        <div class="col-md-3 custom-file-container" data-upload-id="back_image">
                                             <label for="back_image" class="required">صورة الرقم التسلسلي الموجود على المنتج (لبكج)</label>
                                             <label> <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image"></a></label>
                                             <label class="custom-file-container__custom-file">
@@ -268,7 +288,7 @@
                                     <?php endif; ?>
 
                                     
-                                    <div class="col-md-4 custom-file-container" data-upload-id="invoice_image">
+                                    <div class="col-md-3 custom-file-container" data-upload-id="invoice_image">
                                         <label for="invoice_image" class="required">صورة الفاتورة</label>
                                         <label> <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image"></a></label>
                                         <label class="custom-file-container__custom-file">
@@ -280,14 +300,14 @@
 
                                     
                                     <?php $__currentLoopData = $fileInputs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $fi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <?php if(!in_array($fi->key, ['front_image','back_image','invoice_image'])): ?>
+                                        <?php if(!in_array($fi->key, ['front_image','device_back_image','back_image','invoice_image'])): ?>
                                             <?php if(stripos($fi->key, 'qr') !== false): ?>
                                                 <?php continue; ?>
                                             <?php endif; ?>
                                             <?php if($fi->key === 'warranty_image'): ?>
                                                 <?php continue; ?>
                                             <?php endif; ?>
-                                            <div class="col-md-4 custom-file-container" data-upload-id="<?php echo e($fi->key); ?>">
+                                            <div class="col-md-3 custom-file-container" data-upload-id="<?php echo e($fi->key); ?>">
                                                 <label for="<?php echo e($fi->key); ?>" class="required"><?php echo e(__('skudomodule::insurance.'.$fi->key)); ?> <?php if($fi->value_en): ?><em class="required">*</em><?php endif; ?></label>
                                                 <label> <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image"></a></label>
                                                 <label class="custom-file-container__custom-file">
@@ -320,6 +340,29 @@
                                     <span><span><?php echo e(__('usermodule::login.save')); ?></span></span></button>
                             </div>
                         </form>
+
+                        
+                        <div class="modal fade" id="barcodeScannerModal" tabindex="-1" role="dialog" aria-labelledby="barcodeScannerModalTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="barcodeScannerModalTitle"><?php echo e(__('skudomodule::insurance.scanner_title')); ?></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="text-muted mb-2"><?php echo e(__('skudomodule::insurance.scanner_hint')); ?></p>
+                                        <div id="barcodeScannerStatus" class="small text-muted mb-2"><?php echo e(__('skudomodule::insurance.scanner_starting')); ?></div>
+                                        <div id="barcodeScannerReader" style="width: 100%; max-width: 640px; margin: 0 auto;"></div>
+                                        <div id="barcodeScannerError" class="alert alert-danger mt-3" style="display:none;"></div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo e(__('skudomodule::insurance.scanner_close')); ?></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -331,10 +374,12 @@
 
 <?php $__env->startSection('js'); ?>
     <script src="<?php echo e(asset('assets/admin/plugins/file-upload/file-upload-with-preview.js')); ?>"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.10/html5-qrcode.min.js"></script>
 
     <script>
         // تهيئة front_image و back_image و invoice_image أولاً (يتم عرضهم يدوياً في القالب)
         new FileUploadWithPreview('front_image');
+        new FileUploadWithPreview('device_back_image');
         new FileUploadWithPreview('back_image');
         new FileUploadWithPreview('invoice_image');
         
@@ -342,7 +387,7 @@
         <?php $__currentLoopData = $fileInputs->filter(function($fi){ 
             return stripos($fi->key, 'qr') === false 
                 && $fi->key !== 'warranty_image' 
-                && !in_array($fi->key, ['front_image', 'back_image', 'invoice_image']); 
+                && !in_array($fi->key, ['front_image', 'device_back_image', 'back_image', 'invoice_image']); 
         }); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $input): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         new FileUploadWithPreview('<?php echo e($input->key); ?>');
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -403,6 +448,126 @@
 
         // البحث عند النقر على زر البحث
         let isSearching = false;
+
+        // Barcode scanner
+        let _html5QrCode = null;
+        let _scannerRunning = false;
+
+        function _scannerSetError(msg) {
+            if (msg) {
+                $('#barcodeScannerError').text(msg).show();
+            } else {
+                $('#barcodeScannerError').hide().text('');
+            }
+        }
+
+        async function startBarcodeScanner() {
+            _scannerSetError('');
+            $('#barcodeScannerStatus').text('<?php echo e(__('skudomodule::insurance.scanner_starting')); ?>');
+
+            // Camera APIs require secure context (HTTPS) except localhost
+            const host = (window.location && window.location.hostname) ? window.location.hostname : '';
+            const isLocalhost = (host === 'localhost' || host === '127.0.0.1' || host === '[::1]');
+            if (!window.isSecureContext && !isLocalhost) {
+                _scannerSetError('<?php echo e(__('skudomodule::insurance.scanner_https_required')); ?>');
+                return;
+            }
+
+            if (typeof Html5Qrcode === 'undefined') {
+                _scannerSetError('<?php echo e(__('skudomodule::insurance.scanner_not_supported')); ?>');
+                return;
+            }
+
+            try {
+                if (!_html5QrCode) {
+                    _html5QrCode = new Html5Qrcode('barcodeScannerReader');
+                }
+
+                if (_scannerRunning) return;
+
+                const config = {
+                    fps: 10,
+                    qrbox: { width: 300, height: 200 },
+                    // supports EAN/Code128/etc (not only QR)
+                    formatsToSupport: [
+                        Html5QrcodeSupportedFormats.EAN_13,
+                        Html5QrcodeSupportedFormats.EAN_8,
+                        Html5QrcodeSupportedFormats.CODE_128,
+                        Html5QrcodeSupportedFormats.CODE_39,
+                        Html5QrcodeSupportedFormats.UPC_A,
+                        Html5QrcodeSupportedFormats.UPC_E,
+                        Html5QrcodeSupportedFormats.QR_CODE
+                    ]
+                };
+
+                _scannerRunning = true;
+
+                const onDecoded = (decodedText) => {
+                    const val = (decodedText || '').trim();
+                    if (!val) return;
+
+                    $('#package_serial').val(val).trigger('input');
+                    $('#barcodeScannerModal').modal('hide');
+                    // Auto run existing verification
+                    setTimeout(() => $('#search_serial_btn').click(), 150);
+                };
+
+                // Prefer back camera on mobile
+                try {
+                    await _html5QrCode.start(
+                        { facingMode: "environment" },
+                        config,
+                        onDecoded,
+                        () => {}
+                    );
+                } catch (e1) {
+                    // Fallback to first available camera
+                    const devices = await Html5Qrcode.getCameras();
+                    const cameraId = devices?.[0]?.id;
+                    if (!cameraId) {
+                        _scannerRunning = false;
+                        _scannerSetError('<?php echo e(__('skudomodule::insurance.scanner_no_camera_found')); ?>');
+                        return;
+                    }
+                    await _html5QrCode.start(
+                        cameraId,
+                        config,
+                        onDecoded,
+                        () => {}
+                    );
+                }
+
+                $('#barcodeScannerStatus').text('');
+            } catch (e) {
+                _scannerRunning = false;
+                const name = (e && e.name) ? e.name : '';
+                const msg =
+                    (name === 'NotAllowedError' || name === 'PermissionDeniedError')
+                        ? '<?php echo e(__('skudomodule::insurance.scanner_permission_denied')); ?>'
+                        : (name === 'NotFoundError')
+                            ? '<?php echo e(__('skudomodule::insurance.scanner_no_camera_found')); ?>'
+                            : (name === 'NotReadableError')
+                                ? '<?php echo e(__('skudomodule::insurance.scanner_camera_in_use')); ?>'
+                                : (name === 'SecurityError')
+                                    ? '<?php echo e(__('skudomodule::insurance.scanner_https_required')); ?>'
+                                    : '<?php echo e(__('skudomodule::insurance.scanner_not_supported')); ?>';
+                _scannerSetError(msg);
+            }
+        }
+
+        async function stopBarcodeScanner() {
+            try {
+                if (_html5QrCode && _scannerRunning) {
+                    await _html5QrCode.stop();
+                    await _html5QrCode.clear();
+                }
+            } catch (e) {
+                // ignore
+            } finally {
+                _scannerRunning = false;
+                $('#barcodeScannerReader').html('');
+            }
+        }
         
         // إخفاء الرسائل عند تعديل الحقل
         $('#package_serial').on('input', function() {
@@ -445,6 +610,17 @@
                 searchSerialNumber(serialNumber);
             }
         });
+
+        // Open scanner modal
+        $('#scan_serial_btn').on('click', async function() {
+            $('#barcodeScannerModal').modal('show');
+            // IMPORTANT: start camera from the same user gesture (mobile Safari)
+            await startBarcodeScanner();
+        });
+
+        $('#barcodeScannerModal').on('hidden.bs.modal', function() {
+            stopBarcodeScanner();
+        });
         
         // السماح بالبحث عند الضغط على Enter في حقل الرقم التسلسلي
         $('#package_serial').on('keypress', function(e) {
@@ -461,7 +637,7 @@
                 data: { serial: serialNumber },
                 success: function(response) {
                     // إعادة تفعيل الزر وإعادة تعيين flag
-                    $('#search_serial_btn').prop('disabled', false).html('<i class="glyphicon glyphicon-search"></i> تحقق من الرقم');
+                    $('#search_serial_btn').prop('disabled', false).html('تحقق من الرقم');
                     isSearching = false;
                     
                     // إخفاء جميع الرسائل أولاً
@@ -503,7 +679,7 @@
                 },
                 error: function() {
                     // إعادة تفعيل الزر وإعادة تعيين flag
-                    $('#search_serial_btn').prop('disabled', false).html('<i class="glyphicon glyphicon-search"></i> تحقق من الرقم');
+                    $('#search_serial_btn').prop('disabled', false).html('تحقق من الرقم');
                     isSearching = false;
                     $('#package_serial_info').hide();
                     $('#package_serial_error').hide();

@@ -28,7 +28,7 @@
                                                 <form action="<?php echo e(route('front.skudo.insurance.index')); ?>" method="get">
                                                     <input type="search" name="q" id="insurance-search"
                                                            value="<?php echo e($search); ?>"
-                                                           placeholder="البحث برقم التسجيل أو الرقم التسلسلي للمنتج">
+                                                           placeholder="<?php echo e(__('skudomodule::insurance.search_by_phone_placeholder')); ?>">
                                                     <button class="btn btn-info" type="submit"><?php echo e(__('usermodule::admin.search')); ?></button>
                                                 </form>
                                             </div>
@@ -146,7 +146,7 @@
                                                             <ul class="warranty-actions">
                                                                 <li>
                                                                     <a class="btn btn-info a-button p-0"
-                                                                       href="<?php echo e(route('front.skudo.insurance.show', $insurance->id)); ?>"
+                                                                       href="<?php echo e(route('front.skudo.insurance.show', $insurance->id)); ?>?phone=<?php echo e(urlencode($search)); ?>"
                                                                        title="<?php echo e(__('ordermodule::order.order_details')); ?>">
                                                                         <i class="icon-eye-open"></i>
                                                                     </a>
@@ -171,7 +171,20 @@
                                 <?php else: ?>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <h3 class="text-center"><?php echo e(__('skudomodule::insurance.no_result')); ?></h3>
+                                            <?php $qText = trim((string) ($search ?? request()->get('q', ''))); ?>
+                                            <?php if($qText !== ''): ?>
+                                                <h3 class="text-center mb-2"><?php echo e(__('skudomodule::insurance.empty_search_title')); ?></h3>
+                                                <p class="text-center text-muted" style="font-size: 14px;">
+                                                    <?php echo e(__('skudomodule::insurance.empty_search_hint', ['q' => $qText])); ?>
+
+                                                </p>
+                                            <?php else: ?>
+                                                <h3 class="text-center mb-2"><?php echo e(__('skudomodule::insurance.empty_state_title')); ?></h3>
+                                                <p class="text-center text-muted" style="font-size: 14px;">
+                                                    <?php echo e(__('skudomodule::insurance.empty_state_hint')); ?>
+
+                                                </p>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 <?php endif; ?>

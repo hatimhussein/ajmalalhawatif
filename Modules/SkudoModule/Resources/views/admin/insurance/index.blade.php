@@ -30,10 +30,12 @@
                     </div>
                 </div>
                 <div class="page-title" style="float:right">
-                    <a class="mt-4 btn btn-button-16 mr-2"
-                       href="{{route('skudo.insurance.export')}}">
-                        {{__('productmodule::category.download')}}
-                    </a>
+                    @can('show_skudo_insurance')
+                        <a class="mt-4 btn btn-button-16 mr-2"
+                           href="{{route('skudo.insurance.export')}}">
+                            {{__('productmodule::category.download')}}
+                        </a>
+                    @endcan
                 </div>
             </div>
 
@@ -104,7 +106,7 @@
 
             </div>
 
-            @include('warrantymodule::admin.includes.attachment_modal')
+            @include('skudomodule::admin.includes.attachment_modal')
 
         </div>
     </div>

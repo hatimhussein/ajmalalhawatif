@@ -114,8 +114,54 @@
                                                     class="glyphicon glyphicon-picture"></i></h3>
                                         </div>
                                     </div>
-                                    @foreach($inputs->where('properties.type', 'file') as $input)
-                                        <div class="col-md-4 custom-file-container" data-upload-id="{{ $input->key }}">
+                                    @php
+                                        $fileInputs = $inputs->where('properties.type', 'file');
+                                        $orderedKeys = ['front_image', 'device_back_image', 'back_image', 'invoice_image'];
+                                    @endphp
+
+                                    {{-- Render core attachments in fixed order --}}
+                                    @foreach($orderedKeys as $k)
+                                        @php
+                                            $input = $fileInputs->where('key', $k)->first();
+                                            $required = $input ? (bool) $input->value_en : false;
+                                            $accept = $k === 'invoice_image' ? 'image/*' : 'image/*,video/*';
+                                        @endphp
+                                        <div class="col-md-3 custom-file-container" data-upload-id="{{ $k }}">
+                                            <label for="{{ $k }}" class="required">{{ __('skudomodule::insurance.'.$k) }}
+                                                @if($required)<em class="required">*</em>@endif
+                                            </label>
+                                            <label> <a href="javascript:void(0)"
+                                                       class="custom-file-container__image-clear"
+                                                       title="Clear Image"></a></label>
+                                            <label class="custom-file-container__custom-file">
+                                                <input type="file" name="{{ $k }}"
+                                                       title="{{ __('skudomodule::insurance.'.$k) }}"
+                                                       id="{{ $k }}"
+                                                       class="custom-file-container__custom-file__custom-file-input"
+                                                       accept="{{ $accept }}">
+                                                <span
+                                                    class="custom-file-container__custom-file__custom-file-control"></span>
+                                            </label>
+                                            <div id="{{ $k }}_preview" class="custom-file-container__image-preview">
+                                                @if($insurance->{$k} && is_video($insurance->{$k}))
+                                                    <div class="video_preview" style="position:relative;">
+                                                        <video width="100%" height="250" controls style="object-fit: contain">
+                                                            <source src="{{ asset('images/warranty/'.$insurance->{$k}) }}" type="video/mp4">
+                                                            <source src="{{ asset('images/warranty/'.$insurance->{$k}) }}" type="video/ogg">
+                                                            Your browser does not support the video tag.
+                                                        </video>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endforeach
+
+                                    {{-- Render any other file inputs (if any), excluding the fixed ones above --}}
+                                    @foreach($fileInputs as $input)
+                                        @if(in_array($input->key, $orderedKeys, true))
+                                            @continue
+                                        @endif
+                                        <div class="col-md-3 custom-file-container" data-upload-id="{{ $input->key }}">
                                             <label for="{{ $input->key }}"
                                                    class="required">{{__('skudomodule::insurance.'.$input->key)}}
                                                 @if($input->value_en)<em class="required">*</em>@endif
@@ -185,14 +231,29 @@
     <script src="{{ asset('assets/admin/plugins/file-upload/file-upload-with-preview.js')}}"></script>
 
     <script>
-        @foreach($inputs->where('properties.type', 'file') as $input)
-        new FileUploadWithPreview('{{ $input->key }}')
+        new FileUploadWithPreview('front_image');
+        new FileUploadWithPreview('device_back_image');
+        new FileUploadWithPreview('back_image');
+        new FileUploadWithPreview('invoice_image');
+
+        @foreach($inputs->where('properties.type', 'file')->filter(function($i){
+            return !in_array($i->key, ['front_image','device_back_image','back_image','invoice_image'], true);
+        }) as $input)
+        new FileUploadWithPreview('{{ $input->key }}');
         @endforeach
     </script>
 
 
     <script>
-        @foreach($inputs->where('properties.type', 'file') as $input)
+        @foreach(['front_image','device_back_image','back_image','invoice_image'] as $k)
+        @if ($insurance->{$k})
+        $("#{{$k}}_preview").css("background-image", "url('{{ asset('images/warranty/'.$insurance->{$k}) }}')");
+        @endif
+        @endforeach
+
+        @foreach($inputs->where('properties.type', 'file')->filter(function($i){
+            return !in_array($i->key, ['front_image','device_back_image','back_image','invoice_image'], true);
+        }) as $input)
         @if ($insurance->{$input->key})
         $("#{{$input->key}}_preview").css("background-image", "url('{{ asset('images/warranty/'.$insurance->{$input->key}) }}')");
         @endif

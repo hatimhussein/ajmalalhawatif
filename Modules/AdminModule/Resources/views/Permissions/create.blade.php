@@ -81,7 +81,6 @@
                                          <tbody>
                                            @foreach ($permissionsGroup as $key => $permissions)
 
-                                             <tr>
                                                <td class="checkbox-column"> 1 </td>
                                                <td class="text-center"> {{$permissions[0]['title']}} </td>
 

@@ -28,10 +28,12 @@
                     </div>
                 </div>
                 <div class="page-title" style="float:right">
-                    <a class="mt-4 btn btn-button-16 mr-2"
-                       href="<?php echo e(route('skudo.serial-numbers.edit', $serialNumber->id)); ?>">
-                        تعديل
-                    </a>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update_skudo_serial_numbers')): ?>
+                        <a class="mt-4 btn btn-button-16 mr-2"
+                           href="<?php echo e(route('skudo.serial-numbers.edit', $serialNumber->id)); ?>">
+                            تعديل
+                        </a>
+                    <?php endif; ?>
                     <a class="mt-4 btn btn-button-16 mr-2"
                        href="<?php echo e(route('skudo.serial-numbers.index')); ?>">
                         العودة
@@ -109,9 +111,11 @@
                                         <div class="widget-content widget-content-area">
                                             <div class="row">
                                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                    <a href="<?php echo e(route('skudo.serial-numbers.edit', $serialNumber->id)); ?>" class="btn btn-warning btn-block">
-                                                        <i class="flaticon-edit-1"></i> تعديل
-                                                    </a>
+                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update_skudo_serial_numbers')): ?>
+                                                        <a href="<?php echo e(route('skudo.serial-numbers.edit', $serialNumber->id)); ?>" class="btn btn-warning btn-block">
+                                                            <i class="flaticon-edit-1"></i> تعديل
+                                                        </a>
+                                                    <?php endif; ?>
                                                 </div>
                                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                     <a href="<?php echo e(route('skudo.serial-numbers.index')); ?>" class="btn btn-secondary btn-block">

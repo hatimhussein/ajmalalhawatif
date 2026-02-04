@@ -1,5 +1,5 @@
 <?php if($input->key == 'phone'): ?>
-    <div class="row" style="display: flex;">
+    <div class="row skudo-phone-row" style="display: flex;">
         <div class="col-md-8 col-xs-8">
             <label for="phone"
                    class="required"><?php echo e(__('skudomodule::insurance.phone')); ?>

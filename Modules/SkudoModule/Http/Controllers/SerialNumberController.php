@@ -12,6 +12,15 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class SerialNumberController extends Controller
 {
+    public function __construct()
+    {
+        // Admin CRUD permissions for serial numbers
+        $this->middleware('auth:admin')->except(['search']);
+        $this->middleware('permission:show_skudo_serial_numbers')->only(['index', 'show', 'export']);
+        $this->middleware('permission:add_skudo_serial_numbers')->only(['create', 'store', 'import', 'importStore']);
+        $this->middleware('permission:update_skudo_serial_numbers')->only(['edit', 'update']);
+        $this->middleware('permission:delete_skudo_serial_numbers')->only(['destroy']);
+    }
     /**
      * Display a listing of the resource.
      * @return Response

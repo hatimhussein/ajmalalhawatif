@@ -61,14 +61,27 @@
             const url = '{!! route('skudo.insurance.show.modal', 'insurance_id') !!}';
 
             $('.table-controls a').addClass('disabled');
+            
+            // عرض loading
+            $('#modal-insurance-box').html('<div class="text-center"><i class="fas fa-spinner fa-spin fa-3x"></i><p>جاري التحميل...</p></div>');
+            $('#insurance_modal').modal('show');
 
-            $.get(url.replace('insurance_id', id), (response) => {
-                $('#modal-insurance-box').html(response);
-
-                $('#insurance_modal').modal('show');
-
-                $('.table-controls a').removeClass('disabled');
-            })
+            $.get(url.replace('insurance_id', id))
+                .done(function(response) {
+                    $('#modal-insurance-box').html(response);
+                    $('.table-controls a').removeClass('disabled');
+                })
+                .fail(function(xhr, status, error) {
+                    console.error('Error loading insurance:', xhr.responseText);
+                    $('#modal-insurance-box').html(`
+                        <div class="alert alert-danger text-center">
+                            <i class="flaticon-cancel-12"></i>
+                            <h4>حدث خطأ أثناء تحميل البيانات</h4>
+                            <p>${xhr.responseJSON?.message || 'يرجى المحاولة مرة أخرى'}</p>
+                        </div>
+                    `);
+                    $('.table-controls a').removeClass('disabled');
+                });
         }
     </script>
 

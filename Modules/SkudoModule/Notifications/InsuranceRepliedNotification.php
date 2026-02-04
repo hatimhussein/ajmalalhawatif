@@ -74,8 +74,10 @@ class InsuranceRepliedNotification extends Notification
      */
     public function toSMS($notifiable): array
     {
-        $insurance_config = app('site_data')->where('key', 'insurance')->first();
-        $body = $this->generateBodyTest($notifiable) . '   ' . LanguageHelper::configTranslate($insurance_config) . ': ' . url('config/' . $insurance_config->id);
+        // $insurance_config = app('site_data')->where('key', 'insurance')->first();
+        // $body = $this->generateBodyTest($notifiable) . '   ' . LanguageHelper::configTranslate($insurance_config) . ': ' . url('config/' . $insurance_config->id);
+
+        $body = $this->generateBodyTest($notifiable);
 
         return [
             'body' => $body,

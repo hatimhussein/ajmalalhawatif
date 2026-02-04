@@ -75,8 +75,10 @@
                     <a href="<?php echo e(url('/catalog')); ?>"><?php echo e(__('commonmodule::front.catalogs')); ?></a>
                     <a href="<?php echo e(url('/config/5')); ?>"><?php echo LanguageHelper::configTranslate($site_data->where('key','privacy')->first()); ?></a>
                     <a href="<?php echo e(url('/config/3')); ?>"><?php echo LanguageHelper::configTranslate($site_data->where('key','aman')->first()); ?></a>
-                    <a href="<?php echo e(route('front.insurance.index')); ?>"><?php echo e(__('warrantymodule::insurance.insurance')); ?></a>
-                    <a href="<?php echo e(route('front.warranty.index')); ?>"><?php echo e(__('commonmodule::front.warranty')); ?></a>
+                    <?php if(auth()->guard()->check()): ?>
+                        <a href="<?php echo e(route('front.insurance.index')); ?>"><?php echo e(__('warrantymodule::insurance.insurance')); ?></a>
+                        <a href="<?php echo e(route('front.warranty.index')); ?>"><?php echo e(__('commonmodule::front.warranty')); ?></a>
+                    <?php endif; ?>
                     <a href="<?php echo e(route('front.skudo.insurance.index')); ?>"><?php echo e(__('commonmodule::front.insurance_skudo')); ?></a>
                     <a href="<?php echo e(route('front.skudo.warranty.index')); ?>"><?php echo e(__('commonmodule::front.warranty_skudo')); ?></a>
                 </div>

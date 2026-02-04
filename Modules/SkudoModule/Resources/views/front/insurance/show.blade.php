@@ -15,7 +15,7 @@
     <div class="main-container col2-right-layout">
         <div class="main container warranty-container">
             <div class="row w-attachments box">
-                <div class="col-lg-4 col-md-4">
+                <div class="col-lg-6 col-md-3">
                     @if($insurance->front_image)
                         <h5> صورة الجهاز من الأمام بعد التركيب</h5>
                         @if(is_video($insurance->front_image))
@@ -31,9 +31,25 @@
                         @endif
                     @endif
                 </div>
-                <div class="col-lg-4 col-md-4">
+                <div class="col-lg-6 col-md-3">
+                    @if($insurance->device_back_image)
+                        <h5> {{ __('skudomodule::insurance.device_back_image') }}</h5>
+                        @if(is_video($insurance->device_back_image))
+                            <video class="img-responsive" controls>
+                                <source src="{{asset('images/warranty/'.$insurance->device_back_image)}}" type="video/mp4">
+                                <source src="{{asset('images/warranty/'.$insurance->device_back_image)}}"
+                                        type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                        @else
+                            <img class="img-responsive"
+                                 src="{{asset('images/warranty/'.$insurance->device_back_image)}}"/>
+                        @endif
+                    @endif
+                </div>
+                <div class="col-lg-6 col-md-3">
                     @if($insurance->back_image)
-                        <h5> صورة الرقم التسلسلي الموجود على المنتج (لبكج)</h5>
+                        <h5> {{ __('skudomodule::insurance.back_image') }}</h5>
                         @if(is_video($insurance->back_image))
                             <video class="img-responsive" controls>
                                 <source src="{{asset('images/warranty/'.$insurance->back_image)}}" type="video/mp4">
@@ -44,6 +60,20 @@
                         @else
                             <img class="img-responsive"
                                  src="{{asset('images/warranty/'.$insurance->back_image)}}"/>
+                        @endif
+                    @endif
+                </div>
+                <div class="col-lg-6 col-md-3">
+                    @if($insurance->invoice_image)
+                        <h5> صورة الفاتورة</h5>
+                        @if(is_video($insurance->invoice_image))
+                            <video class="img-responsive" controls>
+                                <source src="{{asset('images/warranty/'.$insurance->invoice_image)}}" type="video/mp4">
+                                <source src="{{asset('images/warranty/'.$insurance->invoice_image)}}" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                        @else
+                            <img class="img-responsive" src="{{asset('images/warranty/'.$insurance->invoice_image)}}"/>
                         @endif
                     @endif
                 </div>

@@ -11,6 +11,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Modules\CommonModule\Helper\ApiResponseHelper;
+use Modules\CommonModule\Helper\UploaderHelper;
 use Modules\ConfigModule\Repository\ConfigRepository;
 use Modules\SkudoModule\Notifications\InsuranceRepliedNotification;
 use Modules\SkudoModule\Notifications\InsuranceReplyNotification;
@@ -20,13 +21,20 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class InsuranceAdminController extends Controller
 {
     use ApiResponseHelper;
+    use UploaderHelper;
 
-    private InsuranceRepository $insuranceRepository;
-    private ConfigRepository $configRepository;
+    /** @var InsuranceRepository */
+    private $insuranceRepository;
+    /** @var ConfigRepository */
+    private $configRepository;
 
     public function __construct(InsuranceRepository $insuranceRepository, ConfigRepository $configRepository)
     {
-        $this->middleware('permission:insurance');
+        // Granular permissions
+        $this->middleware('permission:show_skudo_insurance')->only(['index', 'insuranceServer', 'showModal', 'export']);
+        $this->middleware('permission:update_skudo_insurance')->only(['edit', 'update']);
+        $this->middleware('permission:delete_skudo_insurance')->only(['destroy']);
+
         $this->insuranceRepository = $insuranceRepository;
         $this->configRepository = $configRepository;
     }
@@ -110,11 +118,18 @@ class InsuranceAdminController extends Controller
         $insurance->update($data);
 
         if ($insurance->status == 1) {
-//            $insurance->merchant->notify(new InsuranceRepliedNotification($insurance));
-            notify($insurance->user, new InsuranceRepliedNotification($insurance));
+            if ($insurance->merchant) {
+                notify($insurance->merchant, new InsuranceRepliedNotification($insurance));
+            }
+
+            if ($insurance->user) {
+                notify($insurance->user, new InsuranceRepliedNotification($insurance));
+            }
         }
 
-        notify($insurance->merchant, new InsuranceReplyNotification($insurance));
+        if ($insurance->merchant) {
+            notify($insurance->merchant, new InsuranceReplyNotification($insurance));
+        }
 
         return redirect()->route('skudo.insurance.index')->with('updated', 'updated');
     }
@@ -127,9 +142,16 @@ class InsuranceAdminController extends Controller
         return Excel::download(new InsuranceExport($this->insuranceRepository), 'Insurances.xlsx');
     }
 
-    public function showModal($id)
+    public function showModal($insurance)
     {
-        $insurance = $this->insuranceRepository->first(['id' => $id]);
+        $insurance = $this->insuranceRepository->query()
+            ->with(['merchant', 'phone_code', 'admin'])
+            ->find($insurance);
+            
+        if (!$insurance) {
+            return response('<div class="alert alert-danger text-center">لم يتم العثور على بيانات التأمين</div>', 404);
+        }
+        
         return view('skudomodule::admin.insurance.insurance-fields', compact('insurance'));
     }
 
@@ -217,14 +239,16 @@ class InsuranceAdminController extends Controller
 //            $merchant = $insurance->merchant->company_name ?? '';
 //            $merchant_account = $insurance->merchant->account_number ?? '';
             $user_name = $insurance->user_name;
-            $phone = $insurance->phone ? ($insurance->phone_code->code ?? '') : ''.$insurance->phone;
+            $phone = $insurance->phone ? (($insurance->phone_code->code ?? '') . ' ' . $insurance->phone) : '';
 //            $email = $insurance->email;
             $dummy_text_1= $insurance->dummy_text_1;
             $dummy_text_2 = $insurance->dummy_text_2;
 //            $dummy_text_3 = $insurance->dummy_text_3;
             $att = addslashes($insurance->attachments_str);
+            // invoice_image is already included in attachments_str (4th position) for Skudo insurance
+            $inv = '';
             $attachments = '<ul class="table-controls">
-                              <li><a href="javascript: void(0)" onclick="showAttachments(\''.$att.'\')"
+                              <li><a href="javascript: void(0)" onclick="showAttachments(\''.$att.'\', \''.$inv.'\')"
                                                            data-toggle="tooltip" data-placement="top"
                                                            title="Shot">
                                                             <i class="flaticon-view-1 bg-info p-1 text-white"></i>
@@ -265,21 +289,14 @@ class InsuranceAdminController extends Controller
             $expire_date = $insurance->expire_date ? $insurance->expire_date->format('Y-m-d') : '';
             $adminName =  $insurance->admin->name ?? '-';
 
-            $action = '<ul class="table-controls">
-                       <li><a href="'.route('skudo.insurance.edit', $insurance->id).'"
-                             data-toggle="tooltip" data-placement="top" title="Edit">
-                               <i class="flaticon-edit  bg-success p-1 text-white"></i>
-                             </a></li>
-                       <li>
-                       <form class="inline" action="'.route('skudo.insurance.destroy', $insurance->id) .'" method="POST">
-                        '.method_field('DELETE') . csrf_field() .'
-                         <button class="unst" title="Delete" type="submit"
-                            onclick="return confirm(\''.__("skudomodule::admin.delete_warranty").'\')">
-                           <i class="flaticon-delete  bg-danger p-1 text-white"></i>
-                            </button>
-                         </form>
-                        </li>
-                        </ul>';
+            $actionParts = [];
+            if (auth('admin')->user() && auth('admin')->user()->can('update_skudo_insurance')) {
+                $actionParts[] = '<li><a href="'.route('skudo.insurance.edit', $insurance->id).'" data-toggle="tooltip" data-placement="top" title="Edit"><i class="flaticon-edit  bg-success p-1 text-white"></i></a></li>';
+            }
+            if (auth('admin')->user() && auth('admin')->user()->can('delete_skudo_insurance')) {
+                $actionParts[] = '<li><form class="inline" action="'.route('skudo.insurance.destroy', $insurance->id) .'" method="POST">'.method_field('DELETE') . csrf_field() .'<button class="unst" title="Delete" type="submit" onclick="return confirm(\''.__("skudomodule::admin.delete_warranty").'\')"><i class="flaticon-delete  bg-danger p-1 text-white"></i></button></form></li>';
+            }
+            $action = '<ul class="table-controls">'.implode('', $actionParts).'</ul>';
 
 
             $responce[]=[$id,$user_name,$phone,$dummy_text_1,$dummy_text_2,$attachments,$usage_date, $created_at,$replied_at,$status,$expire_date,$adminName,$action];

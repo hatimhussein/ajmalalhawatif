@@ -12,7 +12,7 @@ return array(
     'my_orders' => 'طلباتي',
     'wishlist' => 'المفضلة',
     'returns' => 'الاسترجاع',
-    'warranty' => 'المطالبة والضمان',
+    'warranty' => 'المطالبة والضمان سكودو',
     'warranty_skudo' => 'المطالبة والضمان سكودو',
     'logout' => 'تسجيل الخروج',
     'lang' => 'اللغة',

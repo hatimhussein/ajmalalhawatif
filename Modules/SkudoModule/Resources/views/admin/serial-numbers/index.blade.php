@@ -25,10 +25,12 @@
                     </div>
                 </div>
                 <div class="page-title" style="float:right">
-                    <a class="mt-4 btn btn-button-16 mr-2"
-                       href="{{route('skudo.serial-numbers.create')}}">
-                        إضافة رقم تسلسلي جديد
-                    </a>
+                    @can('add_skudo_serial_numbers')
+                        <a class="mt-4 btn btn-button-16 mr-2"
+                           href="{{route('skudo.serial-numbers.create')}}">
+                            إضافة رقم تسلسلي جديد
+                        </a>
+                    @endcan
                 </div>
             </div>
 
@@ -75,18 +77,22 @@
                                                 </button>
                                             </div>
                                             <div class="col-md-2">
-                                                <a href="{{ route('skudo.serial-numbers.import') }}" class="btn btn-primary">
-                                                    <i class="flaticon-upload"></i> استيراد
-                                                </a>
+                                                @can('add_skudo_serial_numbers')
+                                                    <a href="{{ route('skudo.serial-numbers.import') }}" class="btn btn-primary">
+                                                        <i class="flaticon-upload"></i> استيراد
+                                                    </a>
+                                                @endcan
                                             </div>
                                             <div class="col-md-3">
-                                                <a href="{{ route('skudo.serial-numbers.export', ['search' => request('search')]) }}" 
-                                                   class="btn btn-info" 
-                                                   data-toggle="tooltip" 
-                                                   data-placement="top" 
-                                                   title="تصدير جميع الأرقام التسلسلية إلى CSV (يمكن فتحه في Excel)">
-                                                    <i class="flaticon-download"></i> تصدير CSV
-                                                </a>
+                                                @can('show_skudo_serial_numbers')
+                                                    <a href="{{ route('skudo.serial-numbers.export', ['search' => request('search')]) }}" 
+                                                       class="btn btn-info" 
+                                                       data-toggle="tooltip" 
+                                                       data-placement="top" 
+                                                       title="تصدير جميع الأرقام التسلسلية إلى CSV (يمكن فتحه في Excel)">
+                                                        <i class="flaticon-download"></i> تصدير CSV
+                                                    </a>
+                                                @endcan
                                             </div>
                                         </div>
                                     </form>
@@ -124,8 +130,10 @@
                                             <td>
                                                 @if($serialNumber->insurance)
                                                     <div class="d-flex flex-column">
+                                                        @can('update_skudo_insurance')
                                                         <a href="{{ route('skudo.insurance.edit', $serialNumber->insurance->id) }}" 
                                                            class="badge badge-primary mb-1 text-decoration-none">#{{ $serialNumber->insurance->id }}</a>
+                                                        @endcan
                                                         <span class="badge 
                                                             @if($serialNumber->insurance->status == 0) badge-secondary
                                                             @elseif($serialNumber->insurance->status == 1) badge-success
@@ -149,8 +157,10 @@
                                                         $latestWarranty = $serialNumber->insurance->warranties->sortByDesc('created_at')->first();
                                                     @endphp
                                                     <div class="d-flex flex-column">
+                                                        @can('update_skudo_warranty')
                                                         <a href="{{ route('skudo.warranty.edit', $latestWarranty->id) }}" 
                                                            class="badge badge-info mb-1 text-decoration-none">#{{ $latestWarranty->id }}</a>
+                                                        @endcan
                                                         <span class="badge 
                                                             @if($latestWarranty->is_applicable == 1) badge-success
                                                             @elseif($latestWarranty->is_applicable == 2) badge-warning
@@ -198,36 +208,42 @@
                                             </td>
                                             <td>
                                                 <ul class="table-controls">
-                                                    <li>
-                                                        <a href="{{ route('skudo.serial-numbers.show', $serialNumber->id) }}" 
-                                                           class="btn btn-info p-0" data-toggle="tooltip" data-placement="top" title="عرض">
-                                                            <i class="flaticon-view bg-info p-1 text-white br-6 mb-1"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{ route('skudo.serial-numbers.edit', $serialNumber->id) }}" 
-                                                           class="btn btn-warning p-0" data-toggle="tooltip" data-placement="top" title="تعديل">
-                                                            <i class="flaticon-edit bg-warning p-1 text-white br-6 mb-1"></i>
-                                                        </a>
-                                                    </li>
-                                                    @if(!$serialNumber->insurance)
+                                                    @can('show_skudo_serial_numbers')
                                                         <li>
-                                                            <form class="inline" action="{{ route('skudo.serial-numbers.destroy', $serialNumber->id) }}" 
-                                                                  method="POST" onsubmit="return confirm('هل أنت متأكد من حذف هذا الرقم التسلسلي؟')">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-danger p-0" data-toggle="tooltip" data-placement="top" title="حذف">
+                                                            <a href="{{ route('skudo.serial-numbers.show', $serialNumber->id) }}" 
+                                                               class="btn btn-info p-0" data-toggle="tooltip" data-placement="top" title="عرض">
+                                                                <i class="flaticon-view bg-info p-1 text-white br-6 mb-1"></i>
+                                                            </a>
+                                                        </li>
+                                                    @endcan
+                                                    @can('update_skudo_serial_numbers')
+                                                        <li>
+                                                            <a href="{{ route('skudo.serial-numbers.edit', $serialNumber->id) }}" 
+                                                               class="btn btn-warning p-0" data-toggle="tooltip" data-placement="top" title="تعديل">
+                                                                <i class="flaticon-edit bg-warning p-1 text-white br-6 mb-1"></i>
+                                                            </a>
+                                                        </li>
+                                                    @endcan
+                                                    @can('delete_skudo_serial_numbers')
+                                                        @if(!$serialNumber->insurance)
+                                                            <li>
+                                                                <form class="inline" action="{{ route('skudo.serial-numbers.destroy', $serialNumber->id) }}" 
+                                                                      method="POST" onsubmit="return confirm('هل أنت متأكد من حذف هذا الرقم التسلسلي؟')">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="btn btn-danger p-0" data-toggle="tooltip" data-placement="top" title="حذف">
+                                                                        <i class="flaticon-delete bg-danger p-1 text-white br-6"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </li>
+                                                        @else
+                                                            <li>
+                                                                <button class="btn btn-danger p-0" data-toggle="tooltip" data-placement="top" title="لا يمكن الحذف - مرتبط بضمان" disabled>
                                                                     <i class="flaticon-delete bg-danger p-1 text-white br-6"></i>
                                                                 </button>
-                                                            </form>
-                                                        </li>
-                                                    @else
-                                                        <li>
-                                                            <button class="btn btn-danger p-0" data-toggle="tooltip" data-placement="top" title="لا يمكن الحذف - مرتبط بضمان" disabled>
-                                                                <i class="flaticon-delete bg-danger p-1 text-white br-6"></i>
-                                                            </button>
-                                                        </li>
-                                                    @endif
+                                                            </li>
+                                                        @endif
+                                                    @endcan
                                                 </ul>
                                             </td>
                                         </tr>

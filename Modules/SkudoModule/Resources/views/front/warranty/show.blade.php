@@ -15,19 +15,107 @@
     <div class="main-container col2-right-layout">
         <div class="main container warranty-container">
             <div class="row w-attachments box">
+                {{-- Row 1: broken device image (client upload) --}}
+                <div class="col-lg-12 col-md-12">
+                    <h5>{{ __('skudomodule::warranty.broken_device_image') }}</h5>
+                    @if($warranty->broken_device_image)
+                        @if(is_video($warranty->broken_device_image))
+                            <video class="img-responsive" controls>
+                                <source src="{{asset('images/warranty/'.$warranty->broken_device_image)}}" type="video/mp4">
+                                <source src="{{asset('images/warranty/'.$warranty->broken_device_image)}}" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                        @else
+                            <img class="img-responsive" src="{{asset('images/warranty/'.$warranty->broken_device_image)}}" alt=""/>
+                        @endif
+                    @else
+                        <div class="text-muted text-center py-4">{{ __('skudomodule::warranty.image_not_available') }}</div>
+                    @endif
+                </div>
+
+                <div class="w-100"></div>
+
+                {{-- Row 2: 4 insurance registration images (same order as client insurance UI) --}}
+                @php $ins = $warranty->insurance; @endphp
+                <div class="col-lg-3 col-md-3">
+                    <h5> صورة الجهاز من الأمام بعد التركيب</h5>
+                    @if($ins && $ins->front_image)
+                        @if(is_video($ins->front_image))
+                            <video class="img-responsive" controls>
+                                <source src="{{asset('images/warranty/'.$ins->front_image)}}" type="video/mp4">
+                                <source src="{{asset('images/warranty/'.$ins->front_image)}}" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                        @else
+                            <img class="img-responsive" src="{{asset('images/warranty/'.$ins->front_image)}}"/>
+                        @endif
+                    @else
+                        <div class="text-muted text-center py-4">{{ __('skudomodule::insurance.image_not_available') }}</div>
+                    @endif
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <h5> {{ __('skudomodule::insurance.device_back_image') }}</h5>
+                    @if($ins && $ins->device_back_image)
+                        @if(is_video($ins->device_back_image))
+                            <video class="img-responsive" controls>
+                                <source src="{{asset('images/warranty/'.$ins->device_back_image)}}" type="video/mp4">
+                                <source src="{{asset('images/warranty/'.$ins->device_back_image)}}" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                        @else
+                            <img class="img-responsive" src="{{asset('images/warranty/'.$ins->device_back_image)}}"/>
+                        @endif
+                    @else
+                        <div class="text-muted text-center py-4">{{ __('skudomodule::insurance.image_not_available') }}</div>
+                    @endif
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <h5> {{ __('skudomodule::insurance.back_image') }}</h5>
+                    @if($ins && $ins->back_image)
+                        @if(is_video($ins->back_image))
+                            <video class="img-responsive" controls>
+                                <source src="{{asset('images/warranty/'.$ins->back_image)}}" type="video/mp4">
+                                <source src="{{asset('images/warranty/'.$ins->back_image)}}" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                        @else
+                            <img class="img-responsive" src="{{asset('images/warranty/'.$ins->back_image)}}"/>
+                        @endif
+                    @else
+                        <div class="text-muted text-center py-4">{{ __('skudomodule::insurance.image_not_available') }}</div>
+                    @endif
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <h5> صورة الفاتورة</h5>
+                    @if($ins && $ins->invoice_image)
+                        @if(is_video($ins->invoice_image))
+                            <video class="img-responsive" controls>
+                                <source src="{{asset('images/warranty/'.$ins->invoice_image)}}" type="video/mp4">
+                                <source src="{{asset('images/warranty/'.$ins->invoice_image)}}" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                        @else
+                            <img class="img-responsive" src="{{asset('images/warranty/'.$ins->invoice_image)}}"/>
+                        @endif
+                    @else
+                        <div class="text-muted text-center py-4">{{ __('skudomodule::insurance.image_not_available') }}</div>
+                    @endif
+                </div>
+
+                <div class="w-100"></div>
+
+                {{-- Other warranty attachments (if any) --}}
                 <div class="col-lg-4 col-md-4">
                     @if($warranty->front_image)
                         <h5> {{__('warrantymodule::warranty.front_image')}}</h5>
                         @if(is_video($warranty->front_image))
                             <video class="img-responsive" controls>
                                 <source src="{{asset('images/warranty/'.$warranty->front_image)}}" type="video/mp4">
-                                <source src="{{asset('images/warranty/'.$warranty->front_image)}}"
-                                        type="video/quicktime">
+                                <source src="{{asset('images/warranty/'.$warranty->front_image)}}" type="video/quicktime">
                                 Your browser does not support the video tag.
                             </video>
                         @else
-                            <img class="img-responsive"
-                                 src="{{asset('images/warranty/'.$warranty->front_image)}}"/>
+                            <img class="img-responsive" src="{{asset('images/warranty/'.$warranty->front_image)}}"/>
                         @endif
                     @endif
                 </div>
@@ -37,13 +125,11 @@
                         @if(is_video($warranty->back_image))
                             <video class="img-responsive" controls>
                                 <source src="{{asset('images/warranty/'.$warranty->back_image)}}" type="video/mp4">
-                                <source src="{{asset('images/warranty/'.$warranty->back_image)}}"
-                                        type="video/quicktime">
+                                <source src="{{asset('images/warranty/'.$warranty->back_image)}}" type="video/quicktime">
                                 Your browser does not support the video tag.
                             </video>
                         @else
-                            <img class="img-responsive"
-                                 src="{{asset('images/warranty/'.$warranty->back_image)}}"/>
+                            <img class="img-responsive" src="{{asset('images/warranty/'.$warranty->back_image)}}"/>
                         @endif
                     @endif
                 </div>
@@ -53,13 +139,11 @@
                         @if(is_video($warranty->warranty_image))
                             <video class="img-responsive" controls>
                                 <source src="{{asset('images/warranty/'.$warranty->warranty_image)}}" type="video/mp4">
-                                <source src="{{asset('images/warranty/'.$warranty->warranty_image)}}"
-                                        type="video/quicktime">
+                                <source src="{{asset('images/warranty/'.$warranty->warranty_image)}}" type="video/quicktime">
                                 Your browser does not support the video tag.
                             </video>
                         @else
-                            <img class="img-responsive"
-                                 src="{{asset('images/warranty/'.$warranty->warranty_image)}}" alt=""/>
+                            <img class="img-responsive" src="{{asset('images/warranty/'.$warranty->warranty_image)}}" alt=""/>
                         @endif
                     @endif
                 </div>

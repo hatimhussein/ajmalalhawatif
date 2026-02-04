@@ -1,5 +1,5 @@
 <?php $__env->startSection('title'); ?>
-    <?php echo e(__('commonmodule::front.warranty')); ?>
+    <?php echo e(__('skudomodule::warranty.page_title')); ?>
 
 <?php $__env->stopSection(); ?>
 
@@ -35,10 +35,10 @@
                                         <div class="form-group mb-0">
                                             <small><?php echo e(__('ordermodule::admin.search')); ?></small>
                                             <input type="text" class="form-control" name="q"
-                                                   id="warranty-search" value="<?php echo e(request()->get('q')); ?>"
-                                                   placeholder="البحث برقم المطالبة أو الرقم التسلسلي للمنتج (البكج) "
+                                                   id="warranty-search" value="<?php echo e($search ?? request()->get('q')); ?>"
+                                                   placeholder="<?php echo e(__('skudomodule::warranty.search_by_phone_placeholder')); ?>"
                                                    style="width: 71%;">
-                                            <button type="submit" class="btn btn-sm btn-info mt-1">بحث</button>
+                                            <button type="submit" class="btn btn-sm btn-info mt-1"><?php echo e(__('skudomodule::warranty.search_button')); ?></button>
                                         </div>
                                         </form>
                                     </div>
@@ -153,7 +153,20 @@
                                 <?php else: ?>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <h3 class="text-center"><?php echo e(__('ordermodule::order.no_orders')); ?></h3>
+                                            <?php $qText = trim((string) ($search ?? request()->get('q', ''))); ?>
+                                            <?php if($qText !== ''): ?>
+                                                <h3 class="text-center mb-2"><?php echo e(__('skudomodule::warranty.empty_search_title')); ?></h3>
+                                                <p class="text-center text-muted" style="font-size: 14px;">
+                                                    <?php echo e(__('skudomodule::warranty.empty_search_hint', ['q' => $qText])); ?>
+
+                                                </p>
+                                            <?php else: ?>
+                                                <h3 class="text-center mb-2"><?php echo e(__('skudomodule::warranty.empty_state_title')); ?></h3>
+                                                <p class="text-center text-muted" style="font-size: 14px;">
+                                                    <?php echo e(__('skudomodule::warranty.empty_state_hint')); ?>
+
+                                                </p>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 <?php endif; ?>

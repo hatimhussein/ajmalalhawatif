@@ -35,7 +35,35 @@ class Warranty extends Model
 
     public function getAttachmentsStrAttribute(): string
     {
-        return "$this->front_image,$this->back_image,$this->warranty_image";
+        $attachments = [];
+        
+        // إضافة صورة الجهاز المكسور
+        if ($this->broken_device_image) {
+            $attachments[] = $this->broken_device_image;
+        }
+        
+        // إضافة صور من insurance إذا كانت موجودة
+        if ($this->insurance) {
+            if ($this->insurance->front_image) {
+                $attachments[] = $this->insurance->front_image;
+            }
+            if ($this->insurance->back_image) {
+                $attachments[] = $this->insurance->back_image;
+            }
+        }
+        
+        // إضافة الصور الأخرى من warranty نفسه
+        if ($this->front_image) {
+            $attachments[] = $this->front_image;
+        }
+        if ($this->back_image) {
+            $attachments[] = $this->back_image;
+        }
+        if ($this->warranty_image) {
+            $attachments[] = $this->warranty_image;
+        }
+        
+        return implode(',', $attachments);
     }
 
     public function getDeviceNameAttribute()

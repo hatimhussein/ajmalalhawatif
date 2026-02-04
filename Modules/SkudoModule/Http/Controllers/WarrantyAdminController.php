@@ -26,7 +26,11 @@ class WarrantyAdminController extends Controller
 
     public function __construct(WarrantyRepository $warrantyRepository, CurrencyRepository $currencyRepository)
     {
-        $this->middleware('permission:warranty');
+        // Granular permissions
+        $this->middleware('permission:show_skudo_warranty')->only(['index', 'export']);
+        $this->middleware('permission:update_skudo_warranty')->only(['edit', 'update']);
+        $this->middleware('permission:delete_skudo_warranty')->only(['destroy']);
+
         $this->warrantyRepository = $warrantyRepository;
         $this->currencyRepository = $currencyRepository;
     }

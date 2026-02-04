@@ -1,7 +1,7 @@
 @extends('fronthomemodule::layouts.master')
 
 @section('title')
-    {{__('commonmodule::front.warranty')}}
+    {{__('skudomodule::warranty.page_title')}}
 @endsection
 
 @section('css')
@@ -35,10 +35,10 @@
                                         <div class="form-group mb-0">
                                             <small>{{ __('ordermodule::admin.search') }}</small>
                                             <input type="text" class="form-control" name="q"
-                                                   id="warranty-search" value="{{ request()->get('q') }}"
-                                                   placeholder="البحث برقم المطالبة أو الرقم التسلسلي للمنتج (البكج) "
+                                                   id="warranty-search" value="{{ $search ?? request()->get('q') }}"
+                                                   placeholder="{{ __('skudomodule::warranty.search_by_phone_placeholder') }}"
                                                    style="width: 71%;">
-                                            <button type="submit" class="btn btn-sm btn-info mt-1">بحث</button>
+                                            <button type="submit" class="btn btn-sm btn-info mt-1">{{ __('skudomodule::warranty.search_button') }}</button>
                                         </div>
                                         </form>
                                     </div>
@@ -149,7 +149,18 @@
                                 @else
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <h3 class="text-center">{{__('ordermodule::order.no_orders')}}</h3>
+                                            @php $qText = trim((string) ($search ?? request()->get('q', ''))); @endphp
+                                            @if($qText !== '')
+                                                <h3 class="text-center mb-2">{{ __('skudomodule::warranty.empty_search_title') }}</h3>
+                                                <p class="text-center text-muted" style="font-size: 14px;">
+                                                    {{ __('skudomodule::warranty.empty_search_hint', ['q' => $qText]) }}
+                                                </p>
+                                            @else
+                                                <h3 class="text-center mb-2">{{ __('skudomodule::warranty.empty_state_title') }}</h3>
+                                                <p class="text-center text-muted" style="font-size: 14px;">
+                                                    {{ __('skudomodule::warranty.empty_state_hint') }}
+                                                </p>
+                                            @endif
                                         </div>
                                     </div>
                                 @endif

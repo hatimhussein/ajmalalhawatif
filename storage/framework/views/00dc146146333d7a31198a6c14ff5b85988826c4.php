@@ -29,11 +29,13 @@
                     </div>
                 </div>
                 <div class="page-title" style="float:right">
-                    <a class="mt-4 btn btn-button-16 mr-2"
-                       href="<?php echo e(route('skudo.insurance.export')); ?>">
-                        <?php echo e(__('productmodule::category.download')); ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('show_skudo_insurance')): ?>
+                        <a class="mt-4 btn btn-button-16 mr-2"
+                           href="<?php echo e(route('skudo.insurance.export')); ?>">
+                            <?php echo e(__('productmodule::category.download')); ?>
 
-                    </a>
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -108,7 +110,7 @@
 
             </div>
 
-            <?php echo $__env->make('warrantymodule::admin.includes.attachment_modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            <?php echo $__env->make('skudomodule::admin.includes.attachment_modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
         </div>
     </div>

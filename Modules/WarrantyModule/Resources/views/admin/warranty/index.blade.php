@@ -127,7 +127,7 @@
                                                 <ul class="table-controls">
                                                     <li>
                                                         <a href="javascript: void(0)"
-                                                           onclick="showAttachments('{{addslashes($warranty->attachments_str)}}')"
+                                                           onclick="showAttachments('{{addslashes($warranty->attachments_str)}}', '{{ addslashes($warranty->insurance ? $warranty->insurance->invoice_image : '') }}')"
                                                            data-toggle="tooltip" data-placement="top"
                                                            title="Shot">
                                                             <i class="flaticon-view-1 bg-info p-1 text-white"></i>
