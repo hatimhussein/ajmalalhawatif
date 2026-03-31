@@ -84,14 +84,8 @@ class UserModuleController extends Controller
 
     function deletedUsers()
     {
-        $users = $this->userRepository->getDeletedUsers(1);
+        $users = $this->userRepository->getDeletedUsers();
         return view('usermodule::admin.user.deleted_users', compact('users'));
-    }
-
-    function deletedCustomers()
-    {
-        $users = $this->userRepository->getDeletedUsers(0);
-        return view('usermodule::admin.user.deleted_customers', compact('users'));
     }
 
     public function show($id)

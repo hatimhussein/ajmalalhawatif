@@ -1,6 +1,6 @@
 <?php
 
-use Modules\CommonModule\Channels\Msegat;
+use Modules\CommonModule\Channels\Oursms;
 
 return [
 
@@ -14,10 +14,10 @@ return [
     */
 
     'drivers' => [
-        'MSEGAT' => [
-            'url' => 'https://www.msegat.com/gw/sendsms.php',
-            'driver' => Msegat::class,
-        ]
+        'OURSMS' => [
+            'url' => 'https://api.oursms.com/api-a/msgs',
+            'driver' => Oursms::class,
+        ],
     ],
 
     /*
@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'driver' => env('SMS_DRIVER', Msegat::class),
+    'driver' => env('SMS_DRIVER', Oursms::class),
 
 
     /*
@@ -44,7 +44,7 @@ return [
     |
     */
 
-    'url' => env('SMS_URL'),
+    'url' => env('SMS_URL', 'https://api.oursms.com/api-a/msgs'),
 
     /*
     |--------------------------------------------------------------------------

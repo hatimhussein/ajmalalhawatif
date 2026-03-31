@@ -1,7 +1,7 @@
 @extends('commonmodule::layouts.master')
 
 @section('title')
-    التجار المحذوفون
+    {{__('usermodule::admin.users')}}
 @endsection
 
 @section('css')
@@ -11,22 +11,35 @@
           type="text/css">
 @endsection
 
+
+
 @section('content')
+
+
 
     <!--  BEGIN CONTENT PART  -->
     <div id="content" class="main-content">
         <div class="container">
             <div class="page-header">
-
                 <div class="page-title">
-                    <h3>التجار المحذوفون</h3>
+                    <h3>{{__('usermodule::admin.users')}}</h3>
                     <div class="crumbs">
                         <ul id="breadcrumbs" class="breadcrumb">
                             <li><a href="{{url('/admin')}}"><i class="flaticon-home-fill"></i></a></li>
-                            <li class="active"><a href="#">التجار المحذوفون</a></li>
+                            <li class="active"><a href="#">{{__('usermodule::admin.users')}}</a></li>
                         </ul>
                     </div>
                 </div>
+
+                <div class="page-title" style="float:right">
+                    <a href="{{url('admin/users/create')}}"
+                       class="mt-4 btn btn-button-16"> {{__('usermodule::admin.add_new_user')}}  </a>
+                    <a href="{{asset('assets/admin/users_sample.xlsx')}}"
+                       class="mt-4 btn btn-button-16 mr-2"> {{__('productmodule::admin.download')}}  </a>
+                    <a data-target="#uploadModal" data-toggle="modal"
+                       class="mt-4 btn btn-button-16 mr-2"> {{__('productmodule::admin.upload')}}  </a>
+                </div>
+
 
             </div>
 
@@ -36,6 +49,36 @@
 
                 <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
                     <div class="statbox widget box box-shadow">
+                        <div class="widget-header">
+                            <div class="row">
+                                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                    <h4>{{__('usermodule::admin.users')}}</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form class="bulk-form" action="{{ route('user.bulk') }}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="method" value="">
+                                        <input type="hidden" name="ids" value="">
+                                        <button type="submit" class="btn btn-success bulk-btn" value="active"
+                                                disabled>{{__('productmodule::admin.activate')}}</button>
+                                        <button type="submit" class="btn btn-danger bulk-btn" value="de-active"
+                                                disabled>{{__('productmodule::admin.de-active')}}</button>
+                                        <button type="submit" class="btn btn-danger bulk-btn" value="delete"
+                                                disabled>{{__('productmodule::admin.delete')}}</button>
+                                        <div class="bulk-btn-group d-inline-block">
+                                            <h2 class="group-title">{{__('ordermodule::payment.cash_on_delivery')}}</h2>
+                                            <button type="submit" class="btn btn-success bulk-btn" value="can_cash"
+                                                    disabled>{{__('productmodule::admin.activate')}}</button>
+                                            <button type="submit" class="btn btn-danger bulk-btn" value="can_not_cash"
+                                                    disabled>{{__('productmodule::admin.de-active')}}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
 
                         <div class="widget-content widget-content-area">
                             <div class=" mb-4">
@@ -43,19 +86,24 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>{{ __('usermodule::admin.name') }}</th>
-                                        <th>{{ __('usermodule::admin.email') }}</th>
-                                        <th>{{ __('usermodule::admin.phone') }}</th>
-                                        <th>{{ __('usermodule::admin.date') }} </th>
-                                        <th>{{ __('usermodule::admin.status') }} </th>
-                                        <th>{{ __('usermodule::admin.action') }}</th>
+                                        <th><input type="checkbox" class="table-select-all"></th>
+                                        <th>{{__('usermodule::admin.name')}}</th>
+                                        <th> {{__('usermodule::admin.email')}}</th>
+                                        <th>{{__('usermodule::admin.phone')}}</th>
+                                        <th>{{__('usermodule::admin.date')}} </th>
+                                        <th>{{__('usermodule::admin.status')}} </th>
+                                        <th>{{__('usermodule::admin.action')}}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach($users as $user)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td class="text-primary">{{ $user->company_name }}</td>
+                                            <td>
+                                                <input type="checkbox" class="table-select"
+                                                       name="ids[]" value="{{$user->id}}">
+                                            </td>
+                                            <td class="text-primary">{{$user->first_name}} {{$user->last_name}}</td>
                                             <td>{{$user->email}}</td>
                                             <td>{{$user->phone}}</td>
 

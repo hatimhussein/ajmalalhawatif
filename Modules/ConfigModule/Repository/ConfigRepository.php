@@ -127,8 +127,10 @@ class ConfigRepository extends BaseRepository
 
     public function setSmsConfigs($configs)
     {
-        $driver = $configs->where('key', 'sms_driver')->first()->value_ar ?? '';
-        $driver = config('sms.drivers.' . $driver);
+        // If an old/disabled driver key exists in DB (ex: MSEGAT), fallback safely to OURSMS.
+        $driverKey = $configs->where('key', 'sms_driver')->first()->value_ar ?? '';
+        $driver = config('sms.drivers.' . $driverKey) ?: config('sms.drivers.OURSMS');
+
         if ($driver) {
             config([
                 'sms.driver' => $driver['driver'],

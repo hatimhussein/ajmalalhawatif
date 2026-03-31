@@ -8,5 +8,6 @@
     "ProductFeatureModule": true,
     "ProductModule": true,
     "UserModule": true,
-    "WarrantyModule": true
+    "WarrantyModule": true,
+    "SkudoModule": true
 }

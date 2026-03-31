@@ -102,7 +102,7 @@ class HomeController extends Controller
             'subject' => 'required',
 //            'type' => 'required',
             'message' => 'required',
-            'additional_attachments'  => 'nullable|mimes:doc,docx,pdf,txt,jpg,jpeg,png,bmp,tiff,mp4,mov,ogg,qt,webm,xlsx,xls,doc,docx',
+            'additional_attachments'  => 'nullable|mimes:doc,docx,pdf,txt,jpg,jpeg,png,bmp,tiff,mp4,mov,ogg,qt,webm,xlsx,doc,docx',
         ]);
 
         $data = $request->except('_token');

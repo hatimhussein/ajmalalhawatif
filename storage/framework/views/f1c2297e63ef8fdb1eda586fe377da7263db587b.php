@@ -1,0 +1,1 @@
+<?php /**PATH D:\freelancing\أجمل الهواتف\real_web_app\Modules/SkudoModule\Resources/views/front/warranty/new.blade.php ENDPATH**/ ?>

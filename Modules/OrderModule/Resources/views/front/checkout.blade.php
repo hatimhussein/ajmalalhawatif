@@ -27,7 +27,7 @@
                             <div class="row">
                                 @include('ordermodule::front.checkout_content.shipping_address')
                                 @include('ordermodule::front.checkout_content.shipping_methods')
-                                @include('ordermodule::front.checkout_content.summery', ['cart_data' => $cart_data])
+                                @include('ordermodule::front.checkout_content.summery')
                             </div>
 
                         </form>

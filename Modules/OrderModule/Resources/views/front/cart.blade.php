@@ -7,14 +7,13 @@
 
 @section('content')
 
+
+
     @include('fronthomemodule::content.breadCrumbs',['pages'=>[__('commonmodule::front.view_cart')]])
 
     <!-- main-container -->
     <div class="main-container">
         <div class="main container">
-
-            <h2 style="text-align: center;color: red;">{!! session('failed') !!}</h2>
-
             <div class="cart wow bounceInUp animated">
                 <div class="row" style="margin: 0">
                     @php($total = 0)
@@ -27,7 +26,6 @@
 
                         <div class="col-md-8">
                             <div class="table-responsive pl-0 cart_item tablecart">
-
 
                                 <fieldset>
                                     <table class="data-table cart-table" id="shopping-cart-table">

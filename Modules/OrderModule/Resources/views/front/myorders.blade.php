@@ -7,6 +7,7 @@
 
 @section('content')
 
+
     @include('fronthomemodule::content.breadCrumbs',['pages'=>[__('usermodule::account.my_orders')]])
 
     <!-- main-container -->
@@ -80,22 +81,11 @@
                                                             <form action="{{url('re-order/'.$order->id)}}"
                                                                   method="post">
                                                                 @csrf
-
-                                                                @if($order->status->first()->able_print)
-                                                                    <a class="btn btn-warning a-button p-0"
-                                                                       href="{{url('order/invoice/'.$order->id)}}" target="_blank" title="{{ __('ordermodule::order.print_invoice') }}">
-                                                                        {{ __('ordermodule::order.print_invoice') }}
-                                                                    </a>
-                                                                    <br>
-                                                                    <br>
-                                                                @endif
-
                                                                 <a class="btn btn-success a-button p-0"
                                                                    href="{{url('order/'.$order->id)}}" title="Edit">
                                                                     {{__('ordermodule::order.order_details')}}
                                                                 </a>
-                                                                <br>
-                                                                <br>
+                                                                |
                                                                 <button class="btn btn-info a-button re-purchase"
                                                                         type="submit"
                                                                         title="RePurchase">

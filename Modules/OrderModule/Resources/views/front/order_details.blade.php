@@ -8,29 +8,18 @@
 @section('content')
 
 
+
     @include('fronthomemodule::content.breadCrumbs',['pages'=>[__('ordermodule::checkout.order_details')]])
 
 
     <div class="main-container col2-right-layout">
         <div class="main container">
-
-            @if($order->payment_type == "bank_transfer")
-                <div class="row">
-                    <div class="col-lg-12">
-                        <p style="width: 100%; text-align: center; font-size: 20px;margin-bottom: 20px;">
-                            يجب عليك التأكد من ارسال ايصال الدفع البنكي من خلال
-                            <a href="#" style="color: #FF4C4C; text-decoration: underline">الصفحة التالية</a>
-                            لاتمام معالجة طلبك!
-                        </p>
-                    </div>
-                </div>
-            @endif
-
             <div class="row">
                 <div class="col-lg-3">
                     <div class="card">
                         <h4 class="card-header text-center">{{__('ordermodule::order.shipping_address')}}</h4>
                         <div class="card-body">
+
                             @if($order->userAddresses !=null)
                                 <div>
                                     <span>

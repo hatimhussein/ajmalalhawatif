@@ -13,7 +13,7 @@
 {{--            </li>--}}
             <li class="nav-item d-flex">
                 <a href="#" class="navbar-brand">
-                    <img src="{{ asset('images/img/'.getNavLogo()->photo)}}" class="img-fluid" alt="logo">
+                    <img src="{{ asset('assets/admin/img/icons/config/svg/site_data_new.svg')}}" class="img-fluid" alt="logo">
                 </a>
                 <p class="border-underline"></p>
             </li>
@@ -286,7 +286,7 @@
             @endcan
 
 
-            @canany(['users', 'warranty', 'insurance'])
+            @canany(['users', 'warranty', 'insurance', 'show_skudo_warranty', 'show_skudo_insurance'])
                 <li class="menu">
                     <a href="#users" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
@@ -302,6 +302,11 @@
                         @can('users')
                             <li>
                                 <a href="{{url('admin/users')}}"> {{__('commonmodule::sidebar.users')}} </a>
+                            </li>
+                        @endcan
+                        @can('users')
+                            <li>
+                                <a href="{{url('admin/deleted-users')}}"> العملاء المحذوفين </a>
                             </li>
                         @endcan
                         @can('show_merchant')
@@ -346,7 +351,7 @@
 
                     </ul>
                 </li>
-            @endcan
+            @endcanany
 
             @can('orders')
                 <li class="menu">
@@ -522,20 +527,62 @@
                     <ul class="collapse submenu list-unstyled" id="archive" data-parent="#accordionExample">
 
                         <li>
-                            <a href="{{url('admin/deleted-customers')}}"> العملاء المحذوفون</a>
-                        </li>
-                        <li>
                             <a href="{{url('admin/deleted-users')}}"> التجار المحذوفون</a>
                         </li>
                         <li>
                             <a href="{{url('admin/deleted-products')}}"> المنتجات المحذوفة</a>
                         </li>
-                        <li>
-                            <a href="{{url('admin/deleted-orders')}}"> الطلبات المحذوفة</a>
-                        </li>
 
                     </ul>
                 </li>
+
+            @endcan
+
+            @canany(['show_skudo_warranty', 'show_skudo_insurance', 'show_skudo_serial_numbers'])
+                <li class="menu">
+                    <a href="#skudo-management" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <i class="flaticon-shield"></i>
+                            <span>إدارة سكودو</span>
+                        </div>
+                        <div>
+                            <i class="flaticon-right-arrow"></i>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="skudo-management" data-parent="#accordionExample">
+
+                        @canany(['show_skudo_insurance'])
+                            <li>
+                                <a href="{{route('skudo.insurance.index')}}"> {{__('commonmodule::sidebar.insurance_skudo')}} </a>
+                            </li>
+                        @endcanany
+
+                        @canany(['show_skudo_warranty'])
+                            <li>
+                                <a href="{{route('skudo.warranty.index')}}?type=sms"> {{__('commonmodule::sidebar.warranty_skudo')}} </a>
+                            </li>
+                            {{--                            <li>--}}
+                            {{--                                <a href="{{route('skudo.warranty.index')}}?type=sms"> {{__('commonmodule::sidebar.sms_warranty')}} سكودو</a>--}}
+                            {{--                            </li>--}}
+
+                        @endcanany
+
+                        @canany(['show_skudo_serial_numbers'])
+                            <li>
+                                <a href="{{route('skudo.serial-numbers.index')}}"> الأرقام التسلسلية </a>
+                            </li>
+                        @endcanany
+
+
+                            {{--                        @can('returns')--}}
+{{--                            <li>--}}
+{{--                                <a href="{{route('skudo.returns.index')}}"> {{__('commonmodule::sidebar.returns')}} سكودو</a>--}}
+{{--                            </li>--}}
+{{--                        @endcan--}}
+
+                    </ul>
+                </li>
+            @endcanany
 
             <!--
 
@@ -562,7 +609,6 @@
 
                 <!--   </ul> -->
                 <!--      </li> -->
-            <!--         @endcan -->
         </ul>
 
 

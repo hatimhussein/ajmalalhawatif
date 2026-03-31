@@ -48,8 +48,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
 
     Route::resource('status', 'StatusController');
 
-    Route::get('deleted-orders', 'OrderAdminController@deletedOrders')->name("deleted_orders");
-    Route::put('restore-orders/{order}', 'OrderAdminController@restoreOrders')->name("restore_orders");
 });
 
 Route::middleware('is_not_ban')->group(function () {
@@ -67,7 +65,6 @@ Route::middleware('is_not_ban')->group(function () {
         Route::post('do-checkout', 'OrderModuleController@doCheckout');
         Route::post('re-order/{order}', 'CartController@reOrder');
         Route::get('orders', 'OrderModuleController@myOrders');
-        Route::get('order/invoice/{order_id}', 'OrderModuleController@Invoice');
 
         Route::resource('returns', 'ReturnController')->names('front.returns')->only(['index', 'create', 'store']);
     });

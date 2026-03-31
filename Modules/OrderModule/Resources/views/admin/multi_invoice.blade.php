@@ -275,7 +275,7 @@
                     <tr>
                         <th>م</th>
                         <th>{{ __('productfeaturemodule::admin.parcode') }}</th>
-                        <th>{{__('productmodule::admin.product_item_number')}}</th>
+                        <th>{{__('productfeaturemodule::admin.number')}}</th>
                         <th>{{__('ordermodule::order.product_name')}}</th>
                         <th>{{__('ordermodule::invoice.unit')}}</th>
                         <th>{{__('ordermodule::order.quantity')}}</th>
@@ -289,7 +289,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $product->product_code }}</td>
-                            <td>{{ $product->item_number  }}</td>
+                            <td>{{ $product->id  }}</td>
                             <td>
                                 <p class="desc-name" style="padding-bottom: 5px; border-bottom: 1px solid #000;">
                                     {{ $product->name_ar }}
@@ -367,6 +367,7 @@
 
 <script type="text/javascript">
     window.print();
+
 </script>
 
 </html>

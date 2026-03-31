@@ -16,7 +16,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::post('user/bulk', 'UserModuleController@bulk')->name('user.bulk');
 
     Route::get('deleted-users', 'UserModuleController@deletedUsers')->name("deleted_users");
-    Route::get('deleted-customers', 'UserModuleController@deletedCustomers')->name("deleted_customers");
     Route::put('restore-user/{user}', 'UserModuleController@restoreUser')->name("restore_user");
 
     Route::get('contactus', 'ContactsController@ContactUs');

@@ -12,7 +12,8 @@ return array(
     'my_orders' => 'My Orders',
     'wishlist' => 'Wishlist',
     'returns' => 'Returns',
-    'warranty' => 'Claim & warranty',
+    'warranty' => 'Skudo Warranty',
+    'warranty_skudo' => 'Skudo warranty',
     'logout' => 'Logout',
     'lang' => 'Language',
 
@@ -21,6 +22,7 @@ return array(
     'links' => 'Important Links',
     'categories' => 'Categories',
     'catalogs' => 'Catalogs',
+    'insurance_skudo' => 'Skudo Insurance',
 
     // newsletter
     'newsletter' => 'Newsletter',

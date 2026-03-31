@@ -240,6 +240,7 @@ class ProductModuleController extends Controller
         $data = $this->productRepository->updateProduct($product, $data, $request->file('product_photo'), $request->file('product_images'));
 
         return $this->setCode(200)->setData($data)->send();
+
     }
 
     public function destroy($id)

@@ -49,6 +49,4 @@ return array(
 
     're_order' => 'Re-Order',
 
-    'print_invoice' => 'Print Invoice',
-
 );

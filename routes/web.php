@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Notification;
+use Modules\CommonModule\Notifications\TestSmsNotification;
+use Modules\ConfigModule\Entities\Config;
+use Modules\ConfigModule\Repository\ConfigRepository;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +20,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Legacy redirects (SEO-friendly permanent redirects)
+Route::get('/warranty-new', function () {
+    return redirect('/skudo-warranty/create?type=sms', 301);
+});
+
+Route::get('/insurance/create', function () {
+    return redirect('/skudo-insurance/create', 301);
+});
+
